@@ -8,8 +8,12 @@ example app monorepo
 
 ### Run the whole app
 
-- yarn start ( from the root app )
+- example-app> yarn start ( from the root app )
 
-### Adding dependencies
+### Adding dependencies ( from the root app )
 
-- npx lerna add lodash packages/example-ui
+- example-app> npx lerna add lodash packages/example-ui
+
+### About Lerna
+
+[Lerna](https://lerna.js.org/docs/getting-started)
