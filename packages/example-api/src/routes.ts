@@ -1,5 +1,5 @@
 import { Express } from "express";
-import {
+import { JustifiContext } from "."; import {
   capturePayment,
   createPayment,
   getPayment,
@@ -23,10 +23,10 @@ import {
   listSellerAccounts,
 } from "./handlers/seller_account";
 
-export const configAppRoutes = (app: Express): Express => {
-  app.post("/v1/seller_accounts", createSellerAccount);
-  app.get("/v1/seller_accounts", listSellerAccounts);
-  app.get("/v1/seller_accounts/:accountId", getSellerAccount);
+export const configAppRoutes = (app: Express, ctx: JustifiContext): Express => {
+  app.post("/v1/seller_accounts", createSellerAccount(ctx));
+  app.get("/v1/seller_accounts", listSellerAccounts(ctx));
+  app.get("/v1/seller_accounts/:accountId", getSellerAccount(ctx));
 
   app.get("/v1/refunds", listRefunds);
   app.get("/v1/refunds/:refundId", getRefund);
