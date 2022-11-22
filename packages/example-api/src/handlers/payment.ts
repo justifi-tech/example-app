@@ -9,7 +9,6 @@ export const createPayment = (ctx: JustifiContext) => async (req: Request, res: 
     return res.status(400).json({ error: "Seller-Account header is required" });
   }
 
-  console.log(req.body)
   try {
     const payment = await ctx.client.createPayment(randomUUID(), req.body, sellerAccountId);
     return res.status(200).json(payment);
