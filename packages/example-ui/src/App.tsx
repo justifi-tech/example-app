@@ -2,6 +2,7 @@ import * as React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import CreateSeller from "./components/features/CreateSeller";
 import Onboarding from "./components/features/Onboarding";
+import Payments from "./components/features/Payments";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
             path="/onboarding/:seller_account_id"
             element={<Onboarding />}
           />
+          <Route path="/payments" element={<Payments />} />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>
