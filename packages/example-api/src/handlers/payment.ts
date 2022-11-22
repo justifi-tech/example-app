@@ -9,7 +9,13 @@ export const createPayment = (ctx: JustifiContext) => async (req: Request, res: 
     return res.status(400).json({ error: "Seller-Account header is required" });
   }
 
-  return res.status(200).json(await ctx.client.createPayment(randomUUID(), req.body.json(), sellerAccountId));
+  console.log(req.body)
+  try {
+    const payment = await ctx.client.createPayment(randomUUID(), req.body, sellerAccountId);
+    return res.status(200).json(payment);
+  } catch (e: any) {
+    return res.status(e.code || 500).json(e);
+  }
 };
 
 export const listPayments = (ctx: JustifiContext) => async (req: Request<any, any, any, PaymentListFilters>, res: Response) => {
@@ -18,30 +24,54 @@ export const listPayments = (ctx: JustifiContext) => async (req: Request<any, an
     return res.status(400).json({ error: "Seller-Account header is required" });
   }
 
-  return res.status(200).json(await ctx.client.listPayments(req.query, sellerAccountId));
+  try {
+    return res.status(200).json(await ctx.client.listPayments(req.query, sellerAccountId));
+  } catch (e: any) {
+    return res.status(e.code || 500).json(e);
+  }
 };
 
 export const getPayment = (ctx: JustifiContext) => async (req: Request, res: Response) => {
-  return res.status(200).json(await ctx.client.getPayment(req.params.paymentId));
+  try {
+    return res.status(200).json(await ctx.client.getPayment(req.params.paymentId));
+  } catch (e: any) {
+    return res.status(e.code || 500).json(e);
+  }
 };
 
 export const updatePayment = (ctx: JustifiContext) => async (req: Request, res: Response) => {
-  const updatedPayment = await ctx.client.updatePayment(randomUUID(), req.params.paymentId, req.body.json());
+  const updatedPayment = await ctx.client.updatePayment(randomUUID(), req.params.paymentId, req.body);
 
-  return res.status(200).json(updatedPayment)
+  try {
+    return res.status(200).json(updatedPayment)
+  } catch (e: any) {
+    return res.status(e.code || 500).json(e);
+  }
 };
 
 export const capturePayment = (ctx: JustifiContext) => async (req: Request, res: Response) => {
-  return res.status(200).json(await ctx.client.capturePayment(randomUUID(), req.params.paymentId));
+  try {
+    return res.status(200).json(await ctx.client.capturePayment(randomUUID(), req.params.paymentId));
+  } catch (e: any) {
+    return res.status(e.code || 500).json(e);
+  }
 };
 
 export const refundPayment = (ctx: JustifiContext) => async (req: Request, res: Response) => {
-  return res.status(200).json(await ctx.client.refundPayment(randomUUID(), req.params.paymentId, req.body.json()));
+  try {
+    return res.status(200).json(await ctx.client.refundPayment(randomUUID(), req.params.paymentId, req.body));
+  } catch (e: any) {
+    return res.status(e.code || 500).json(e);
+  }
 };
 
 export const listPaymentBalanceTransactions = (ctx: JustifiContext) => async (
   req: Request,
   res: Response
 ) => {
-  return res.status(200).json(await ctx.client.listPaymentsForPaymentIntent(req.params.paymentId));
+  try {
+    return res.status(200).json(await ctx.client.listPaymentsForPaymentIntent(req.params.paymentId));
+  } catch (e: any) {
+    return res.status(e.code || 500).json(e);
+  }
 };

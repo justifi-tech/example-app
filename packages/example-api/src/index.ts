@@ -1,6 +1,7 @@
 import Justifi from "@justifi/justifi-node";
 import express from "express";
 import { configAppRoutes } from "./routes";
+import morgan from "morgan";
 
 export interface JustifiContext {
   client: Justifi;
@@ -18,6 +19,7 @@ const context: JustifiContext = { client };
 
 const app = express();
 app.use(express.json());
+app.use(morgan("tiny"))
 
 configAppRoutes(app, context).listen(process.env.PORT, () => {
   console.log(`Example api listening on port ${process.env.PORT}`);

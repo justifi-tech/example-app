@@ -9,7 +9,7 @@
     "dist/"
   ],
   "scripts": {
-    "dev": "npx ts-node",
+    "dev": "npx ts-node src/index.ts",
     "build": "tsc -p .",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
@@ -19,6 +19,8 @@
   "author": "Justifi.ai",
   "license": "ISC",
   "dependencies": {
-    "@justifi/justifi-node": "^0.1.2"
+    "@justifi/justifi-node": "^0.1.2",
+    "@types/morgan": "^1.9.3",
+    "morgan": "^1.10.0"
   }
 }
