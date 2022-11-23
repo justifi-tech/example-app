@@ -22,6 +22,7 @@ import {
   getSellerAccount,
   listSellerAccounts,
 } from "./handlers/seller_account";
+import { justifiWebhook, listRecentWebhooks } from "./handlers/webhook";
 
 export const configAppRoutes = (app: Express, ctx: JustifiContext): Express => {
   app.post("/v1/seller_accounts", createSellerAccount(ctx));
@@ -55,6 +56,9 @@ export const configAppRoutes = (app: Express, ctx: JustifiContext): Express => {
     "/v1/payments/:paymentId/payment_balance_transactions",
     listPaymentBalanceTransactions(ctx)
   );
+
+  app.post("/v1/webhook", justifiWebhook(ctx))
+  app.get("/v1/webhook/recent", listRecentWebhooks(ctx))
 
   return app;
 };
