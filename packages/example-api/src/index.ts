@@ -2,9 +2,11 @@ import Justifi from "@justifi/justifi-node";
 import express from "express";
 import { configAppRoutes } from "./routes";
 import morgan from "morgan";
+import { InMemoryCache } from "./cache";
 
 export interface JustifiContext {
   client: Justifi;
+  cache: InMemoryCache;
 }
 
 if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET) {
@@ -15,7 +17,8 @@ const client = Justifi.client().withCredentials({
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
 })
-const context: JustifiContext = { client };
+const cache = InMemoryCache.getInstance();
+const context: JustifiContext = { client, cache };
 
 const app = express();
 app.use(express.json());

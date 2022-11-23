@@ -22,6 +22,8 @@ enum EventType {
 }
 
 export const justifiWebhook = (ctx: JustifiContext) => async (req: Request, res: Response) => {
+  ctx.cache.add(req.body)
+
   const secretKey = process.env.SECRET_KEY;
   if (!secretKey) {
     console.log("SECRET_KEY env var must be set, returning 200 to cancel retries");
@@ -75,4 +77,8 @@ export const justifiWebhook = (ctx: JustifiContext) => async (req: Request, res:
 
   // We must return 200 otherwise the request will retry a few times
   return res.status(200).send();
+}
+
+export const listRecentWebhooks = (ctx: JustifiContext) => (_req: Request, res: Response) => {
+  return res.status(200).json(ctx.cache.get())
 }
