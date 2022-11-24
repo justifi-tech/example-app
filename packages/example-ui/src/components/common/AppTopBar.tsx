@@ -1,4 +1,3 @@
-import { FunctionComponent } from "react";
 import { Box, AppBar, Toolbar, Typography } from "@mui/material";
 
 import SvgIcon from "@mui/material/SvgIcon";
@@ -22,13 +21,14 @@ interface AppTopBarProps {
   toggleDrawer: () => void;
 }
 
-const AppTopBar: FunctionComponent<React.PropsWithChildren<AppTopBarProps>> = (
-  props
-) => {
+const AppTopBar = (props: AppTopBarProps) => {
   const classes = useStyles();
 
   return (
-    <AppBar position="fixed">
+    <AppBar
+      position="fixed"
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    >
       <Toolbar>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <SvgIcon className={classes.appBarLogo}>
