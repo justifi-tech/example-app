@@ -1,5 +1,6 @@
 import Justifi from "@justifi/justifi-node";
 import express from "express";
+import cors from "cors";
 import { configAppRoutes } from "./routes";
 import morgan from "morgan";
 import { InMemoryCache } from "./cache";
@@ -22,7 +23,8 @@ const context: JustifiContext = { client, cache };
 
 const app = express();
 app.use(express.json());
-app.use(morgan("tiny"))
+app.use(morgan("tiny"));
+app.use(cors({ origin: "*" }));
 
 configAppRoutes(app, context).listen(process.env.PORT, () => {
   console.log(`Example api listening on port ${process.env.PORT}`);
