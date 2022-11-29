@@ -19,9 +19,6 @@ export const createPayment = (ctx: JustifiContext) => async (req: Request, res: 
 
 export const listPayments = (ctx: JustifiContext) => async (req: Request<any, any, any, PaymentListFilters>, res: Response) => {
   const sellerAccountId = req.header("Seller-Account");
-  if (!sellerAccountId) {
-    return res.status(400).json({ error: "Seller-Account header is required" });
-  }
 
   try {
     return res.status(200).json(await ctx.client.listPayments(req.query, sellerAccountId));

@@ -15,7 +15,7 @@ import JustiFiPalette from "../common/JustiFiPallete";
 import getCreateSellerFormSchema from "./CreateSellerFormSchema";
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeStyles(() => ({
   content: {
     height: "100%",
     padding: "32px",
@@ -75,7 +75,7 @@ const CreateSellerForm = (
   };
 
   return (
-    <Box sx={{ width: "390px", height: "310px" }}>
+    <Box>
       <Card variant="outlined" className={classes.content}>
         <form
           aria-label="refund form"

@@ -33,7 +33,7 @@ const Events = () => {
     listRecentEvents().then((evts) => {
       setEvents(evts);
       setIsLoading(false);
-    }).catch((e) => {
+    }).catch(() => {
       setIsError(true);
       setIsLoading(false);
     })

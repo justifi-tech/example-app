@@ -11,24 +11,24 @@ export enum RefundReasons {
 
 export class Refund {
   public amount: number;
-  public created_at: string;
+  public createdAt: string;
   public description: string;
   public id: string;
   public metadata: object | null;
-  public payment_id: string;
+  public paymentId: string;
   public reason: RefundReasons | null;
   public status: RefundStatuses;
-  public updated_at: string;
+  public updatedAt: string;
 
   constructor(refund: Refund) {
     this.amount = refund.amount;
-    this.created_at = refund.created_at;
+    this.createdAt = refund.createdAt;
     this.description = refund.description;
     this.id = refund.id;
     this.metadata = refund.metadata;
-    this.payment_id = refund.payment_id;
+    this.paymentId = refund.paymentId;
     this.reason = refund.reason;
     this.status = refund.status;
-    this.updated_at = refund.updated_at;
+    this.updatedAt = refund.updatedAt;
   }
 }

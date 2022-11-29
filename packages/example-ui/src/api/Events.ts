@@ -1,3 +1,5 @@
+import { HttpMethod, makeRequest, requestUrl } from "./Base";
+
 export interface Event {
   id: string;
   account_id: string;
@@ -6,11 +8,7 @@ export interface Event {
 }
 
 export const listRecentEvents = async (): Promise<Event[]> => {
-  const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
-  const res = await fetch(`${baseUrl}/v1/webhook/recent`);
-  if (!res.ok) {
-    Promise.reject("Failed to list recent events")
-  }
+  const url = requestUrl("/v1/webhook/recent");
 
-  return res.json()
+  return makeRequest<Event[]>(url, HttpMethod.Get);
 }

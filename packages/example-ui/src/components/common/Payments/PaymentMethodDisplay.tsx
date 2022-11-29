@@ -16,8 +16,8 @@ const StyledPaymentMethodDisplay = styled("span")({
 const PaymentMethodDisplay = (props: PaymentMethodDisplayProps) => {
   const { paymentMethod } = props;
   const card = paymentMethod.card;
-  const bankAccount = paymentMethod.bank_account;
-  const last4 = card ? card.acct_last_four : bankAccount?.acct_last_four;
+  const bankAccount = paymentMethod.bankAccount;
+  const last4 = card ? card.acctLastFour : bankAccount?.acctLastFour;
 
   return (
     <StyledPaymentMethodDisplay>
