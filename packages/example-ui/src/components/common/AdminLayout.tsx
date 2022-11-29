@@ -20,6 +20,7 @@ import AppTopBar from "./AppTopBar";
 import { ReactComponent as Camera } from "../../assets/camera-cattails-logo.svg";
 import SvgIcon from "@mui/material/SvgIcon";
 import { makeStyles } from "@mui/styles";
+import { Webhook } from "@mui/icons-material";
 
 const drawerWidth = 256;
 
@@ -52,7 +53,7 @@ const AdminLayout = (props: AdminLayoutProps) => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppTopBar toggleDrawer={() => {}} />
+      <AppTopBar toggleDrawer={() => { }} />
       <Drawer
         variant="permanent"
         sx={{
@@ -135,6 +136,17 @@ const AdminLayout = (props: AdminLayoutProps) => {
                   <AccountBalanceIcon />
                 </ListItemIcon>
                 <ListItemText primary="Payouts" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+          <Divider />
+          <List>
+            <ListItem key="Events" disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Webhook />
+                </ListItemIcon>
+                <ListItemText primary="Received Events" />
               </ListItemButton>
             </ListItem>
           </List>

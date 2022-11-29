@@ -9,7 +9,8 @@
     "dist/"
   ],
   "scripts": {
-    "dev": "PORT=${API_PORT:8000} npx ts-node src/index.ts",
+    "start": "yarn run dev",
+    "dev": "PORT=${API_PORT:-8000} npx ts-node src/index.ts",
     "build": "tsc -p .",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
@@ -20,7 +21,9 @@
   "license": "ISC",
   "dependencies": {
     "@justifi/justifi-node": "^0.1.2",
+    "@types/cors": "^2.8.12",
     "@types/morgan": "^1.9.3",
+    "cors": "^2.8.5",
     "morgan": "^1.10.0"
   }
 }

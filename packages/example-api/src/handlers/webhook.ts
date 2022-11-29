@@ -42,7 +42,6 @@ export const justifiWebhook = (ctx: JustifiContext) => async (req: Request, res:
     return res.status(400).send();
   }
 
-  console.log(req.body, timestamp, secretKey, signature)
   if (!ctx.client.verifySignature(req.body, timestamp, secretKey, signature)) {
     console.log("invalid webhook signature, returning 400 to retry request");
     return res.status(400).send();
