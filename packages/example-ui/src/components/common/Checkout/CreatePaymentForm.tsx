@@ -19,7 +19,7 @@ import JustiFiPalette from "../JustiFiPallete";
 import getCreatePaymentFormSchema from "./CreatePaymentFormSchema";
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeStyles(() => ({
   content: {
     height: "100%",
     padding: "32px",
@@ -61,20 +61,16 @@ const CreatePaymentForm = (
     },
   });
 
-  const onSubmit = (values: any) => {
-    submitHandler(values);
-  };
-
   return (
     <Box sx={{ width: "390px" }}>
       <Card variant="outlined" className={classes.content}>
-        <form aria-label="refund form" onSubmit={handleSubmit(onSubmit)}>
+        <form aria-label="refund form" onSubmit={handleSubmit(submitHandler)}>
           <CardContent sx={{ padding: "0" }}>
             <Typography
               sx={{
                 fontSize: "34px",
                 color: "#004C4D",
-                fontWeight: "bold",
+                fontWeight: 700,
                 padding: "0",
               }}
             >
@@ -85,16 +81,18 @@ const CreatePaymentForm = (
               checkout.
             </SubheaderText>
             <Box sx={{ marginTop: "32px" }}>
-              <FormControl fullWidth>
+              <FormControl variant="filled" fullWidth>
                 <InputLabel id="seller-account-id">Seller</InputLabel>
                 <Select label="Seller" {...register("sellerAccountId")}>
-                  <MenuItem value={"/"}>Pleasant View Gardens</MenuItem>
+                  <MenuItem value={"Pleasant View Gardens"}>
+                    Pleasant View Gardens
+                  </MenuItem>
                 </Select>
               </FormControl>
             </Box>
             <TextField
               fullWidth
-              label="Payment amount"
+              label="Payment amount in cents"
               variant="filled"
               margin="normal"
               {...register("amount")}

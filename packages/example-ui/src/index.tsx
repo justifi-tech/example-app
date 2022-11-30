@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import { create } from "jss";
 import createCache from "@emotion/cache";
 import App from "./App";
+import "./App.css";
 import theme from "./theme";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);

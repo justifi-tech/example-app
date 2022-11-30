@@ -4,7 +4,7 @@ import { makeStyles } from "@mui/styles";
 import JustiFiPalette from "./JustiFiPallete";
 
 const useStyles = makeStyles(
-  (theme: any) => ({
+  () => ({
     table: {
       tableLayout: "fixed",
       "& .MuiTableCell-root": {

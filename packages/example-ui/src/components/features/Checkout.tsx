@@ -8,20 +8,10 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import JustiFiPalette from "../common/JustiFiPallete";
 import AppTopBar from "../common/AppTopBar";
 import CreatePaymentForm from "../common/Checkout/CreatePaymentForm";
-
-const useStyles = makeStyles((theme: any) => ({
-  content: {
-    height: "100%",
-    padding: "32px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-}));
+import CardFormComponent from "../common/Checkout/CardFormComponent";
 
 const HeaderText = styled("span")({
   display: "flex",
@@ -42,6 +32,10 @@ const SubheaderText = styled(Typography)({
 const Checkout = () => {
   const [params, setParams] = React.useState<any>({});
 
+  const onCreatePayment = (data: any) => {
+    setParams(data);
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -50,16 +44,11 @@ const Checkout = () => {
         variant="permanent"
         sx={{
           width: 390,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
-            width: 390,
-            boxSizing: "border-box",
-          },
         }}
       >
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
-          <CreatePaymentForm submitHandler={() => {}} />
+          <CreatePaymentForm submitHandler={onCreatePayment} />
         </Box>
       </Drawer>
       <Box component="main">
@@ -68,7 +57,7 @@ const Checkout = () => {
           <Grid>
             <Typography
               variant="h4"
-              sx={{ fontSize: "34px", color: "#004C4D" }}
+              sx={{ fontSize: "34px", color: "#004C4D", fontWeight: 700 }}
             >
               <HeaderText>Card Form Component</HeaderText>
             </Typography>
@@ -79,6 +68,7 @@ const Checkout = () => {
               them, while the iframed card form will send the payment method
               info to JustiFi, keeping the platform free of PCI scope.
             </SubheaderText>
+            <CardFormComponent params={params} />
           </Grid>
         </Grid>
       </Box>
