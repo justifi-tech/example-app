@@ -14,7 +14,7 @@ const PaymentsTableHeaderRow = () => {
           <span>Amount</span>
         </Tooltip>
       </TableCell>
-      <TableCell style={{ width: 200 }}>
+      <TableCell style={{ width: 250 }}>
         <Tooltip title="Account ID">
           <span>Account ID</span>
         </Tooltip>
@@ -24,7 +24,7 @@ const PaymentsTableHeaderRow = () => {
           <span>Description</span>
         </Tooltip>
       </TableCell>
-      <TableCell style={{ width: 240 }}>
+      <TableCell style={{ width: 250 }}>
         <Tooltip title="Payment ID">
           <span>Payment ID</span>
         </Tooltip>

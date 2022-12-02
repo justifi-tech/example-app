@@ -4,33 +4,13 @@ import AdminLayout from "../common/AdminLayout";
 import { PageTable } from "../common/PageTable";
 import JustiFiPalette from "../common/JustiFiPallete";
 import PaginationComponent, {
-  IPagination,
   Pagination,
 } from "../common/PaginationComponent";
 import { Payment } from "../../api/Payment";
 import PaymentsTableRow from "../common/Payments/PaymentsTableRow";
 import PaymentsTableHeaderRow from "../common/Payments/PaymentsTableHeaderRow";
+import { HttpMethod, IApiResponse, IPagination, makeRequest, requestUrl } from "../../api/Base";
 
-export interface IApiResponse<T> {
-  data: T;
-  error?: IErrorObject | IServerError;
-  page_info?: IPagination;
-  errors?: string[];
-  id: number;
-  type: string;
-}
-
-export type IServerError = string;
-
-export interface IErrorObject {
-  message: string;
-  code: string;
-  param?: string;
-}
-
-export interface IApiResponseCollection<T> extends IApiResponse<T> {
-  page_info: IPagination;
-}
 const HeaderText = styled("span")({
   display: "flex",
   alignItems: "center",
@@ -57,17 +37,13 @@ const Payments = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const response = await fetch("paymentsResponse.json", {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const result: IApiResponseCollection<Payment[]> = await response.json();
+      const url = requestUrl("/v1/payments");
+      const result = await makeRequest<IApiResponse<Payment[]>>(url, HttpMethod.Get);
 
-      const fakePayments = result.data.map((dataItem) => new Payment(dataItem));
-      setPayments(fakePayments);
-      setPagination(result.page_info);
+      const payments = result.data.map((dataItem) => new Payment(dataItem));
+      console.log(payments);
+      setPayments(payments);
+      setPagination(new Pagination(result.pageInfo));
       setIsLoading(false);
     };
     getData();

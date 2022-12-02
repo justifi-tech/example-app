@@ -18,8 +18,8 @@ export enum PaymentStatuses {
   succeeded = "succeeded",
   failed = "failed",
   disputed = "disputed",
-  fully_refunded = "fully_refunded",
-  partially_refunded = "partially_refunded",
+  fullyRefunded = "fully_refunded",
+  partiallyRefunded = "partially_refunded",
 }
 
 export enum PaymentStatusFilters {
@@ -39,7 +39,7 @@ export enum PaymentDisputedStatuses {
 
 export interface IPaymentMethod {
   card?: ICard;
-  bank_account?: IBankAccount;
+  bankAccount?: IBankAccount;
 }
 
 export type CardBrand =
@@ -54,146 +54,146 @@ export type CardBrand =
 
 export interface ICard {
   id: string;
-  acct_last_four: string;
+  acctLastFour: string;
   name: string;
   brand: CardBrand;
   token: string;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
   metadata?: object | null;
-  customer_id: string | null;
-  address_line1_check: string;
-  address_postal_code_check: string;
+  customerId: string | null;
+  addressLine1Check: string;
+  addressPostalCodeCheck: string;
 }
 
 export interface IBankAccount {
   id: string;
-  acct_last_four: string;
+  acctLastFour: string;
   name: string;
   brand: string;
   token: string;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
   metadata?: object | null;
-  customer_id: string | null;
+  customerId: string | null;
 }
 
 export interface IDispute {
-  amount_cents: number;
-  created_at: string;
+  amountCents: number;
+  createdAt: string;
   currency: string;
-  gateway_ref_id: string;
+  gatewayRefId: string;
   id: string;
-  payment_id: string;
+  paymentId: string;
   reason: null;
   status: string;
-  updated_at: string;
+  updatedAt: string;
 }
 
 export interface IApplicationFee {
   id: string;
   amount: number;
   currency: string;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IPayment {
   id: string;
-  account_id: string;
+  accountId: string;
   amount: number;
-  amount_disputed: number;
-  amount_refundable: number;
-  amount_refunded: number;
-  amount_returned: number;
-  application_fee_rate_id: string;
-  application_fee: IApplicationFee | null;
+  amountDisputed: number;
+  amountRefundable: number;
+  amountRefunded: number;
+  amountReturned: number;
+  applicationFeeRateId: string;
+  applicationFee: IApplicationFee | null;
   balance: number;
   captured: boolean;
-  capture_strategy: CaptureStrategy;
+  captureStrategy: CaptureStrategy;
   currency: "usd";
   description: string;
   disputed: boolean;
   disputes: IDispute[];
-  error_code: string | null;
-  error_description: string | null;
-  fee_amount: number;
-  is_test: boolean;
-  last_error: string | null;
+  errorCode: string | null;
+  errorDescription: string | null;
+  feeAmount: number;
+  isTest: boolean;
+  lastError: string | null;
   metadata: object | null;
-  payment_method: IPaymentMethod;
-  payment_intent_id: string | null;
+  paymentMethod: IPaymentMethod;
+  paymentIntentId: string | null;
   refunded: boolean;
   refunds: Refund[];
   returned: boolean;
   status: PaymentStatuses;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export class Payment implements IPayment {
   public id: string;
-  public account_id: string;
+  public accountId: string;
   public amount: number;
-  public amount_disputed: number;
-  public amount_refundable: number;
-  public amount_refunded: number;
-  public amount_returned: number;
-  public application_fee_rate_id: string;
-  public application_fee: IApplicationFee | null;
+  public amountDisputed: number;
+  public amountRefundable: number;
+  public amountRefunded: number;
+  public amountReturned: number;
+  public applicationFeeRateId: string;
+  public applicationFee: IApplicationFee | null;
   public balance: number;
   public captured: boolean;
-  public capture_strategy: CaptureStrategy;
+  public captureStrategy: CaptureStrategy;
   public currency: "usd";
   public description: string;
   public disputed: boolean;
   public disputes: IDispute[];
-  public error_code: string | null;
-  public error_description: string | null;
-  public fee_amount: number;
-  public is_test: boolean;
-  public last_error: string | null;
+  public errorCode: string | null;
+  public errorDescription: string | null;
+  public feeAmount: number;
+  public isTest: boolean;
+  public lastError: string | null;
   public metadata: Object | null;
-  public payment_method: IPaymentMethod;
-  public payment_intent_id: string | null;
+  public paymentMethod: IPaymentMethod;
+  public paymentIntentId: string | null;
   public refunded: boolean;
   public refunds: Refund[];
   public returned: boolean;
   public status: PaymentStatuses;
-  public created_at: string;
-  public updated_at: string;
+  public createdAt: string;
+  public updatedAt: string;
 
   constructor(payment: IPayment) {
     this.id = payment.id;
-    this.account_id = payment.account_id;
+    this.accountId = payment.accountId;
     this.amount = payment.amount;
-    this.amount_disputed = payment.amount_disputed;
-    this.amount_refundable = payment.amount_refundable;
-    this.amount_refunded = payment.amount_refunded;
-    this.amount_returned = payment.amount_returned;
-    this.application_fee_rate_id = payment.application_fee_rate_id;
-    this.application_fee = payment.application_fee;
+    this.amountDisputed = payment.amountDisputed;
+    this.amountRefundable = payment.amountRefundable;
+    this.amountRefunded = payment.amountRefunded;
+    this.amountReturned = payment.amountReturned;
+    this.applicationFeeRateId = payment.applicationFeeRateId;
+    this.applicationFee = payment.applicationFee;
     this.balance = payment.balance;
     this.captured = payment.captured;
-    this.capture_strategy = payment.capture_strategy;
+    this.captureStrategy = payment.captureStrategy;
     this.currency = payment.currency;
     this.description = payment.description;
     this.disputed = payment.disputed;
     this.disputes = payment.disputes;
-    this.error_code = payment.error_code;
-    this.error_description = payment.error_description;
-    this.fee_amount = payment.fee_amount;
-    this.is_test = payment.is_test;
-    this.last_error = payment.last_error;
+    this.errorCode = payment.errorCode;
+    this.errorDescription = payment.errorDescription;
+    this.feeAmount = payment.feeAmount;
+    this.isTest = payment.isTest;
+    this.lastError = payment.lastError;
     this.metadata = payment.metadata;
-    this.payment_method = payment.payment_method;
-    this.payment_intent_id = payment.payment_intent_id;
+    this.paymentMethod = payment.paymentMethod;
+    this.paymentIntentId = payment.paymentIntentId;
     this.refunded = payment.refunded;
     this.refunds = payment.refunds;
     this.returned = payment.returned;
     this.status = payment.status;
-    this.created_at = payment.created_at;
-    this.updated_at = payment.updated_at;
+    this.createdAt = payment.createdAt;
+    this.updatedAt = payment.updatedAt;
   }
 
   get statusTagType(): TagTypes {
@@ -201,8 +201,8 @@ export class Payment implements IPayment {
       [PaymentStatuses.authorized]: TagTypes.info,
       [PaymentStatuses.disputed]: TagTypes.warning,
       [PaymentStatuses.failed]: TagTypes.error,
-      [PaymentStatuses.fully_refunded]: TagTypes.info,
-      [PaymentStatuses.partially_refunded]: TagTypes.info,
+      [PaymentStatuses.fullyRefunded]: TagTypes.info,
+      [PaymentStatuses.partiallyRefunded]: TagTypes.info,
       [PaymentStatuses.pending]: TagTypes.neutral,
       [PaymentStatuses.succeeded]: TagTypes.success,
     };
@@ -240,7 +240,7 @@ export class Payment implements IPayment {
   }
 
   get displayFeeAmount(): string {
-    return formatCurrency(-this.fee_amount);
+    return formatCurrency(-this.feeAmount);
   }
 
   get displayBalance(): string {
@@ -248,14 +248,14 @@ export class Payment implements IPayment {
   }
 
   get displayRefundedAmount(): string {
-    return formatCurrency(-this.amount_refunded);
+    return formatCurrency(-this.amountRefunded);
   }
 
   get displayDisputedAmount(): string {
-    return formatCurrency(-this.amount_disputed);
+    return formatCurrency(-this.amountDisputed);
   }
 
   get displayReturnedAmount(): string {
-    return formatCurrency(-this.amount_returned);
+    return formatCurrency(-this.amountReturned);
   }
 }

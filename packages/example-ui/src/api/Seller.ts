@@ -1,3 +1,5 @@
+import { HttpMethod, IApiResponse, makeRequest, requestUrl } from "./Base";
+
 export enum SellerStatusType {
   created = "created",
   submitted = "submitted",
@@ -31,4 +33,14 @@ export interface ISeller {
   status: SellerStatusType;
   updated_at: string;
   related_accounts?: object;
+}
+
+export interface CreateSellerPayload {
+  name: string
+}
+
+export const createSeller = async (payload: CreateSellerPayload): Promise<IApiResponse<ISeller>> => {
+  const url = requestUrl("/v1/seller_accounts");
+
+  return makeRequest<IApiResponse<ISeller>>(url, HttpMethod.Post, {}, payload);
 }

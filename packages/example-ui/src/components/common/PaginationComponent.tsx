@@ -3,6 +3,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
+import { IPagination } from "../../api/Base";
 
 const useStyles = makeStyles(
   {
@@ -22,24 +23,17 @@ const useStyles = makeStyles(
   { index: 1 }
 );
 
-export interface IPagination {
-  has_previous: boolean;
-  has_next: boolean;
-  start_cursor: string;
-  end_cursor: string;
-}
-
 export class Pagination implements IPagination {
-  public has_previous: boolean;
-  public has_next: boolean;
-  public start_cursor: string;
-  public end_cursor: string;
+  public hasPrevious: boolean;
+  public hasNext: boolean;
+  public startCursor: string;
+  public endCursor: string;
 
   constructor(pagination?: IPagination) {
-    this.has_previous = pagination?.has_previous || false;
-    this.has_next = pagination?.has_next || false;
-    this.start_cursor = pagination?.start_cursor || "";
-    this.end_cursor = pagination?.end_cursor || "";
+    this.hasPrevious = pagination?.hasPrevious || false;
+    this.hasNext = pagination?.hasNext || false;
+    this.startCursor = pagination?.startCursor || "";
+    this.endCursor = pagination?.endCursor || "";
   }
 }
 
@@ -71,8 +65,8 @@ const PaginationComponent = (props: PaginationProps) => {
       <Tooltip title="Previous page">
         <span>
           <IconButton
-            disabled={!pagination.has_previous}
-            onClick={() => handleClickPrevious(pagination.start_cursor)}
+            disabled={!pagination.hasPrevious}
+            onClick={() => handleClickPrevious(pagination.startCursor)}
             aria-label="Previous page"
             data-testid="pagination-previous"
           >
@@ -83,8 +77,8 @@ const PaginationComponent = (props: PaginationProps) => {
       <Tooltip title="Next page">
         <span>
           <IconButton
-            disabled={!pagination.has_next}
-            onClick={() => handleClickNext(pagination.end_cursor)}
+            disabled={!pagination.hasNext}
+            onClick={() => handleClickNext(pagination.endCursor)}
             aria-label="Next page"
             data-testid="pagination-next"
           >
