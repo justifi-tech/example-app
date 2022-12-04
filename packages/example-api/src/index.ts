@@ -4,6 +4,8 @@ import cors from "cors";
 import { configAppRoutes } from "./routes";
 import morgan from "morgan";
 import { InMemoryCache } from "./cache";
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 export interface JustifiContext {
   client: Justifi;
@@ -24,7 +26,10 @@ const context: JustifiContext = { client, cache };
 const app = express();
 app.use(express.json());
 app.use(morgan("tiny"));
-app.use(cors({ origin: "*" }));
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"]
+}));
 
 configAppRoutes(app, context).listen(process.env.PORT, () => {
   console.log(`Example api listening on port ${process.env.PORT}`);
