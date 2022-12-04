@@ -1,11 +1,27 @@
-# example-app
+# Example App
 
-example app monorepo
+Example App Monorepo to showcase integration of our product into customers apps.
 
-### Followed this how-to
+### Needed ENV Variables
 
-[How to create a node and CRA monorepo](https://dev.to/alexeagleson/how-to-create-a-node-and-react-monorepo-with-git-submodules-2g83)
+All variables needed can be found in the `.env.template` file. You need to re-name it to simply `.env` and add the values to your config. Restart the service if these are changed!
 
+For staging
+```.sh
+  CLIENT_ID=<Your CLIENT_ID obtained from the staging dashboard in API KEYS section>
+  CLIENT_SECRET=<Your CLIENT_SECRET obtained from the staging dashboard in API KEYS section>
+  JUSTIFI_API_URL= ????
+  REACT_APP_HOSTED_ONBOARDING_URL= ????
+```
+
+To run it locally
+
+```.sh
+  CLIENT_ID=<Your CLIENT_ID obtained from your local dashboard in API KEYS section>
+  CLIENT_SECRET=<Your CLIENT_SECRET obtained from your local dashboard in API KEYS section>
+  JUSTIFI_API_URL= ????
+  REACT_APP_HOSTED_ONBOARDING_URL=<The URL of your running account_settings service, default is http://localhost:3004>
+```
 ### Run the whole app
 
 - example-app> yarn start
@@ -14,6 +30,10 @@ example app monorepo
 
 - example-app> npx lerna add lodash packages/example-ui
 
+
+### Followed this how-to
+
+[How to create a node and CRA monorepo](https://dev.to/alexeagleson/how-to-create-a-node-and-react-monorepo-with-git-submodules-2g83)
 ### About Lerna
 
 [Lerna](https://lerna.js.org/docs/getting-started)
