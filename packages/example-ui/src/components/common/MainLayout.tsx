@@ -5,7 +5,7 @@ import { makeStyles } from "@mui/styles";
 import AppTopBar from "./AppTopBar";
 
 const useStyles = makeStyles(
-  (theme: any) => ({
+  () => ({
     root: {
       position: "fixed",
       width: "100vw",

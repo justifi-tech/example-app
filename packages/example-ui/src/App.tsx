@@ -4,6 +4,7 @@ import CreateSeller from "./components/features/CreateSeller";
 import Onboarding from "./components/features/Onboarding";
 import Payments from "./components/features/Payments";
 import Events from "./components/features/Events";
+import Checkout from "./components/features/Checkout";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
           />
           <Route path="/payments" element={<Payments />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

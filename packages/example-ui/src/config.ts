@@ -12,5 +12,6 @@ export function getConfig() {
     apiOrigin: config.apiOrigin,
     environment: process.env.REACT_APP_ENVIRONMENT,
     featureUrl: config.featureUrl,
+    sellerAccountId: config.sellerAccountId,
   };
 }

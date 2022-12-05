@@ -1,7 +1,12 @@
 {
   "domain": "",
   "clientId": "C4btfdcpURqvYMyAWodJplBbJNdtIf4B",
+  "appDomain": "http://localhost:4201",
   "audience": "",
   "apiOrigin": "http://localhost:8000",
-  "featureUrl": ""
+  "featureUrl": "",
+  "clientSecret": "",
+  "serverDomain": "http://localhost:4200",
+  "apiDomain": "https://api.justifi.ai",
+  "sellerAccountId": ""
 }

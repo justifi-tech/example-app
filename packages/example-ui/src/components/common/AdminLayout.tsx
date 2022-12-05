@@ -29,7 +29,7 @@ interface AdminLayoutProps {
 }
 
 const useStyles = makeStyles(
-  (theme: any) => ({
+  () => ({
     appCameraLogo: {
       height: "93px",
       width: "auto",
