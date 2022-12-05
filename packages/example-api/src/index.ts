@@ -4,6 +4,8 @@ import cors from "cors";
 import { configAppRoutes } from "./routes";
 import morgan from "morgan";
 import { InMemoryCache } from "./cache";
+import dotenv from 'dotenv';
+dotenv.config();
 
 export interface JustifiContext {
   client: Justifi;
