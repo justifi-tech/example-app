@@ -39,6 +39,12 @@ export interface CreateSellerPayload {
   name: string
 }
 
+export const getSellers = async (): Promise<IApiResponse<ISeller>[]> => {
+  const url = requestUrl("/v1/seller_accounts");
+
+  return makeRequest<IApiResponse<ISeller>[]>(url, HttpMethod.Get, {});
+}
+
 export const createSeller = async (payload: CreateSellerPayload): Promise<IApiResponse<ISeller>> => {
   const url = requestUrl("/v1/seller_accounts");
 

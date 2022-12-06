@@ -1,9 +1,10 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert, Grid, Skeleton } from "@mui/material";
 import MainLayout from "../common/MainLayout";
 import PageLayout from "../common/PageLayout";
 import CreateSellerForm from "./CreateSellerForm";
+import SelectSeller from './SelectSeller';
 import { createSeller, CreateSellerPayload, ISeller } from "../../api/Seller";
 import { IApiResponse, IErrorObject, IServerError } from "../../api/Base";
 
@@ -29,22 +30,22 @@ const CreateSellerError = (props: { error: IErrorObject | IServerError }) => {
 };
 
 const CreateSeller = () => {
-  const [url, setUrl] = React.useState<string>("");
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [serverError, setServerError] = React.useState<
+  const [url, setUrl] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [serverError, setServerError] = useState<
     IErrorObject | IServerError | undefined
   >();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (url.length > 0) {
       navigate(url);
     }
   }, [navigate, url]);
 
   const doCreateSeller = async (payload: CreateSellerPayload) => {
-    const { data, error }: IApiResponse<ISeller> = await createSeller(payload)
-    console.log(data);
+    const { data, error }: IApiResponse<ISeller> = await createSeller(payload);
+    console.log(data, error);
     if (error) {
       setServerError(error);
     } else {
@@ -65,7 +66,10 @@ const CreateSeller = () => {
           {loading ? (
             <Skeleton variant="circular" width={40} height={40} />
           ) : (
-            <CreateSellerForm submitHandler={doCreateSeller} />
+            <>
+              <CreateSellerForm submitHandler={doCreateSeller} />
+              <SelectSeller submitHandler={() => {}}/>
+            </>
           )}
           {serverError && <CreateSellerError error={serverError} />}
         </Grid>
