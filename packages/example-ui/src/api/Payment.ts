@@ -1,6 +1,7 @@
 import { formatCurrency } from "../components/common/FormattingUtilities";
 import { TagTypes } from "../components/common/Tag";
 import { Refund } from "./Refund";
+import { HttpMethod, IApiResponse, makeRequest, requestUrl } from './Base';
 
 export enum CaptureStrategy {
   automatic = "automatic",
@@ -258,4 +259,10 @@ export class Payment implements IPayment {
   get displayReturnedAmount(): string {
     return formatCurrency(-this.amountReturned);
   }
+}
+
+export const createPayment = async (payload: any, headers: any = {}): Promise<IApiResponse<IPayment>> => {
+  const url = requestUrl("/v1/payments");
+
+  return makeRequest<IApiResponse<IPayment>>(url, HttpMethod.Post, headers, payload);
 }

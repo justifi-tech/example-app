@@ -1657,6 +1657,24 @@
   resolved "https://registry.npmjs.org/@justifi/justifi-node/-/justifi-node-0.1.2.tgz"
   integrity sha512-r9g89xmbC8dvrPu7Fq8dQSkphpvHxVHED0E4sV++69GviHZu2Zz64IPB6oqXTBpScwjixro0g1DbVnX3xlS7vg==
 
+"@justifi/react-components@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@justifi/react-components/-/react-components-0.0.8.tgz#c809df80ae839e50bfd2fbe2e2bb4b464da0eb9e"
+  integrity sha512-QFALeESZkSQ9LNA4mOFAl83e6s3FJEYALM5Kzu08nUxQxZgCPcXB8h4P+aY0p0+dAI8lePyONXcqTBL9+8nMFQ==
+  dependencies:
+    "@justifi/webcomponents" "^0.0.8"
+
+"@justifi/webcomponents@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@justifi/webcomponents/-/webcomponents-0.0.8.tgz#b27f4a0cbea0ab236cfaa1b7003360d69c409874"
+  integrity sha512-joNwPwH2uBzLW26KQHpRhiXH6/lPmAgIpia+MF5cTcuNL119AO4VGK5NJ4sEQ0QahsQc2/3A2xW3W75ocsGh3Q==
+  dependencies:
+    "@stencil/core" "^2.13.0"
+    "@stencil/react-output-target" "^0.3.1"
+    date-fns "^2.29.3"
+    dinero.js "^1.9.1"
+    uuid "^9.0.0"
+
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.4"
   resolved "https://registry.npmjs.org/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz"
@@ -2855,6 +2873,16 @@
   integrity sha512-OAPJUAtgeINhh/TAlUID4QTs53Njm7xzddaVlEs/SXwgtiD1tW22zAB/W1wdqfrpmikgaWQ9Fw6Ws+hsiRm5Vg==
   dependencies:
     "@sinonjs/commons" "^1.7.0"
+
+"@stencil/core@^2.13.0":
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-2.20.0.tgz#0e68b5b42e727233803291eb0367ab2b53f7f1f3"
+  integrity sha512-ka+eOW+dNteXIfLCRipNbbAlBEQjqJ2fkx3fxzlKgnNHEQMdZiuIjlWt63KzvOJStNeuADdQXo89BB1dC2VRUw==
+
+"@stencil/react-output-target@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@stencil/react-output-target/-/react-output-target-0.3.1.tgz#dc9cc2fea32d0e30474a87fcb2a447f90ab78696"
+  integrity sha512-6d9pPhyajFfdxkqU/pPP2SzI7wn+EklySQc4KXlI/xcdvC2H9BzLmhmR40fR1q2TQoJbJui/nvSWhbYqkE3OBQ==
 
 "@surma/rollup-plugin-off-main-thread@^2.2.3":
   version "2.2.3"
@@ -12146,6 +12174,11 @@ uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
+
+uuid@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
+  integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
 
 v8-compile-cache@2.3.0:
   version "2.3.0"
