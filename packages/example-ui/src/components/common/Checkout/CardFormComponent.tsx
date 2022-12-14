@@ -19,7 +19,6 @@ import { CardErrorCode, CheckoutFormErrors } from "./FormFieldError";
 import { checkoutFormSchema } from './makeSchemas';
 import JustiFiPalette from "../JustiFiPallete";
 import { getConfig } from "../../../config";
-import './CardFormStyles.css';
 import { createPayment } from "../../../api/Payment";
 
 const { clientId } = getConfig();

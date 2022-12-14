@@ -4,3 +4,4 @@ dist/
 */**/.envrc
 .envrc
 .env
+packages/example-ui/src/config.json
