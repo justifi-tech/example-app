@@ -41,7 +41,6 @@ const Payments = () => {
       const result = await makeRequest<IApiResponse<Payment[]>>(url, HttpMethod.Get);
 
       const payments = result.data.map((dataItem) => new Payment(dataItem));
-      console.log(payments);
       setPayments(payments);
       setPagination(new Pagination(result.pageInfo));
       setIsLoading(false);

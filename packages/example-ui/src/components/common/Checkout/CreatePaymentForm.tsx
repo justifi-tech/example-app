@@ -12,11 +12,12 @@ import {
   TextField,
   Typography,
   styled,
+  FormHelperText
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import JustiFiPalette from "../JustiFiPallete";
-import getCreatePaymentFormSchema from "./CreatePaymentFormSchema";
+import { paymentFormSchema } from "./makeSchemas";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() => ({
@@ -51,7 +52,7 @@ const CreatePaymentForm = (
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(getCreatePaymentFormSchema()),
+    resolver: yupResolver(paymentFormSchema()),
     defaultValues: {
       sellerAccountId: "",
       amount: 0.0,
@@ -83,11 +84,17 @@ const CreatePaymentForm = (
             <Box sx={{ marginTop: "32px" }}>
               <FormControl variant="filled" fullWidth>
                 <InputLabel id="seller-account-id">Seller</InputLabel>
-                <Select label="Seller" {...register("sellerAccountId")}>
-                  <MenuItem value={"Pleasant View Gardens"}>
+                <Select
+                  label="Seller"
+                  defaultValue={""}
+                  {...register("sellerAccountId")}
+                  error={!!errors?.sellerAccountId}
+                >
+                  <MenuItem value={"acc_Yzem4ZF4mKnMO0dBObRUU"}>
                     Pleasant View Gardens
                   </MenuItem>
                 </Select>
+                <FormHelperText error>{errors.sellerAccountId?.message}</FormHelperText>
               </FormControl>
             </Box>
             <TextField

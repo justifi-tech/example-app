@@ -15,8 +15,8 @@ const useStyles = makeStyles(
       height: "100%",
       maxHeight: "100%",
       overflowY: "scroll",
-      paddingLeft: theme.spacing(64),
-      paddingRight: theme.spacing(64),
+      paddingLeft: theme.spacing(8),
+      paddingRight: theme.spacing(8),
     },
     layoutHeader: {
       flexShrink: 1,

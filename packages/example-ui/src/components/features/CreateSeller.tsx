@@ -44,7 +44,6 @@ const CreateSeller = () => {
 
   const doCreateSeller = async (payload: CreateSellerPayload) => {
     const { data, error }: IApiResponse<ISeller> = await createSeller(payload)
-    console.log(data);
     if (error) {
       setServerError(error);
     } else {
