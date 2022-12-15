@@ -70,7 +70,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
   const [submitting, setSubmitting] = useState<boolean>();
 
   useEffect(() => {
-    setEnabled(params.sellerAccountId ? true : false);
+    setEnabled(!!params.sellerAccountId);
   }, [params])
 
   const [paymentMethodErrors, setPaymentMethodErrors] = useState<CardErrorCode[]>();
@@ -151,9 +151,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
               transition: '0.2s ease-in-out filter',
             }}
           >
-            <Card sx={{
-              
-            }}>
+            <Card>
               <form aria-label="refund form" onSubmit={handleSubmit(onSubmit)}>
                 <CardContent sx={{
                   padding: "0",
@@ -232,7 +230,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                         {...register("name")}
                         error={!!errors.name}
                       />
-                      <FormHelperText error>{errors.name?.message as any}</FormHelperText>
+                      <FormHelperText error>{errors.name?.message as string}</FormHelperText>
                     </FormControl>
                   </Box>
                   <Box>
@@ -322,7 +320,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                         {...register("address_postal_code")}
                         sx={{ flexShrink: 2, marginLeft: "16px" }}
                       />
-                      <FormHelperText error>{errors.address_postal_code?.message as any}</FormHelperText>
+                      {<FormHelperText error>{errors.address_postal_code?.message as string}</FormHelperText>}
                     </FormControl>
                   </Box>
                 </CardContent>

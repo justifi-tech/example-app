@@ -16,10 +16,12 @@ const paymentFormSchema = () => {
 
 const checkoutFormSchema = () => {
   return object({
-    name: string().required('Please, provide the name as written in your card'),
+    name: string()
+      .required('Please, provide the name as written in your card')
+      .typeError('Only alphabetic values allowed'),
     streetAddress: string().optional(),
     apartment: string().optional(),
-    address_postal_code: string().required('Please, provide a valid ZIP code')
+    address_postal_code: number().required('Please, provide a valid ZIP code').typeError('Please, provide a valid ZIP code')
   });
 };
 
