@@ -32,8 +32,9 @@ const SubheaderText = styled(Typography)({
 const Checkout = () => {
   const [params, setParams] = React.useState<any>({});
 
-  const onCreatePayment = (data: any) => {
-    setParams(data);
+  // This should be nore specifically typed
+  const onCreatePayment = (data: Object, extras?: Object) => {
+    setParams({...data, ...extras});
   };
 
   return (

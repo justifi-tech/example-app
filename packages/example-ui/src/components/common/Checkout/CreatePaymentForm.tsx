@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -38,7 +38,7 @@ const SubheaderText = styled(Typography)({
 });
 
 interface CreatePaymentFormProps {
-  submitHandler: (data: any) => void;
+  submitHandler: (data: Object, extras?: Object) => void;
 }
 
 const CreatePaymentForm = (
@@ -46,11 +46,16 @@ const CreatePaymentForm = (
 ) => {
   const { submitHandler } = props;
   const classes = useStyles();
+  const [enableSubmit, setEnableSubmit] = useState<boolean>(false);
+  const [selectedSellerSafeName, setSelectedSellerSafeName] = useState<String>('');
+  const extendedSubmitHandler = (data: Object) => {
+    return submitHandler(data, { sellerSafeName: selectedSellerSafeName });
+  }
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState
   } = useForm({
     resolver: yupResolver(paymentFormSchema()),
     defaultValues: {
@@ -60,12 +65,20 @@ const CreatePaymentForm = (
       applicationFeeAmount: null,
       metadata: "",
     },
+    mode: 'onChange'
   });
+  const errors = formState.errors;
+
+  useEffect(() => {
+    if (formState.isDirty && !Object.entries(errors).length) {
+      setEnableSubmit(true);
+    }
+  }, [errors, formState])
 
   return (
     <Box sx={{ width: "390px" }}>
       <Card variant="outlined" className={classes.content}>
-        <form aria-label="refund form" onSubmit={handleSubmit(submitHandler)}>
+        <form aria-label="refund form" onSubmit={handleSubmit(extendedSubmitHandler)}>
           <CardContent sx={{ padding: "0" }}>
             <Typography
               sx={{
@@ -88,10 +101,18 @@ const CreatePaymentForm = (
                   label="Seller"
                   defaultValue={""}
                   {...register("sellerAccountId")}
+                  onChange={(event, element: React.PropsWithChildren<any>) => {
+                    if (element?.props) {
+                      setSelectedSellerSafeName(element.props['data-safe-name']);
+                    }
+                  }}
                   error={!!errors?.sellerAccountId}
                 >
-                  <MenuItem value={"acc_Yzem4ZF4mKnMO0dBObRUU"}>
+                  <MenuItem data-safe-name='Pleasant View Gardens' value={"acc_Yzem4ZF4mKnMO0dBObRUU"}>
                     Pleasant View Gardens
+                  </MenuItem>
+                  <MenuItem data-safe-name='Other Seller' value={"not_an_account_value"}>
+                    Other Seller
                   </MenuItem>
                 </Select>
                 <FormHelperText error>{errors.sellerAccountId?.message}</FormHelperText>
@@ -135,7 +156,12 @@ const CreatePaymentForm = (
             />
           </CardContent>
           <CardActions sx={{ padding: "0", marginTop: "30px" }}>
-            <Button type="submit" variant="contained" fullWidth={true}>
+            <Button
+              disabled={!enableSubmit}
+              type="submit"
+              variant="contained"
+              fullWidth
+            >
               Create Payment
             </Button>
           </CardActions>

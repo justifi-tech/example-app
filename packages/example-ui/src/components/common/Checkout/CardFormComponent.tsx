@@ -32,6 +32,7 @@ export interface CreatePaymentParams {
   amount: number;
   description: string;
   sellerAccountId: string;
+  sellerSafeName: string;
 }
 
 const contentOffset = "24px";
@@ -67,7 +68,8 @@ const formatCentsToDollars = (amount: number | undefined) => {
 function CardFormComponent(props: { params: CreatePaymentParams }) {
   const { params } = props;
   const [enabled, setEnabled] = useState<boolean>(false);
-  const [submitting, setSubmitting] = useState<boolean>();
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [enableSubmit, setEnableSubmit] = useState<boolean>(false);
 
   useEffect(() => {
     setEnabled(!!params.sellerAccountId);
@@ -83,10 +85,18 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState,
   } = useForm({
     resolver: yupResolver(checkoutFormSchema())
   });
+
+  const errors = formState.errors;
+
+  useEffect(() => {
+    if (formState.isDirty && !Object.entries(errors).length) {
+      setEnableSubmit(true);
+    }
+  }, [errors, formState])
   
   const classes = useStyles();
 
@@ -171,7 +181,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                         padding: "0",
                       }}
                     >
-                      {params.sellerAccountId}
+                      {params.sellerSafeName}
                     </Typography>
                     <Typography
                       sx={{
@@ -264,7 +274,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                     <TextField
                       fullWidth
                       id="address"
-                      label="Street Address"
+                      label="Street Address (optional)"
                       type="text"
                       variant="filled"
                       margin="normal"
@@ -286,7 +296,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                     <TextField
                       fullWidth
                       id="city"
-                      label="City"
+                      label="City (optional)"
                       type="text"
                       variant="filled"
                       margin="normal"
@@ -302,7 +312,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                     <TextField
                       fullWidth
                       id="state"
-                      label="State"
+                      label="State (optional)"
                       type="text"
                       variant="filled"
                       margin="normal"
@@ -325,7 +335,12 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                   </Box>
                 </CardContent>
                 <CardActions sx={{ padding: "0", marginTop: "30px" }}>
-                  <Button type="submit" variant="contained" fullWidth={true}>
+                  <Button
+                    disabled={!enableSubmit || submitting}
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                  >
                     Authorize & Capture Payment
                   </Button>
                 </CardActions>
