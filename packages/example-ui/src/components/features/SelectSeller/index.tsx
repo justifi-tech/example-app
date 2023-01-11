@@ -106,7 +106,7 @@ const SelectSeller = () => {
                 </Typography>
                 <SubheaderText variant="h5">
                   {
-                    "Sellect a seller from this account to continue with the onboarding."
+                    "Select a seller from this account to continue with the onboarding."
                   }
                 </SubheaderText>
                 <FormControl fullWidth>
