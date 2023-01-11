@@ -35,8 +35,16 @@ export interface ISeller {
   related_accounts?: object;
 }
 
+export type ISellerList = [ISeller];
+
 export interface CreateSellerPayload {
   name: string
+}
+
+export const getSellers = async (): Promise<IApiResponse<ISellerList>> => {
+  const url = requestUrl("/v1/seller_accounts");
+
+  return makeRequest<IApiResponse<ISellerList>>(url, HttpMethod.Get, {});
 }
 
 export const createSeller = async (payload: CreateSellerPayload): Promise<IApiResponse<ISeller>> => {

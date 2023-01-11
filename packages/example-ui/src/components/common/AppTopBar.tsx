@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   AppBar,
@@ -7,12 +6,13 @@ import {
   SelectChangeEvent,
   MenuItem,
   Toolbar,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import SvgIcon from "@mui/material/SvgIcon";
 import { ReactComponent as Tree } from "../../assets/tree-logo-2-color.svg";
 import { makeStyles } from "@mui/styles";
+import { useEffect, useState } from "react";
 
 const useStyles = makeStyles(
   (theme: any) => ({
@@ -32,7 +32,7 @@ interface AppTopBarProps {
 }
 
 const AppTopBar = (props: AppTopBarProps) => {
-  const [url, setUrl] = React.useState("/");
+  const [url, setUrl] = useState("/");
   const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,7 +43,11 @@ const AppTopBar = (props: AppTopBarProps) => {
     navigate(url);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
+    if (location.pathname.search('onboarding') !== -1) {
+      setUrl('/onboarding');
+      return;
+    }
     setUrl(location.pathname);
   }, [location]);
 
@@ -70,24 +74,19 @@ const AppTopBar = (props: AppTopBarProps) => {
           </Typography>
         </Box>
         <Box>
-          <FormControl>
+          <FormControl fullWidth>
             <Select
               labelId="component-select-label"
               id="demo-simple-select"
+              name="demo-simple-select"
               value={url}
-              label="Age"
               onChange={handleSelectChange}
               sx={{ bordercolor: "white" }}
             >
-              <MenuItem value={"/"}>
-                <Typography
-                  sx={{ fontSize: "16px", fontWeight: 700, lineHeight: "24px" }}
-                >
-                  Create Seller
-                </Typography>
-              </MenuItem>
+              <MenuItem value={"/"}>Create or Select Seller</MenuItem>
               <MenuItem value={"/payments"}>Payments</MenuItem>
               <MenuItem value={"/checkout"}>Card Form Component</MenuItem>
+              <MenuItem value={"/onboarding"} disabled>Onboarding</MenuItem>
             </Select>
           </FormControl>
         </Box>
