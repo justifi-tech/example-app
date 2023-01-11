@@ -1,11 +1,12 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert, Grid, Skeleton } from "@mui/material";
-import MainLayout from "../common/MainLayout";
-import PageLayout from "../common/PageLayout";
+import { Alert, Grid, Skeleton, Typography } from "@mui/material";
+import MainLayout from "../../common/MainLayout";
+import PageLayout from "../../common/PageLayout";
 import CreateSellerForm from "./CreateSellerForm";
-import { createSeller, CreateSellerPayload, ISeller } from "../../api/Seller";
-import { IApiResponse, IErrorObject, IServerError } from "../../api/Base";
+import { createSeller, CreateSellerPayload, ISeller } from "../../../api/Seller";
+import { IApiResponse, IErrorObject, IServerError } from "../../../api/Base";
+import SelectSeller from "../SelectSeller";
 
 const CreateSellerError = (props: { error: IErrorObject | IServerError }) => {
   const { error } = props;
@@ -29,14 +30,18 @@ const CreateSellerError = (props: { error: IErrorObject | IServerError }) => {
 };
 
 const CreateSeller = () => {
-  const [url, setUrl] = React.useState<string>("");
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [serverError, setServerError] = React.useState<
+  const [url, setUrl] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [serverError, setServerError] = useState<
     IErrorObject | IServerError | undefined
   >();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
     if (url.length > 0) {
       navigate(url);
     }
@@ -68,6 +73,13 @@ const CreateSeller = () => {
           )}
           {serverError && <CreateSellerError error={serverError} />}
         </Grid>
+        <Typography
+          sx={{
+            textAlign: 'center',
+            margin: '15px 0'
+          }}
+        variant="body1">OR</Typography>
+        <SelectSeller />
       </PageLayout>
     </MainLayout>
   );

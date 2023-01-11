@@ -11,12 +11,13 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import JustiFiPalette from "../common/JustiFiPallete";
-import getCreateSellerFormSchema from "./CreateSellerFormSchema";
+import JustiFiPalette from "../../common/JustiFiPallete";
 import { makeStyles } from "@mui/styles";
+import SellerFormSchema from "./CreateSellerFormSchema";
 
 const useStyles = makeStyles(() => ({
   content: {
+    width: "100%",
     height: "100%",
     padding: "32px",
     display: "flex",
@@ -52,7 +53,7 @@ const CreateSellerForm = (
     formState: { errors },
     setValue,
   } = useForm({
-    resolver: yupResolver(getCreateSellerFormSchema()),
+    resolver: yupResolver(SellerFormSchema),
     defaultValues: {
       name: "",
     },
@@ -75,7 +76,10 @@ const CreateSellerForm = (
   };
 
   return (
-    <Box>
+    <Box sx={{
+      width: '100%',
+      maxWidth: '600px'
+    }}>
       <Card variant="outlined" className={classes.content}>
         <form
           aria-label="refund form"
@@ -94,7 +98,7 @@ const CreateSellerForm = (
             </Typography>
             <SubheaderText variant="h5">
               {
-                "Provide the name of the seller you’d like to send to hosted onboarding."
+                "Provide the name of the seller you'd like to send to hosted onboarding."
               }
             </SubheaderText>
             <TextField
@@ -115,7 +119,7 @@ const CreateSellerForm = (
             />
           </CardContent>
           <CardActions sx={{ padding: "0", marginTop: "30px" }}>
-            <Button type="submit" variant="contained" fullWidth={true}>
+            <Button type="submit" variant="contained" fullWidth>
               Create Seller
             </Button>
           </CardActions>
