@@ -10,7 +10,10 @@ import {
   TextField,
   Typography,
   FormHelperText,
-  FormControl
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel
 } from "@mui/material";
 import { JustifiBankAccountForm } from '@justifi/react-components';
 import { makeStyles } from "@mui/styles";
@@ -95,7 +98,7 @@ function BankForm(props: { params: CreatePaymentParams }) {
 
   async function onSubmit(formValues: any) {
     setShowPaymentMethodErrors(true);
-    if (submitting || paymentMethodErrors?.length) return;
+    if (submitting || !!Object.entries(errors).length || paymentMethodErrors?.length) return;
 
     setSubmitting(true);
 
@@ -204,6 +207,7 @@ function BankForm(props: { params: CreatePaymentParams }) {
                   </Box>
                   <Box>
                     <JustifiBankAccountForm 
+                      iframeOrigin='https://js.justifi-staging.com/bank-account'
                       ref={cardFormRef}
                       onBankAccountFormReady={onPaymentMethodReady}
                       onBankAccountFormChange={onPaymentMethodChange}
@@ -213,6 +217,58 @@ function BankForm(props: { params: CreatePaymentParams }) {
                     {showPaymentMethodErrors ? paymentMethodErrors?.map(
                       (errorKey, index) => BankError(errorKey, index)
                     ) : ''}
+                  </Box>
+                  <Box>
+                    <TextField
+                      fullWidth
+                      id="name"
+                      label="Account Owner Name"
+                      type="text"
+                      variant="filled"
+                      margin="normal"
+                      {...register("name")}
+                    />
+                    {<FormHelperText error>{errors.name?.message as string}</FormHelperText>}
+                  </Box>
+                  <Box>
+                    <FormControl
+                      variant="filled"
+                      fullWidth
+                      sx={{
+                        margin: '10px 0'
+                      }}
+                    >
+                      <InputLabel htmlFor="account_owner_type">Select an account owner type</InputLabel>
+                      <Select
+                        {...register("account_owner_type")}
+                        id="account_owner_type"
+                        defaultValue=""
+                      >
+                        <MenuItem value="individual">Individual</MenuItem>
+                        <MenuItem value="company">Company</MenuItem>
+                      </Select>
+                    </FormControl>
+                    {<FormHelperText error>{errors.account_owner_type?.message as string}</FormHelperText>}
+                  </Box>
+                  <Box>
+                    <FormControl
+                      variant="filled"
+                      fullWidth
+                      sx={{
+                        margin: '10px 0'
+                      }}
+                    >
+                      <InputLabel htmlFor="account_type">Select an account type</InputLabel>
+                      <Select
+                        id="account_type"
+                        defaultValue=""
+                        {...register("account_type")}
+                      >
+                        <MenuItem value="checking">Checking</MenuItem>
+                        <MenuItem value="savings">Savings</MenuItem>
+                      </Select>
+                    </FormControl>
+                    {<FormHelperText error>{errors.account_type?.message as string}</FormHelperText>}
                   </Box>
                   <Box sx={{ marginTop: "32px" }}>
                     <Typography
