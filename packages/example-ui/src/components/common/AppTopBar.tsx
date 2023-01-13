@@ -6,13 +6,15 @@ import {
   SelectChangeEvent,
   MenuItem,
   Toolbar,
-  Typography
+  Typography,
+  Link
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import SvgIcon from "@mui/material/SvgIcon";
 import { ReactComponent as Tree } from "../../assets/tree-logo-2-color.svg";
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
+import JustiFiPalette from "./JustiFiPallete";
 
 const useStyles = makeStyles(
   (theme: any) => ({
@@ -28,7 +30,7 @@ const useStyles = makeStyles(
 );
 
 interface AppTopBarProps {
-  toggleDrawer: () => void;
+  toggleDrawer?: () => void;
 }
 
 const AppTopBar = (props: AppTopBarProps) => {
@@ -57,22 +59,30 @@ const AppTopBar = (props: AppTopBarProps) => {
       sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <SvgIcon className={classes.appBarLogo}>
-            <Tree />
-          </SvgIcon>
-          <Typography
-            component="h1"
-            sx={{
-              marginLeft: "1em",
-              fontSize: "20px",
-              fontWeight: 700,
-              lineHeight: "24px",
-            }}
-          >
-            Landscaping Platform
-          </Typography>
-        </Box>
+        <Link underline="none" href="/" sx={{
+          '&:hover': {
+            textDecoration: 'none'
+          }
+        }}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+              <SvgIcon className={classes.appBarLogo}>
+                <Tree />
+              </SvgIcon>
+              <Typography
+                component="h1"
+                sx={{
+                  textDecoration: 'none',
+                  color: JustiFiPalette.grey[900],
+                  marginLeft: "1em",
+                  fontSize: "20px",
+                  fontWeight: 700,
+                  lineHeight: "24px"
+                }}
+              >
+                Landscaping Platform
+              </Typography>
+          </Box>
+        </Link>
         <Box>
           <FormControl fullWidth>
             <Select
@@ -86,6 +96,7 @@ const AppTopBar = (props: AppTopBarProps) => {
               <MenuItem value={"/"}>Create or Select Seller</MenuItem>
               <MenuItem value={"/payments"}>Payments</MenuItem>
               <MenuItem value={"/checkout"}>Card Form Component</MenuItem>
+              <MenuItem value={"/bank-checkout"}>Bank Checkout</MenuItem>
               <MenuItem value={"/onboarding"} disabled>Onboarding</MenuItem>
             </Select>
           </FormControl>

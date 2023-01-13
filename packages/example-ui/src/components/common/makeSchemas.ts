@@ -25,7 +25,16 @@ const checkoutFormSchema = () => {
   });
 };
 
+const bankCheckoutFormSchema = () => {
+  return object({
+    streetAddress: string().optional(),
+    apartment: string().optional(),
+    address_postal_code: number().required('Please, provide a valid ZIP code').typeError('Please, provide a valid ZIP code')
+  });
+}
+
 export {
   paymentFormSchema,
-  checkoutFormSchema
+  checkoutFormSchema,
+  bankCheckoutFormSchema
 };

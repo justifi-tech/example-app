@@ -12,11 +12,11 @@ import {
   FormHelperText,
   FormControl
 } from "@mui/material";
-import { JustifiCardForm } from '@justifi/react-components';
+import { JustifiBankAccountForm } from '@justifi/react-components';
 import { makeStyles } from "@mui/styles";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { CardErrorCode, CheckoutFormErrors } from "../FormFieldErrors";
-import { checkoutFormSchema } from '../makeSchemas';
+import { BankErrorCode, CheckoutFormErrors } from "../FormFieldErrors";
+import { bankCheckoutFormSchema } from '../makeSchemas';
 import JustiFiPalette from "../JustiFiPallete";
 import { getConfig } from "../../../config";
 import { createPayment } from "../../../api/Payment";
@@ -24,9 +24,9 @@ import { formatCentsToDollars } from "../utils";
 
 const { clientId } = getConfig();
 
-const CardError = (errorKey: CardErrorCode, index: number) => (
+const BankError = (errorKey: BankErrorCode, index: number) => (
   <FormHelperText error variant="filled" key={index} >
-    {CheckoutFormErrors.validationErrors.card[errorKey]}
+    {CheckoutFormErrors.validationErrors.bank[errorKey]}
   </FormHelperText>
 );
 export interface CreatePaymentParams {
@@ -59,20 +59,14 @@ const useStyles = makeStyles(
   { index: 1 }
 );
 
-
-function CardFormComponent(props: { params: CreatePaymentParams }) {
+function BankForm(props: { params: CreatePaymentParams }) {
   const { params } = props;
-  const [enabled, setEnabled] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [enableSubmit, setEnableSubmit] = useState<boolean>(false);
 
-  useEffect(() => {
-    setEnabled(!!params.sellerAccountId);
-  }, [params])
-
-  const [paymentMethodErrors, setPaymentMethodErrors] = useState<CardErrorCode[]>();
+  const [paymentMethodErrors, setPaymentMethodErrors] = useState<BankErrorCode[]>();
   const [showPaymentMethodErrors, setShowPaymentMethodErrors] = useState<boolean>(false);
-  const showInvalid = showPaymentMethodErrors && paymentMethodErrors?.length;
+  const [showInvalid, setShowInvalid] = useState<boolean>(true);
 
 
   const cardFormRef = useRef(null);
@@ -82,16 +76,20 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
     handleSubmit,
     formState,
   } = useForm({
-    resolver: yupResolver(checkoutFormSchema())
+    resolver: yupResolver(bankCheckoutFormSchema())
   });
 
   const errors = formState.errors;
 
   useEffect(() => {
+    setShowInvalid(!!(showPaymentMethodErrors && paymentMethodErrors?.length));
+  }, [paymentMethodErrors, showPaymentMethodErrors])
+
+  useEffect(() => {
     if (formState.isDirty && !Object.entries(errors).length) {
       setEnableSubmit(true);
     }
-  }, [errors, formState])
+  }, [errors, formState, paymentMethodErrors, showPaymentMethodErrors])
   
   const classes = useStyles();
 
@@ -110,8 +108,8 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
       const paymentRequest = await createPayment({
         amount: params.amount,
         description: params.description,
-        currency: 'usd', // Ask if this should be flagged as optional in our backend
-        capture_strategy: 'automatic', // Ask if this should be flagged as optional in our backend
+        // currency: 'usd', // Ask if this should be flagged as optional in our backend
+        // capture_strategy: 'automatic', // Ask if this should be flagged as optional in our backend
         payment_method: { token: tokenizeResponse.token }
       }, {
         'Seller-Account': params.sellerAccountId
@@ -126,15 +124,13 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
   }
 
   function onPaymentMethodReady(data: any) {
-    setPaymentMethodErrors(data.detail.errors);
+    setPaymentMethodErrors(data.detail.detail.errors);
   };
-
   function onPaymentMethodChange(data: any) {
-    setPaymentMethodErrors(data.detail.errors);
+    setPaymentMethodErrors(data.detail.detail.errors);
   };
-
   function onPaymentMethodBlur(data: any) {
-    setPaymentMethodErrors(data.detail.errors);
+    setPaymentMethodErrors(data.detail.detail.errors);
   };
 
   return (
@@ -142,25 +138,19 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
       <div className={classes.layoutContent}>
         <Grid container sx={{
           justifyContent: "center",
-          cursor: !enabled ? 'not-allowed' : '',
           borderRadius: '5px',
         }}>
           <Box
             sx={{
-              width: "464px",
               backgroundColor: "white",
               padding: 4,
               borderRadius: '5px',
-              filter: !enabled ? 'brightness(0.8)' : '',
-              pointerEvents: !enabled ? 'none' : '',
               transition: '0.2s ease-in-out filter',
             }}
           >
             <Card>
-              <form aria-label="refund form" onSubmit={handleSubmit(onSubmit)}>
-                <CardContent sx={{
-                  padding: "0",
-                }}>
+              <form aria-label="refund form" onSubmit={handleSubmit(onSubmit, onSubmit)}>
+                <CardContent>
                   <Box
                     sx={{
                       display: "flex",
@@ -201,17 +191,6 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                     </Typography>
                   </Box>
                   <Box sx={{ marginTop: "32px" }}>
-                    <TextField
-                      fullWidth
-                      id="customer-rewards-number"
-                      label="Customer Rewards Number (optional)"
-                      type="text"
-                      variant="filled"
-                      margin="normal"
-                      {...register("customerRewardsNumber")}
-                    />
-                  </Box>
-                  <Box sx={{ marginTop: "32px" }}>
                     <Typography
                       variant="h5"
                       sx={{
@@ -224,32 +203,15 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                     </Typography>
                   </Box>
                   <Box>
-                  <FormControl variant="filled" fullWidth>
-                      <TextField
-                        fullWidth
-                        id="name-on-card"
-                        label="Name on Card"
-                        type="text"
-                        variant="filled"
-                        margin="normal"
-                        {...register("name")}
-                        error={!!errors.name}
-                      />
-                      <FormHelperText error>{errors.name?.message as string}</FormHelperText>
-                    </FormControl>
-                  </Box>
-                  <Box>
-                    <JustifiCardForm 
+                    <JustifiBankAccountForm 
                       ref={cardFormRef}
-                      iframeOrigin='https://js.justifi-staging.com'
-                      // iframeOrigin='http://localhost:3003'
-                      onCardFormReady={onPaymentMethodReady}
-                      onCardFormChange={onPaymentMethodChange}
-                      onCardFormBlur={onPaymentMethodBlur}
+                      onBankAccountFormReady={onPaymentMethodReady}
+                      onBankAccountFormChange={onPaymentMethodChange}
+                      onBankAccountFormBlur={onPaymentMethodBlur}
                       className={(showInvalid) ? 'justifiCardForm invalid' : 'justifiCardForm'}
                     />
-                    {(showInvalid) ? paymentMethodErrors.map(
-                      (errorKey, index) => CardError(errorKey, index)
+                    {showPaymentMethodErrors ? paymentMethodErrors?.map(
+                      (errorKey, index) => BankError(errorKey, index)
                     ) : ''}
                   </Box>
                   <Box sx={{ marginTop: "32px" }}>
@@ -302,6 +264,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                     sx={{
                       display: "flex",
                       flexDirection: "row",
+                      width: '100%'
                     }}
                   >
                     <TextField
@@ -323,7 +286,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                         variant="filled"
                         margin="normal"
                         {...register("address_postal_code")}
-                        sx={{ flexShrink: 2, marginLeft: "16px" }}
+                        sx={{ flexShrink: 2, marginLeft: "16px", width: 'auto' }}
                       />
                       {<FormHelperText error>{errors.address_postal_code?.message as string}</FormHelperText>}
                     </FormControl>
@@ -348,4 +311,4 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
   );
 }
 
-export default CardFormComponent;
+export default BankForm;

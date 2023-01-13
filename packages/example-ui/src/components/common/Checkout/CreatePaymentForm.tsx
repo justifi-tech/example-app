@@ -17,7 +17,7 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import JustiFiPalette from "../JustiFiPallete";
-import { paymentFormSchema } from "./makeSchemas";
+import { paymentFormSchema } from "../makeSchemas";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() => ({
