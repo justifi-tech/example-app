@@ -111,8 +111,8 @@ function BankForm(props: { params: CreatePaymentParams }) {
       const paymentRequest = await createPayment({
         amount: params.amount,
         description: params.description,
-        // currency: 'usd', // Ask if this should be flagged as optional in our backend
-        // capture_strategy: 'automatic', // Ask if this should be flagged as optional in our backend
+        currency: 'usd', // Ask if this should be flagged as optional in our backend
+        capture_strategy: 'automatic', // Ask if this should be flagged as optional in our backend
         payment_method: { token: tokenizeResponse.token }
       }, {
         'Seller-Account': params.sellerAccountId

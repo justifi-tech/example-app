@@ -8,6 +8,8 @@ import {
 import JustiFiPalette from "../common/JustiFiPallete";
 import AppTopBar from "../common/AppTopBar";
 import BankForm from "../common/BankCheckout/BankForm";
+import SelectSeller from "./SelectSeller";
+import { FormEvent, useState } from "react";
 
 const HeaderText = styled("span")({
   display: "flex",
@@ -26,6 +28,15 @@ const SubheaderText = styled(Typography)({
 });
 
 const BankCheckout = () => {
+  const [currentSeller, setCurrentSeller] = useState<{
+    selectedSellerID: string,
+    selectedSellerSafeName: string
+  }>({
+    selectedSellerID: '',
+    selectedSellerSafeName: ''
+  });
+
+
   return (
     <Box sx={{ display: "flex" }}>
       <AppTopBar />
@@ -39,17 +50,27 @@ const BankCheckout = () => {
             >
               <HeaderText>Bank Account Component</HeaderText>
             </Typography>
-            <SubheaderText variant="h5">
+            <SubheaderText variant="h5" margin="15px 0">
               This is an example of the usage of the Bank Account Web Component. The platform can use
               their own fields to collect any additional info that's relevant to
               them, while the iframed bank account form will send the payment method
               info to JustiFi, keeping the platform free of PCI scope.
             </SubheaderText>
+            <SelectSeller handleSubmit={
+              (
+                selectedSellerID: string,
+                selectedSellerSafeName: string,
+                e: FormEvent<HTMLFormElement>
+              ) => {
+                setCurrentSeller({selectedSellerID, selectedSellerSafeName});
+              }
+            }
+            />
             <BankForm params={{
               amount: 1000,
               description: 'test payment',
-              sellerAccountId: 'acc_Yzem4ZF4mKnMO0dBObRUU',
-              sellerSafeName: 'Pleasant View Gardens'
+              sellerAccountId: currentSeller.selectedSellerID,
+              sellerSafeName: currentSeller.selectedSellerSafeName
             }}/>
           </Grid>
         </Grid>
