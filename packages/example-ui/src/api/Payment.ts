@@ -266,3 +266,15 @@ export const createPayment = async (payload: any, headers: any = {}): Promise<IA
 
   return makeRequest<IApiResponse<IPayment>>(url, HttpMethod.Post, headers, payload);
 }
+
+export const createPaymentIntent = async (payload: any, headers: any = {}): Promise<IApiResponse<IPayment>> => {
+  const url = requestUrl("/v1/payment_intents");
+
+  return makeRequest<IApiResponse<IPayment>>(url, HttpMethod.Post, headers, payload);
+}
+
+export const createCheckoutSession = async (payload: any, headers: any = {}): Promise<IApiResponse<IPayment>> => {
+  const url = requestUrl("/v1/checkout_session");
+
+  return makeRequest<IApiResponse<IPayment>>(url, HttpMethod.Post, headers, payload);
+}

@@ -1,8 +1,8 @@
 import { object, string, number } from "yup";
 
-const paymentFormSchema = () => {
+const paymentFormSchema = (hasSeller: boolean) => {
   return object({
-    sellerAccountId: string().required("Please, select a seller"),
+    sellerAccountId: !hasSeller ? string().required("Please, select a seller") : string(),
     amount: number()
       .required("Please, provide an amount")
       .typeError("Please, provide an amount")

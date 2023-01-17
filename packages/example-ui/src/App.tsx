@@ -7,6 +7,8 @@ import Events from "./components/features/Events";
 import Checkout from "./components/features/Checkout";
 import { CssBaseline } from "@mui/material";
 import BankCheckout from "./components/features/BankCheckout";
+import HostedCheckout from "./components/features/HostedCheckout";
+import CheckoutSuccess from "./components/features/HostedCheckoutForm/CheckoutSuccess";
 
 export default function App() {
   return (
@@ -23,6 +25,8 @@ export default function App() {
           <Route path="/events" element={<Events />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/bank-checkout" element={<BankCheckout />} />
+          <Route path="/hosted-checkout" element={<HostedCheckout />} />
+          <Route path="/hosted-checkout/success" element={<CheckoutSuccess />} />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

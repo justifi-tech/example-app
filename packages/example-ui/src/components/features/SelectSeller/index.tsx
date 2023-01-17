@@ -1,4 +1,4 @@
-import { FormEvent, ReactElement, ReactNode, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Alert, Box, Button, Card, CardActions, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, Skeleton, Typography } from "@mui/material";
 import { getSellers, ISellerList } from "../../../api/Seller";
 import { IApiResponse, IErrorObject, IServerError } from "../../../api/Base";
@@ -58,12 +58,16 @@ const SelectSeller = ({ handleSubmit }: { handleSubmit?: Function }) => {
   }, [selectedSellerID]);
 
   const fetchAndUpdateSellers = async () => {
-    const { data, error }: IApiResponse<ISellerList> = await getSellers();
-    if (error) {
-      setServerError(error);
-      return;
+    try {
+      const { data, error }: IApiResponse<ISellerList> = await getSellers();
+      if (error) {
+        setServerError(error);
+        return;
+      }
+      setSellers(data);
+    } catch (e) {
+      console.error(e);
     }
-    setSellers(data);
     setLoading(false);
   };
 

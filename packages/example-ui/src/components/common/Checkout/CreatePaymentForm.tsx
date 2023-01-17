@@ -39,17 +39,25 @@ const SubheaderText = styled(Typography)({
 
 interface CreatePaymentFormProps {
   submitHandler: (data: Object, extras?: Object) => void;
+  seller?: {
+    sellerID: string,
+    sellerName: string
+  },
+  disabled?: boolean
 }
 
 const CreatePaymentForm = (
   props: React.PropsWithChildren<CreatePaymentFormProps>
 ) => {
-  const { submitHandler } = props;
+  const { submitHandler, disabled = true, seller } = props;
   const classes = useStyles();
   const [enableSubmit, setEnableSubmit] = useState<boolean>(false);
   const [selectedSellerSafeName, setSelectedSellerSafeName] = useState<String>('');
   const extendedSubmitHandler = (data: Object) => {
-    return submitHandler(data, { sellerSafeName: selectedSellerSafeName });
+    return submitHandler(data, {
+      sellerID: seller?.sellerID,
+      sellerSafeName: selectedSellerSafeName || seller?.sellerName
+    });
   }
 
   const {
@@ -57,9 +65,9 @@ const CreatePaymentForm = (
     handleSubmit,
     formState
   } = useForm({
-    resolver: yupResolver(paymentFormSchema()),
+    resolver: yupResolver(paymentFormSchema(!!seller?.sellerID)),
     defaultValues: {
-      sellerAccountId: "",
+      sellerAccountId: seller?.sellerID || '',
       amount: 0.0,
       description: "",
       applicationFeeAmount: null,
@@ -76,7 +84,10 @@ const CreatePaymentForm = (
   }, [errors, formState])
 
   return (
-    <Box sx={{ width: "390px" }}>
+    <Box sx={{
+      width: "600px",
+      opacity: disabled ? 0.5 : 1
+    }}>
       <Card variant="outlined" className={classes.content}>
         <form aria-label="refund form" onSubmit={handleSubmit(extendedSubmitHandler)}>
           <CardContent sx={{ padding: "0" }}>
@@ -94,30 +105,36 @@ const CreatePaymentForm = (
               Configure the settings of the payment you’d like to send to the
               checkout.
             </SubheaderText>
-            <Box sx={{ marginTop: "32px" }}>
-              <FormControl variant="filled" fullWidth>
-                <InputLabel id="seller-account-id">Seller</InputLabel>
-                <Select
-                  label="Seller"
-                  defaultValue={""}
-                  {...register("sellerAccountId")}
-                  onChange={(event, element: React.PropsWithChildren<any>) => {
-                    if (element?.props) {
-                      setSelectedSellerSafeName(element.props['data-safe-name']);
-                    }
-                  }}
-                  error={!!errors?.sellerAccountId}
-                >
-                  <MenuItem data-safe-name='Pleasant View Gardens' value={"acc_Yzem4ZF4mKnMO0dBObRUU"}>
-                    Pleasant View Gardens
-                  </MenuItem>
-                  <MenuItem data-safe-name='Other Seller' value={"not_an_account_value"}>
-                    Other Seller
-                  </MenuItem>
-                </Select>
-                <FormHelperText error>{errors.sellerAccountId?.message}</FormHelperText>
-              </FormControl>
-            </Box>
+            
+            {!seller ? 
+              <Box sx={{ marginTop: "32px" }}>
+                <FormControl variant="filled" fullWidth>
+                  <InputLabel id="seller-account-id">Seller</InputLabel>
+                  <Select
+                    label="Seller"
+                    defaultValue={""}
+                    {...register("sellerAccountId")}
+                    onChange={(event, element: React.PropsWithChildren<any>) => {
+                      if (element?.props) {
+                        setSelectedSellerSafeName(element.props['data-safe-name']);
+                      }
+                    }}
+                    error={!!errors?.sellerAccountId}
+                  >
+                    <MenuItem data-safe-name='Pleasant View Gardens' value={"acc_Yzem4ZF4mKnMO0dBObRUU"}>
+                      Pleasant View Gardens
+                    </MenuItem>
+                    <MenuItem data-safe-name='Other Seller' value={"not_an_account_value"}>
+                      Other Seller
+                    </MenuItem>
+                  </Select>
+                  <FormHelperText error>{errors.sellerAccountId?.message}</FormHelperText>
+                </FormControl>
+              </Box>
+            :
+              null
+            }
+
             <TextField
               fullWidth
               label="Payment amount in cents"
@@ -137,14 +154,15 @@ const CreatePaymentForm = (
               helperText={errors.description?.message}
             />
             <TextField
+              type="number"
               fullWidth
-              label="Application fee amount (optional)"
+              label="Application fee amount"
               variant="filled"
               margin="normal"
+              defaultValue={0}
               {...register("applicationFeeAmount")}
-              helperText={
-                "You can override the seller's application fee rate on a per-payment basis by setting a custom amount here"
-              }
+              helperText={errors.applicationFeeAmount?.message}
+              error={!!errors.applicationFeeAmount}
             />
             <TextField
               fullWidth
