@@ -1657,17 +1657,17 @@
   resolved "https://registry.yarnpkg.com/@justifi/justifi-node/-/justifi-node-0.1.3.tgz#6e0c23bbada5ab55836015ef8fc24e99e9d7b7e0"
   integrity sha512-j6xmrqC4piTjCrdouSrQHxS7bHY5LJE45xlLRhg54V3xKdsD14FiSfWEXVMfytnHhhYTybeXgK4yVpiUg4ZqkA==
 
-"@justifi/react-components@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@justifi/react-components/-/react-components-0.0.8.tgz#c809df80ae839e50bfd2fbe2e2bb4b464da0eb9e"
-  integrity sha512-QFALeESZkSQ9LNA4mOFAl83e6s3FJEYALM5Kzu08nUxQxZgCPcXB8h4P+aY0p0+dAI8lePyONXcqTBL9+8nMFQ==
+"@justifi/react-components@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@justifi/react-components/-/react-components-0.0.11.tgz#bc6e9e028f973a25b43475d02db758b2923dfc27"
+  integrity sha512-G/p/5BWT2KMA4MBRoCq6KYPXpdeP24Hds/WElYpisX7CPFg4XqMKybLDx/IxkKbOLt+jsXVk9MGdzAAZjyqdjA==
   dependencies:
-    "@justifi/webcomponents" "^0.0.8"
+    "@justifi/webcomponents" "0.0.11"
 
-"@justifi/webcomponents@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@justifi/webcomponents/-/webcomponents-0.0.8.tgz#b27f4a0cbea0ab236cfaa1b7003360d69c409874"
-  integrity sha512-joNwPwH2uBzLW26KQHpRhiXH6/lPmAgIpia+MF5cTcuNL119AO4VGK5NJ4sEQ0QahsQc2/3A2xW3W75ocsGh3Q==
+"@justifi/webcomponents@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@justifi/webcomponents/-/webcomponents-0.0.11.tgz#29459faac610dfeea0ae4a75ec49ba157e3fe860"
+  integrity sha512-Tqj6y4p2I+j7GDpSjrAHV6wj3Da3jh8xEBGeVaOK7kxd0yzzgMpaYYKtMRPV9NBzGsE7Lyq0u5hvYgx35onWig==
   dependencies:
     "@stencil/core" "^2.13.0"
     "@stencil/react-output-target" "^0.3.1"

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Alert, Box, Button, Card, CardActions, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, Skeleton, Typography } from "@mui/material";
 import { getSellers, ISellerList } from "../../../api/Seller";
 import { IApiResponse, IErrorObject, IServerError } from "../../../api/Base";
@@ -34,8 +34,9 @@ const SubheaderText = styled(Typography)({
   lineHeight: "1.5",
 });
 
-const SelectSeller = () => {
+const SelectSeller = ({ handleSubmit }: { handleSubmit?: Function }) => {
   const [url, setUrl] = useState<string>("");
+  const [enabled, setEnabled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [serverError, setServerError] = useState<
     IErrorObject | IServerError | undefined
@@ -50,6 +51,11 @@ const SelectSeller = () => {
 
   const [sellers, setSellers] = useState<ISellerList>();
   const [selectedSellerID, setSelectedSellerID] = useState<string>('');
+  const [selectedSellerSafeName, setSelectedSellerSafeName] = useState<string>('');
+
+  useEffect(() => {
+    setEnabled(!!selectedSellerID);
+  }, [selectedSellerID]);
 
   const fetchAndUpdateSellers = async () => {
     const { data, error }: IApiResponse<ISellerList> = await getSellers();
@@ -85,13 +91,17 @@ const SelectSeller = () => {
             }}
           >
             <form
-              onSubmit={(e) => {
+              onSubmit={(e: FormEvent<HTMLFormElement>) => {
                 e.preventDefault();
-                setLoading(false);
-                setServerError(undefined);
-                const to = `/onboarding/${selectedSellerID}`;
-                setUrl(to);
-              }}
+                if (handleSubmit) {return handleSubmit(selectedSellerID, selectedSellerSafeName, e);}
+                
+                return (e: FormEvent<HTMLFormElement>) => {
+                  setLoading(false);
+                  setServerError(undefined);
+                  const to = `/onboarding/${selectedSellerID}`;
+                  setUrl(to);
+                }}
+              }
             >
               <CardContent sx={{ padding: "0" }}>
                 <Typography
@@ -115,18 +125,27 @@ const SelectSeller = () => {
                     variant="filled"
                     name="seller-selector"
                     value={selectedSellerID}
-                    onChange={(e) => setSelectedSellerID(e.target.value)}
+                    native={false}
+                    onChange={(e, child: any) => {
+                      setSelectedSellerID(e.target.value);
+                      setSelectedSellerSafeName(child?.props['data-seller-name']);
+                    }}
                   >
                     {/* Need a case for when there's no sellers in the account */}
                     {
                       sellers?.length 
-                      ? sellers.map(seller => <MenuItem key={seller.id} value={seller.id}>{seller.name}</MenuItem>)
+                      ? sellers.map(seller => <MenuItem key={seller.id} data-seller-name={seller.name} value={seller.id}>{seller.name}</MenuItem>)
                       : null
                     }
                   </Select>
                 </FormControl>
                 <CardActions sx={{ padding: "0", marginTop: "30px" }}>
-                  <Button type="submit" variant="contained" fullWidth>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    disabled={!enabled}
+                  >
                     Continue with selected seller
                   </Button>
                 </CardActions>

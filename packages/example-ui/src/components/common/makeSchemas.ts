@@ -25,7 +25,18 @@ const checkoutFormSchema = () => {
   });
 };
 
+const bankCheckoutFormSchema = () => {
+  return object({
+    name: string()
+      .required('Please, provide the bank account owner name')
+      .typeError('Only alphabetic values allowed'),
+    account_owner_type: string().required('Select an account owner type'),
+    account_type: string().required('Select an account type')
+  });
+}
+
 export {
   paymentFormSchema,
-  checkoutFormSchema
+  checkoutFormSchema,
+  bankCheckoutFormSchema
 };

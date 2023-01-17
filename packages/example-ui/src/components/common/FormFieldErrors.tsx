@@ -13,12 +13,21 @@ export const CheckoutFormErrors = {
       number_required: 'Enter card number',
       verification_invalid: 'Enter a valid CVV security code',
       verification_required: 'Enter CVV security code',
+    },
+    bank: {
+      routing_number_required: 'Enter a routing number',
+      account_number_required: 'Enter an account number',
+      account_owner_name_required: 'Enter an account owner name',
+      account_owner_type_required: 'Select an Account Owner Type',
+      account_type_required: 'Select an Account Type'
     }
   },
   serverErrors: {
 
   }
 };
+
+export type BankErrorCode = 'routing_number_required' | 'account_number_required';
 
 export type CardErrorCode =
   'expiration_date_invalid' |

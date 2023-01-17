@@ -10,13 +10,16 @@ import {
   TextField,
   Typography,
   FormHelperText,
-  FormControl
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel
 } from "@mui/material";
-import { JustifiCardForm } from '@justifi/react-components';
+import { JustifiBankAccountForm } from '@justifi/react-components';
 import { makeStyles } from "@mui/styles";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { CardErrorCode, CheckoutFormErrors } from "../FormFieldErrors";
-import { checkoutFormSchema } from '../makeSchemas';
+import { BankErrorCode, CheckoutFormErrors } from "../FormFieldErrors";
+import { bankCheckoutFormSchema } from '../makeSchemas';
 import JustiFiPalette from "../JustiFiPallete";
 import { getConfig } from "../../../config";
 import { createPayment } from "../../../api/Payment";
@@ -24,9 +27,9 @@ import { formatCentsToDollars } from "../utils";
 
 const { clientId } = getConfig();
 
-const CardError = (errorKey: CardErrorCode, index: number) => (
+const BankError = (errorKey: BankErrorCode, index: number) => (
   <FormHelperText error variant="filled" key={index} >
-    {CheckoutFormErrors.validationErrors.card[errorKey]}
+    {CheckoutFormErrors.validationErrors.bank[errorKey]}
   </FormHelperText>
 );
 export interface CreatePaymentParams {
@@ -59,20 +62,14 @@ const useStyles = makeStyles(
   { index: 1 }
 );
 
-
-function CardFormComponent(props: { params: CreatePaymentParams }) {
+function BankForm(props: { params: CreatePaymentParams }) {
   const { params } = props;
-  const [enabled, setEnabled] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [enableSubmit, setEnableSubmit] = useState<boolean>(false);
 
-  useEffect(() => {
-    setEnabled(!!params.sellerAccountId);
-  }, [params])
-
-  const [paymentMethodErrors, setPaymentMethodErrors] = useState<CardErrorCode[]>();
+  const [paymentMethodErrors, setPaymentMethodErrors] = useState<BankErrorCode[]>();
   const [showPaymentMethodErrors, setShowPaymentMethodErrors] = useState<boolean>(false);
-  const showInvalid = showPaymentMethodErrors && paymentMethodErrors?.length;
+  const [showInvalid, setShowInvalid] = useState<boolean>(true);
 
 
   const cardFormRef = useRef(null);
@@ -82,22 +79,26 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
     handleSubmit,
     formState,
   } = useForm({
-    resolver: yupResolver(checkoutFormSchema())
+    resolver: yupResolver(bankCheckoutFormSchema())
   });
 
   const errors = formState.errors;
 
   useEffect(() => {
+    setShowInvalid(!!(showPaymentMethodErrors && paymentMethodErrors?.length));
+  }, [paymentMethodErrors, showPaymentMethodErrors])
+
+  useEffect(() => {
     if (formState.isDirty && !Object.entries(errors).length) {
       setEnableSubmit(true);
     }
-  }, [errors, formState])
+  }, [errors, formState, paymentMethodErrors, showPaymentMethodErrors])
   
   const classes = useStyles();
 
   async function onSubmit(formValues: any) {
     setShowPaymentMethodErrors(true);
-    if (submitting || paymentMethodErrors?.length) return;
+    if (submitting || !!Object.entries(errors).length || paymentMethodErrors?.length) return;
 
     setSubmitting(true);
 
@@ -126,15 +127,13 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
   }
 
   function onPaymentMethodReady(data: any) {
-    setPaymentMethodErrors(data.detail.errors);
+    setPaymentMethodErrors(data.detail.detail.errors);
   };
-
   function onPaymentMethodChange(data: any) {
-    setPaymentMethodErrors(data.detail.errors);
+    setPaymentMethodErrors(data.detail.detail.errors);
   };
-
   function onPaymentMethodBlur(data: any) {
-    setPaymentMethodErrors(data.detail.errors);
+    setPaymentMethodErrors(data.detail.detail.errors);
   };
 
   return (
@@ -142,25 +141,19 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
       <div className={classes.layoutContent}>
         <Grid container sx={{
           justifyContent: "center",
-          cursor: !enabled ? 'not-allowed' : '',
           borderRadius: '5px',
         }}>
           <Box
             sx={{
-              width: "464px",
               backgroundColor: "white",
               padding: 4,
               borderRadius: '5px',
-              filter: !enabled ? 'brightness(0.8)' : '',
-              pointerEvents: !enabled ? 'none' : '',
               transition: '0.2s ease-in-out filter',
             }}
           >
             <Card>
-              <form aria-label="refund form" onSubmit={handleSubmit(onSubmit)}>
-                <CardContent sx={{
-                  padding: "0",
-                }}>
+              <form aria-label="refund form" onSubmit={handleSubmit(onSubmit, onSubmit)}>
+                <CardContent>
                   <Box
                     sx={{
                       display: "flex",
@@ -201,17 +194,6 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                     </Typography>
                   </Box>
                   <Box sx={{ marginTop: "32px" }}>
-                    <TextField
-                      fullWidth
-                      id="customer-rewards-number"
-                      label="Customer Rewards Number (optional)"
-                      type="text"
-                      variant="filled"
-                      margin="normal"
-                      {...register("customerRewardsNumber")}
-                    />
-                  </Box>
-                  <Box sx={{ marginTop: "32px" }}>
                     <Typography
                       variant="h5"
                       sx={{
@@ -224,109 +206,69 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                     </Typography>
                   </Box>
                   <Box>
-                  <FormControl variant="filled" fullWidth>
-                      <TextField
-                        fullWidth
-                        id="name-on-card"
-                        label="Name on Card"
-                        type="text"
-                        variant="filled"
-                        margin="normal"
-                        {...register("name")}
-                        error={!!errors.name}
-                      />
-                      <FormHelperText error>{errors.name?.message as string}</FormHelperText>
-                    </FormControl>
-                  </Box>
-                  <Box>
-                    <JustifiCardForm 
+                    <JustifiBankAccountForm 
+                      iframeOrigin='https://js.justifi-staging.com/bank-account'
                       ref={cardFormRef}
-                      iframeOrigin='https://js.justifi-staging.com'
-                      // iframeOrigin='http://localhost:3003'
-                      onCardFormReady={onPaymentMethodReady}
-                      onCardFormChange={onPaymentMethodChange}
-                      onCardFormBlur={onPaymentMethodBlur}
+                      onBankAccountFormReady={onPaymentMethodReady}
+                      onBankAccountFormChange={onPaymentMethodChange}
+                      onBankAccountFormBlur={onPaymentMethodBlur}
                       className={(showInvalid) ? 'justifiCardForm invalid' : 'justifiCardForm'}
                     />
-                    {(showInvalid) ? paymentMethodErrors.map(
-                      (errorKey, index) => CardError(errorKey, index)
+                    {showPaymentMethodErrors ? paymentMethodErrors?.map(
+                      (errorKey, index) => BankError(errorKey, index)
                     ) : ''}
                   </Box>
-                  <Box sx={{ marginTop: "32px" }}>
-                    <Typography
-                      variant="h5"
+                  <Box>
+                    <TextField
+                      fullWidth
+                      id="name"
+                      label="Account Owner Name"
+                      type="text"
+                      variant="filled"
+                      margin="normal"
+                      {...register("name")}
+                    />
+                    {<FormHelperText error>{errors.name?.message as string}</FormHelperText>}
+                  </Box>
+                  <Box>
+                    <FormControl
+                      variant="filled"
+                      fullWidth
                       sx={{
-                        fontSize: "16px",
-                        color: JustiFiPalette.grey[700],
-                        fontWeight: 400,
+                        margin: '10px 0'
                       }}
                     >
-                      Billing Address
-                    </Typography>
-                  </Box>
-
-                  <Box>
-                    <TextField
-                      fullWidth
-                      id="address"
-                      label="Street Address (optional)"
-                      type="text"
-                      variant="filled"
-                      margin="normal"
-                      {...register("streetAddress")}
-                    />
-                  </Box>
-                  <Box>
-                    <TextField
-                      fullWidth
-                      id="apartment"
-                      label="Apartment, Suite, etc. (optional)"
-                      type="text"
-                      variant="filled"
-                      margin="normal"
-                      {...register("apartment")}
-                    />
-                  </Box>
-                  <Box>
-                    <TextField
-                      fullWidth
-                      id="city"
-                      label="City (optional)"
-                      type="text"
-                      variant="filled"
-                      margin="normal"
-                      {...register("city")}
-                    />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                    }}
-                  >
-                    <TextField
-                      fullWidth
-                      id="state"
-                      label="State (optional)"
-                      type="text"
-                      variant="filled"
-                      margin="normal"
-                      {...register("state")}
-                      sx={{ flexShrink: 1 }}
-                    />
-                    <FormControl fullWidth>
-                      <TextField
-                        fullWidth
-                        id="zip"
-                        label="Zip"
-                        type="text"
-                        variant="filled"
-                        margin="normal"
-                        {...register("address_postal_code")}
-                        sx={{ flexShrink: 2, marginLeft: "16px" }}
-                      />
-                      {<FormHelperText error>{errors.address_postal_code?.message as string}</FormHelperText>}
+                      <InputLabel htmlFor="account_owner_type">Select an account owner type</InputLabel>
+                      <Select
+                        {...register("account_owner_type")}
+                        id="account_owner_type"
+                        defaultValue=""
+                      >
+                        <MenuItem value="individual">Individual</MenuItem>
+                        <MenuItem value="company">Company</MenuItem>
+                      </Select>
                     </FormControl>
+                    {<FormHelperText error>{errors.account_owner_type?.message as string}</FormHelperText>}
+                  </Box>
+                  <Box>
+                    <FormControl
+                      variant="filled"
+                      fullWidth
+                      sx={{
+                        margin: '10px 0'
+                      }}
+                    >
+                      <InputLabel htmlFor="account_type">Select an account type</InputLabel>
+                      <Select
+                        id="account_type"
+                        defaultValue=""
+                        {...register("account_type")}
+                      >
+                        <MenuItem value="checking">Checking</MenuItem>
+                        <MenuItem value="savings">Savings</MenuItem>
+                      </Select>
+                    </FormControl>
+                    {<FormHelperText error>{errors.account_type?.message as string}</FormHelperText>}
                   </Box>
                 </CardContent>
                 <CardActions sx={{ padding: "0", marginTop: "30px" }}>
@@ -348,4 +290,4 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
   );
 }
 
-export default CardFormComponent;
+export default BankForm;
