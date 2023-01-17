@@ -36,7 +36,6 @@ const BankCheckout = () => {
     selectedSellerSafeName: ''
   });
 
-
   return (
     <Box sx={{ display: "flex" }}>
       <AppTopBar />
