@@ -49,7 +49,7 @@ const Checkout = () => {
       >
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
-          <CreatePaymentForm submitHandler={onCreatePayment} />
+          <CreatePaymentForm disabled={false} width="390px" submitHandler={onCreatePayment} />
         </Box>
       </Drawer>
       <Box component="main">

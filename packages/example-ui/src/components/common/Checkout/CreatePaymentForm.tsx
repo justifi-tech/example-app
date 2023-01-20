@@ -43,13 +43,14 @@ interface CreatePaymentFormProps {
     sellerID: string,
     sellerName: string
   },
-  disabled?: boolean
+  disabled?: boolean,
+  width?: string
 }
 
 const CreatePaymentForm = (
   props: React.PropsWithChildren<CreatePaymentFormProps>
 ) => {
-  const { submitHandler, disabled = true, seller } = props;
+  const { submitHandler, disabled = true, seller, width } = props;
   const classes = useStyles();
   const [enableSubmit, setEnableSubmit] = useState<boolean>(false);
   const [selectedSellerSafeName, setSelectedSellerSafeName] = useState<String>('');
@@ -85,7 +86,7 @@ const CreatePaymentForm = (
 
   return (
     <Box sx={{
-      width: "600px",
+      width: width || "600px",
       opacity: disabled ? 0.5 : 1
     }}>
       <Card variant="outlined" className={classes.content}>
@@ -156,7 +157,7 @@ const CreatePaymentForm = (
             <TextField
               type="number"
               fullWidth
-              label="Application fee amount"
+              label="Application fee amount (optional)"
               variant="filled"
               margin="normal"
               defaultValue={0}
