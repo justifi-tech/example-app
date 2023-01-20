@@ -50,6 +50,10 @@ const AppTopBar = (props: AppTopBarProps) => {
       setUrl('/onboarding');
       return;
     }
+    if (location.pathname.search('hosted-checkout/success') !== -1) {
+      setUrl('/hosted-checkout');
+      return;
+    }
     setUrl(location.pathname);
   }, [location]);
 
@@ -97,6 +101,7 @@ const AppTopBar = (props: AppTopBarProps) => {
               <MenuItem value={"/payments"}>Payments</MenuItem>
               <MenuItem value={"/checkout"}>Card Form Component</MenuItem>
               <MenuItem value={"/bank-checkout"}>Bank Checkout</MenuItem>
+              <MenuItem value={"/hosted-checkout"}>Hosted Checkout</MenuItem>
               <MenuItem value={"/onboarding"} disabled>Onboarding</MenuItem>
             </Select>
           </FormControl>

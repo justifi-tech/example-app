@@ -1,4 +1,4 @@
-import { FormEvent, ReactElement, ReactNode, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Alert, Box, Button, Card, CardActions, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, Skeleton, Typography } from "@mui/material";
 import { getSellers, ISellerList } from "../../../api/Seller";
 import { IApiResponse, IErrorObject, IServerError } from "../../../api/Base";
@@ -34,7 +34,7 @@ const SubheaderText = styled(Typography)({
   lineHeight: "1.5",
 });
 
-const SelectSeller = ({ handleSubmit }: { handleSubmit?: Function }) => {
+const SelectSeller = ({ handleSubmit, maxWidth }: { handleSubmit?: Function, maxWidth?: string }) => {
   const [url, setUrl] = useState<string>("");
   const [enabled, setEnabled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -58,12 +58,16 @@ const SelectSeller = ({ handleSubmit }: { handleSubmit?: Function }) => {
   }, [selectedSellerID]);
 
   const fetchAndUpdateSellers = async () => {
-    const { data, error }: IApiResponse<ISellerList> = await getSellers();
-    if (error) {
-      setServerError(error);
-      return;
+    try {
+      const { data, error }: IApiResponse<ISellerList> = await getSellers();
+      if (error) {
+        setServerError(error);
+        return;
+      }
+      setSellers(data);
+    } catch (e) {
+      console.error(e);
     }
-    setSellers(data);
     setLoading(false);
   };
 
@@ -78,7 +82,7 @@ const SelectSeller = ({ handleSubmit }: { handleSubmit?: Function }) => {
       ) : (
         <Box sx={{
           width: '100%',
-          maxWidth: '600px'
+          maxWidth: maxWidth || '600px'
         }}>
           <Card
             variant="outlined"
@@ -114,11 +118,7 @@ const SelectSeller = ({ handleSubmit }: { handleSubmit?: Function }) => {
                 >
                   Select a Seller
                 </Typography>
-                <SubheaderText variant="h5">
-                  {
-                    "Select a seller from this account to continue with the onboarding."
-                  }
-                </SubheaderText>
+                <SubheaderText variant="h5">{"Select a seller from this account to continue"}</SubheaderText>
                 <FormControl fullWidth>
                   <InputLabel variant="filled" id="seller-selector">Select a Seller</InputLabel>
                   <Select

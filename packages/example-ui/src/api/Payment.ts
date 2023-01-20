@@ -132,6 +132,10 @@ export interface IPayment {
   updatedAt: string;
 }
 
+type ICheckoutSession = {
+  checkoutSessionId: string
+}
+
 export class Payment implements IPayment {
   public id: string;
   public accountId: string;
@@ -265,4 +269,16 @@ export const createPayment = async (payload: any, headers: any = {}): Promise<IA
   const url = requestUrl("/v1/payments");
 
   return makeRequest<IApiResponse<IPayment>>(url, HttpMethod.Post, headers, payload);
+}
+
+export const createPaymentIntent = async (payload: any, headers: any = {}): Promise<IApiResponse<IPayment>> => {
+  const url = requestUrl("/v1/payment_intents");
+
+  return makeRequest<IApiResponse<IPayment>>(url, HttpMethod.Post, headers, payload);
+}
+
+export const createCheckoutSession = async (payload: any, headers: any = {}): Promise<IApiResponse<ICheckoutSession>> => {
+  const url = requestUrl("/v1/checkout_sessions");
+
+  return makeRequest<IApiResponse<ICheckoutSession>>(url, HttpMethod.Post, headers, payload);
 }

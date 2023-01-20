@@ -1,5 +1,6 @@
 import { Express } from "express";
-import { JustifiContext } from "."; import {
+import { JustifiContext } from ".";import { createCheckoutSession } from "./handlers/checkout_sessions";
+ import {
   capturePayment,
   createPayment,
   getPayment,
@@ -45,6 +46,8 @@ export const configAppRoutes = (app: Express, ctx: JustifiContext): Express => {
     "/v1/payment_intents/:paymentIntentId/payments",
     listPaymentsForPaymentIntent(ctx)
   );
+
+  app.post("/v1/checkout_sessions", createCheckoutSession(ctx));
 
   app.post("/v1/payments", createPayment(ctx));
   app.get("/v1/payments", listPayments(ctx));
