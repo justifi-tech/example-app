@@ -6,9 +6,11 @@ import {
   Toolbar,
   Typography,
   styled,
+  Button,
 } from "@mui/material";
 import AppTopBar from "../../common/AppTopBar";
 import JustiFiPalette from "../../common/JustiFiPallete";
+import { Link } from "react-router-dom";
 
 const HeaderText = styled("span")({
   display: "flex",
@@ -46,6 +48,9 @@ const CheckoutSuccess = () => {
               This is an example of a page to redirect to after payment success when using the Hosted Checkout.
               This can be configured through the 'after_payment_url' property when creating the Checkout Session.
             </SubheaderText>
+            <Link to="/hosted-checkout">
+              <Button variant="contained">Return to Hosted Checkout Flow</Button>
+            </Link>
           </Grid>
         </Grid>
       </Box>
