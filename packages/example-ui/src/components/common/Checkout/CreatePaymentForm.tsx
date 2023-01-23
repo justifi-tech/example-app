@@ -44,13 +44,14 @@ interface CreatePaymentFormProps {
     sellerName: string
   },
   disabled?: boolean,
-  width?: string
+  width?: string,
+  title?: string
 }
 
 const CreatePaymentForm = (
   props: React.PropsWithChildren<CreatePaymentFormProps>
 ) => {
-  const { submitHandler, disabled = true, seller, width } = props;
+  const { submitHandler, disabled = true, seller, width, title } = props;
   const classes = useStyles();
   const [enableSubmit, setEnableSubmit] = useState<boolean>(false);
   const [selectedSellerSafeName, setSelectedSellerSafeName] = useState<String>('');
@@ -100,7 +101,9 @@ const CreatePaymentForm = (
                 padding: "0",
               }}
             >
-              Create a Payment
+              {title ? title :
+                'Create a Payment'
+              }
             </Typography>
             <SubheaderText variant="h5">
               Configure the settings of the payment you’d like to send to the

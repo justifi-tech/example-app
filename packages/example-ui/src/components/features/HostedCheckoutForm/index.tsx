@@ -84,7 +84,13 @@ const HostedCheckoutComponent = () => {
           </Card>
         </Grid>
         <Grid item xs={6}>
-          <CreatePaymentForm width="auto" disabled={!seller.sellerID} seller={seller} submitHandler={handleCreatePayment} />
+          <CreatePaymentForm
+            title="Create a Payment Intent"
+            width="auto"
+            disabled={!seller.sellerID}
+            seller={seller}
+            submitHandler={handleCreatePayment}
+          />
         </Grid>
       </Grid>
     </Box>
