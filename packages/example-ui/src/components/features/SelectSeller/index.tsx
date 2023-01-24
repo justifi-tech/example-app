@@ -77,13 +77,13 @@ const SelectSeller = ({ handleSubmit, maxWidth }: { handleSubmit?: Function, max
 
   return (
     <Grid container sx={{ justifyContent: "center" }}>
-      {loading ? (
-        <Skeleton variant="circular" width={40} height={40} />
-      ) : (
-        <Box sx={{
-          width: '100%',
-          maxWidth: maxWidth || '600px'
-        }}>
+      <Box sx={{
+        width: '100%',
+        maxWidth: maxWidth || '600px'
+      }}>
+        {loading ? (
+        <Skeleton variant="rectangular" height={200}/>
+        ) : (
           <Card
             variant="outlined"
             sx={{
@@ -152,8 +152,8 @@ const SelectSeller = ({ handleSubmit, maxWidth }: { handleSubmit?: Function, max
               </CardContent>
             </form>
           </Card>
-        </Box>
-      )}
+        )}
+      </Box>
       {serverError && <SelectSellerError error={serverError} />}
     </Grid>
   );
