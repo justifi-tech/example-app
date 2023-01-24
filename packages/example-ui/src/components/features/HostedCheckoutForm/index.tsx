@@ -48,18 +48,29 @@ const HostedCheckoutComponent = () => {
   return (
     <Box>
       <Grid container spacing={1}>
-      {loading && (
-          <CircularProgress
-            size={24}
-            sx={{
-              color: 'gray',
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              marginTop: '-12px',
-              marginLeft: '-12px',
-            }}
-          />
+        {loading && (
+          <>
+            <CircularProgress
+              size={80}
+              sx={{
+                color: 'gray',
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                marginTop: '-12px',
+                marginLeft: '-12px',
+              }}
+            />
+            <Box sx={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              backgroundColor: 'rgba(0,0,0,0.2)',
+              zIndex: 100
+            }}/>
+          </>
         )}
         <Grid item xs={6}>
           <SelectSeller maxWidth="auto" handleSubmit={(sellerID: string, sellerName: string) => {setSeller({ sellerID, sellerName })}} />
@@ -84,7 +95,13 @@ const HostedCheckoutComponent = () => {
           </Card>
         </Grid>
         <Grid item xs={6}>
-          <CreatePaymentForm width="auto" disabled={!seller.sellerID} seller={seller} submitHandler={handleCreatePayment} />
+          <CreatePaymentForm
+            title={`Create a Payment Intent${seller.sellerName ? ' for '+seller.sellerName : ''}`}
+            width="auto"
+            disabled={!seller.sellerID}
+            seller={seller}
+            submitHandler={handleCreatePayment}
+          />
         </Grid>
       </Grid>
     </Box>
