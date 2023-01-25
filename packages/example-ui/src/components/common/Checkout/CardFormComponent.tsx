@@ -22,7 +22,7 @@ import { getConfig } from "../../../config";
 import { createPayment } from "../../../api/Payment";
 import { formatCentsToDollars } from "../utils";
 
-const { clientId } = getConfig();
+const { clientId, environment, paymentsUrl } = getConfig();
 
 const CardError = (errorKey: CardErrorCode, index: number) => (
   <FormHelperText error variant="filled" key={index} >
@@ -241,8 +241,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                   <Box>
                     <JustifiCardForm 
                       ref={cardFormRef}
-                      iframeOrigin='https://js.justifi-staging.com'
-                      // iframeOrigin='http://localhost:3003'
+                      iframeOrigin={`${environment === 'local' ? paymentsUrl : 'https://js.justifi-staging.com'}`}
                       onCardFormReady={onPaymentMethodReady}
                       onCardFormChange={onPaymentMethodChange}
                       onCardFormBlur={onPaymentMethodBlur}
