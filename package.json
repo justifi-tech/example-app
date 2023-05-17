@@ -15,6 +15,6 @@
   "npmClient": "yarn",
   "useWorkspaces": true,
   "scripts": {
-    "start": "lerna run --parallel start"
+    "start": "cd packages/example-api && npx ts-node src/index.ts"
   }
 }
