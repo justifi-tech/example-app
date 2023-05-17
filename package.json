@@ -16,6 +16,7 @@
   "useWorkspaces": true,
   "scripts": {
     "build": "cd packages/example-ui && react-scripts build",
-    "start": "cd packages/example-api && npx ts-node src/index.ts"
+    "start": "cd packages/example-api && npx ts-node src/index.ts",
+    "dev": "lerna run --parallel start"
   }
 }
