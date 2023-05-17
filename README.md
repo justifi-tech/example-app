@@ -26,9 +26,17 @@ To run it locally
 ```
 ### Run the whole app
 
-- example-app> yarn start
+- example-app> yarn dev
 
 ### Adding dependencies
 
 - example-app> npx lerna add lodash packages/example-ui
 
+### Deploying (Heroku)
+* Create (or login to) your heroku account, and install the heroku cli.
+* Create a new node js project
+* Set the following environment variables
+ * CLIENT_ID="YOUR CLIENT ID"
+ * CLIENT_SECRET="YOUR SECRET"
+ * JUSTIFI_API_URL=https://justifi.ai
+ * REACT_APP_API_URL="domain for your heroku app"
