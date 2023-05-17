@@ -15,7 +15,7 @@
   "npmClient": "yarn",
   "useWorkspaces": true,
   "scripts": {
-    "build": "cd packages/example-ui && REACT_APP_API_URL=http://localhost:8082 react-scripts build",
+    "build": "cd packages/example-ui && react-scripts build",
     "start": "cd packages/example-api && npx ts-node src/index.ts"
   }
 }
