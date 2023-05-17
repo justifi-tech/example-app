@@ -5,6 +5,8 @@ import { configAppRoutes } from "./routes";
 import morgan from "morgan";
 import { InMemoryCache } from "./cache";
 import dotenv from 'dotenv';
+import path from 'path';
+
 dotenv.config();
 
 export interface JustifiContext {
@@ -31,3 +33,10 @@ app.use(cors({ origin: "*" }));
 configAppRoutes(app, context).listen(process.env.PORT, () => {
   console.log(`Example api listening on port ${process.env.PORT}`);
 });
+
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, '/../../example-ui/build')));
+// Anything that doesn't match the above, send back index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/../../example-ui/build/index.html'))
+})
