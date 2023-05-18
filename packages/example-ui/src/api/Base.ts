@@ -1,5 +1,7 @@
 import { getConfig } from "../config"
 
+const { apiOrigin } = getConfig();
+
 export enum HttpMethod {
   Get = "GET",
   Post = "POST",
@@ -31,7 +33,7 @@ export interface IErrorObject {
 }
 
 export const requestUrl = (path: string): string => {
-  const baseUrl = process.env.REACT_APP_API_URL || getConfig().apiOrigin;
+  const baseUrl = apiOrigin;
 
   return baseUrl + path;
 }

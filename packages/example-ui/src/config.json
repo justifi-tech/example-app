@@ -1,12 +1,8 @@
 {
-  "domain": "",
   "clientId": "test_bgb0miHQAflE4EZFWG4v3sxNLEslxDnt",
-  "appDomain": "http://localhost:4201",
-  "audience": "",
   "apiOrigin": "http://localhost:8000",
-  "featureUrl": "",
-  "clientSecret": "",
-  "serverDomain": "http://localhost:4200",
-  "apiDomain": "https://api.justifi-staging.com",
+  "paymentsUrl": "http://localhost:3003",
+  "localHostedCheckoutUrl": "http://localhost:3005",
+  "environment": "staging",
   "sellerAccountId": "acc_Yzem4ZF4mKnMO0dBObRUU"
 }
