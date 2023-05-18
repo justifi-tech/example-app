@@ -9,6 +9,7 @@ import { CssBaseline } from "@mui/material";
 import BankCheckout from "./components/features/BankCheckout";
 import HostedCheckout from "./components/features/HostedCheckout";
 import CheckoutSuccess from "./components/features/HostedCheckoutForm/CheckoutSuccess";
+import PaymentFormCheckout from "./components/features/PaymentForm";
 import { useAuth0 } from '@auth0/auth0-react';
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="/events" element={<Events />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/bank-checkout" element={<BankCheckout />} />
+            <Route path="/payment-form-checkout" element={<PaymentFormCheckout />} />
             <Route path="/hosted-checkout" element={<HostedCheckout />} />
             <Route path="/hosted-checkout/success" element={<CheckoutSuccess />} />
           </Routes>

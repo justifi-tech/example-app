@@ -7,7 +7,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@hookform/resolvers": "^2.9.10",
-    "@justifi/react-components": "^0.0.11",
+    "@justifi/react-components": "^4.0.0",
     "@mui/icons-material": "^5.10.14",
     "@mui/material": "^5.10.12",
     "@mui/styles": "^5.10.10",
