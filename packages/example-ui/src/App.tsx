@@ -9,6 +9,7 @@ import { CssBaseline } from "@mui/material";
 import BankCheckout from "./components/features/BankCheckout";
 import HostedCheckout from "./components/features/HostedCheckout";
 import CheckoutSuccess from "./components/features/HostedCheckoutForm/CheckoutSuccess";
+import CheckoutLegacy from './components/features/CheckoutLegacy';
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
           <Route path="/payments" element={<Payments />} />
           <Route path="/events" element={<Events />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout-legacy" element={<CheckoutLegacy />} />
           <Route path="/bank-checkout" element={<BankCheckout />} />
           <Route path="/hosted-checkout" element={<HostedCheckout />} />
           <Route path="/hosted-checkout/success" element={<CheckoutSuccess />} />

@@ -103,6 +103,7 @@ const AppTopBar = (props: AppTopBarProps) => {
               <MenuItem value={"/bank-checkout"}>Bank Checkout</MenuItem>
               <MenuItem value={"/hosted-checkout"}>Hosted Checkout</MenuItem>
               <MenuItem value={"/onboarding"} disabled>Onboarding</MenuItem>
+              <MenuItem value={"/checkout-legacy"}>Checkout Legacy</MenuItem>
             </Select>
           </FormControl>
         </Box>

@@ -1,6 +1,6 @@
 {
   "domain": "",
-  "clientId": "test_bgb0miHQAflE4EZFWG4v3sxNLEslxDnt",
+  "clientId": "test_04hwhjmtD2EqQ5zZTblodFJASvqj9mlz",
   "appDomain": "http://localhost:4201",
   "audience": "",
   "apiOrigin": "http://localhost:8000",
@@ -8,5 +8,5 @@
   "clientSecret": "",
   "serverDomain": "http://localhost:4200",
   "apiDomain": "https://api.justifi-staging.com",
-  "sellerAccountId": "acc_Yzem4ZF4mKnMO0dBObRUU"
+  "sellerAccountId": "acc_2ELCdFp1sPkOVo4h4DD0o7"
 }
