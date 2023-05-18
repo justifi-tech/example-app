@@ -207,7 +207,7 @@ function BankForm(props: { params: CreatePaymentParams }) {
                   </Box>
                   <Box>
                     <JustifiBankAccountForm 
-                      iframeOrigin='https://js.justifi-staging.com/bank-account'
+                      iframeOrigin='https://js.justifi.ai/bank-account'
                       ref={cardFormRef}
                       onBankAccountFormReady={onPaymentMethodReady}
                       onBankAccountFormChange={onPaymentMethodChange}

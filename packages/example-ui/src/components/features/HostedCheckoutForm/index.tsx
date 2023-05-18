@@ -90,7 +90,7 @@ const HostedCheckoutComponent = () => {
                 <Link href={`${
                   environment === 'local'
                   ? localHostedCheckoutUrl+'/'+checkoutSession
-                  : 'https://hosted-checkout.justifi-staging.com/'+checkoutSession
+                  : 'https://hosted-checkout.justifi.ai/'+checkoutSession
                 }`}>
                   <Button variant="contained">Go to the Hosted Checkout</Button>
                 </Link>

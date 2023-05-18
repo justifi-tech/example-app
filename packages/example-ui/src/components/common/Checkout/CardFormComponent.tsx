@@ -241,7 +241,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                   <Box>
                     <JustifiCardForm 
                       ref={cardFormRef}
-                      iframeOrigin={`${environment === 'local' ? paymentsUrl : 'https://js.justifi-staging.com'}`}
+                      iframeOrigin={`${environment === 'local' ? paymentsUrl : 'https://js.justifi.ai'}`}
                       onCardFormReady={onPaymentMethodReady}
                       onCardFormChange={onPaymentMethodChange}
                       onCardFormBlur={onPaymentMethodBlur}
