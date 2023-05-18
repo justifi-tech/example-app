@@ -97,14 +97,13 @@ const SelectSeller = ({ handleSubmit, maxWidth }: { handleSubmit?: Function, max
             <form
               onSubmit={(e: FormEvent<HTMLFormElement>) => {
                 e.preventDefault();
-                if (handleSubmit) {return handleSubmit(selectedSellerID, selectedSellerSafeName, e);}
+                if (handleSubmit) {handleSubmit(selectedSellerID, selectedSellerSafeName, e);}
                 
-                return (e: FormEvent<HTMLFormElement>) => {
-                  setLoading(false);
-                  setServerError(undefined);
-                  const to = `/onboarding/${selectedSellerID}`;
-                  setUrl(to);
-                }}
+                setLoading(false);
+                setServerError(undefined);
+                const to = `/onboarding/${selectedSellerID}`;
+                setUrl(to);
+              }
               }
             >
               <CardContent sx={{ padding: "0" }}>
