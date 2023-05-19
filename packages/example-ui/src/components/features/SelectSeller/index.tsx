@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Alert, Box, Button, Card, CardActions, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, Skeleton, Typography } from "@mui/material";
 import { getSellers, ISellerList } from "../../../api/Seller";
-import { IApiResponse, IErrorObject, IServerError } from "../../../api/Base";
+import { IApiResponse, IErrorObject, IServerError } from "../../../api/Api";
 import styled from "@emotion/styled";
 import JustiFiPalette from "../../common/JustiFiPallete";
 import { useNavigate } from "react-router";

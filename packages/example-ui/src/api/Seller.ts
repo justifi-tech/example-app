@@ -1,4 +1,4 @@
-import { HttpMethod, IApiResponse, makeRequest, requestUrl } from "./Base";
+import { HttpMethod, IApiResponse, Api } from "./Api";
 
 export enum SellerStatusType {
   created = "created",
@@ -42,13 +42,15 @@ export interface CreateSellerPayload {
 }
 
 export const getSellers = async (): Promise<IApiResponse<ISellerList>> => {
-  const url = requestUrl("/v1/seller_accounts");
+  const api = Api();
+  const url = api.requestUrl("/v1/seller_accounts");
 
-  return makeRequest<IApiResponse<ISellerList>>(url, HttpMethod.Get, {});
+  return api.makeRequest<IApiResponse<ISellerList>>(url, HttpMethod.Get, {});
 }
 
 export const createSeller = async (payload: CreateSellerPayload): Promise<IApiResponse<ISeller>> => {
-  const url = requestUrl("/v1/seller_accounts");
+  const api = Api();
+  const url = api.requestUrl("/v1/seller_accounts");
 
-  return makeRequest<IApiResponse<ISeller>>(url, HttpMethod.Post, {}, payload);
+  return api.makeRequest<IApiResponse<ISeller>>(url, HttpMethod.Post, {}, payload);
 }

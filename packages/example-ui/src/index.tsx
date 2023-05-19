@@ -7,23 +7,34 @@ import reportWebVitals from "./reportWebVitals";
 import { create } from "jss";
 import createCache from "@emotion/cache";
 import App from "./App";
+import { getConfig } from "./config"
 import "./App.css";
 import theme from "./theme";
+import { Auth0Provider } from "@auth0/auth0-react";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
-
 const jss = create({ plugins: [...jssPreset().plugins] });
 const emotion = createCache({
   key: "muistyles",
   prepend: true,
 });
 
+const config = getConfig();
+
 root.render(
   <React.StrictMode>
     <CacheProvider value={emotion}>
       <ThemeProvider theme={theme}>
         <StylesProvider jss={jss}>
+        <Auth0Provider
+          domain={config.authDomain}
+          clientId={config.authClientId}
+          authorizationParams={{
+            redirect_uri: window.location.origin,
+            audience: config.authAudience
+          }}>
           <App />
+        </Auth0Provider>
         </StylesProvider>
       </ThemeProvider>
     </CacheProvider>
