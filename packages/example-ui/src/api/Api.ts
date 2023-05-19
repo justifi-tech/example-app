@@ -36,7 +36,7 @@ export const Api = () => {
 
   const requestUrl = (path: string): string => {
 
-    const baseUrl = process.env.REACT_APP_API_URL || getConfig().apiOrigin;
+    const baseUrl = process.env.REACT_APP_API_URL || getConfig().apiUrl;
   
     return baseUrl + path;
   }

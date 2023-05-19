@@ -22,7 +22,7 @@ import { getConfig } from "../../../config";
 import { createPayment } from "../../../api/Payment";
 import { formatCentsToDollars } from "../utils";
 
-const { clientId } = getConfig();
+const clientId = process.env.REACT_APP_CLIENT_ID || getConfig().clientId;
 
 const CardError = (errorKey: CardErrorCode, index: number) => (
   <FormHelperText error variant="filled" key={index} >

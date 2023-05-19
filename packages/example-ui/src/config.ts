@@ -9,11 +9,9 @@ export function getConfig() {
   return {
     authClientId: config.authClientId,
     authAudience: config.authAudience,
-    apiOrigin: config.apiOrigin,
+    apiUrl: config.apiUrl,
     authDomain: config.authDomain,
     clientId: config.clientId,
-    environment: process.env.REACT_APP_ENVIRONMENT,
-    featureUrl: config.featureUrl,
-    sellerAccountId: config.sellerAccountId,
+    environment: process.env.REACT_APP_ENVIRONMENT
   };
 }

@@ -27,11 +27,11 @@ root.render(
       <ThemeProvider theme={theme}>
         <StylesProvider jss={jss}>
         <Auth0Provider
-          domain={config.authDomain}
-          clientId={config.authClientId}
+          domain={process.env.REACT_APP_AUTH_DOMAIN || config.authDomain}
+          clientId={process.env.REACT_APP_AUTH_CLIENT_ID || config.authClientId}
           authorizationParams={{
             redirect_uri: window.location.origin,
-            audience: config.authAudience
+            audience: process.env.REACT_APP_AUTH_AUDIENCE || config.authAudience
           }}>
           <App />
         </Auth0Provider>

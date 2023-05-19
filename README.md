@@ -8,22 +8,22 @@ All variables needed can be found in the `.env.template` file. You need to re-na
 
 Restart the service if these are changed!
 
-For staging
-```.sh
-  CLIENT_ID=<Your CLIENT_ID obtained from the staging dashboard in API KEYS section>
-  CLIENT_SECRET=<Your CLIENT_SECRET obtained from the staging dashboard in API KEYS section>
-  JUSTIFI_API_URL=https://api.justifi-staging.com
-  REACT_APP_HOSTED_ONBOARDING_URL=https://api.justifi-staging.com/onboarding/seller
-```
-
 To run it locally
 
 ```.sh
-  CLIENT_ID=<Your CLIENT_ID obtained from your local dashboard in API KEYS section>
-  CLIENT_SECRET=<Your CLIENT_SECRET obtained from your local dashboard in API KEYS section>
-  JUSTIFI_API_URL=<The URL of your running capital service, default is http://localhost:3000>
-  REACT_APP_HOSTED_ONBOARDING_URL=<The URL of your running account_settings service, default is http://localhost:3004/onboarding>
+  CLIENT_ID=<Your CLIENT_ID obtained from your dashboard in API KEYS section>
+  CLIENT_SECRET=<Your CLIENT_SECRET obtained from your dashboard in API KEYS section>
+  JUSTIFI_API_URL=<The URL of your running capital service, prod is https://justifi.ai>
+  AUTH_DOMAIN=<Domain for authorization, we recommend auth0 for experimentation>
+  AUTH_AUDIENCE=<API Audience for authorization, we recommend auth0 for experimentation>
+
+  REACT_APP_HOSTED_ONBOARDING_URL=https://accounts.justifi.ai/onboarding
+  REACT_APP_AUTH_DOMAIN=<same as AUTH_DOMAIN above>
+  REACT_APP_AUTH_AUDIENCE=<same as AUTH_AUDIENCE above>
+  REACT_APP_AUTH_CLIENT_ID=<client id for pkce auth, we recommend auth0>
+  REACT_APP_API_URL=<api for your backend, http://localhost:8000 by default>
 ```
+
 ### Run the whole app
 
 - example-app> yarn dev
