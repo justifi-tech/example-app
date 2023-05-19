@@ -7,11 +7,11 @@ const config: Config = configJson as Config;
 
 export function getConfig() {
   return {
+    authClientId: config.authClientId,
+    authAudience: config.authAudience,
+    apiUrl: config.apiUrl,
+    authDomain: config.authDomain,
     clientId: config.clientId,
-    audience: config.audience,
-    apiOrigin: config.apiOrigin,
-    environment: process.env.REACT_APP_ENVIRONMENT,
-    featureUrl: config.featureUrl,
-    sellerAccountId: config.sellerAccountId,
+    environment: process.env.REACT_APP_ENVIRONMENT
   };
 }

@@ -5,7 +5,7 @@ import MainLayout from "../../common/MainLayout";
 import PageLayout from "../../common/PageLayout";
 import CreateSellerForm from "./CreateSellerForm";
 import { createSeller, CreateSellerPayload, ISeller } from "../../../api/Seller";
-import { IApiResponse, IErrorObject, IServerError } from "../../../api/Base";
+import { IApiResponse, IErrorObject, IServerError } from "../../../api/Api";
 import SelectSeller from "../SelectSeller";
 
 const CreateSellerError = (props: { error: IErrorObject | IServerError }) => {

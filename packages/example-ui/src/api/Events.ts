@@ -1,4 +1,4 @@
-import { HttpMethod, makeRequest, requestUrl } from "./Base";
+import { HttpMethod, Api } from "./Api";
 
 export interface Event {
   id: string;
@@ -8,7 +8,8 @@ export interface Event {
 }
 
 export const listRecentEvents = async (): Promise<Event[]> => {
-  const url = requestUrl("/v1/webhook/recent");
+  const api = Api();
+  const url = api.requestUrl("/v1/webhook/recent");
 
-  return makeRequest<Event[]>(url, HttpMethod.Get);
+  return api.makeRequest<Event[]>(url, HttpMethod.Get);
 }

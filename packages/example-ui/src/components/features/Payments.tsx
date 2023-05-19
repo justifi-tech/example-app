@@ -9,7 +9,7 @@ import PaginationComponent, {
 import { Payment } from "../../api/Payment";
 import PaymentsTableRow from "../common/Payments/PaymentsTableRow";
 import PaymentsTableHeaderRow from "../common/Payments/PaymentsTableHeaderRow";
-import { HttpMethod, IApiResponse, IPagination, makeRequest, requestUrl } from "../../api/Base";
+import { HttpMethod, IApiResponse, IPagination, Api } from "../../api/Api";
 
 const HeaderText = styled("span")({
   display: "flex",
@@ -28,6 +28,7 @@ const SubheaderText = styled(Typography)({
 });
 
 const Payments = () => {
+  const api = Api();
   const [params, setParams] = React.useState<any>({});
   const [payments, setPayments] = React.useState<Payment[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -37,8 +38,8 @@ const Payments = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const url = requestUrl("/v1/payments");
-      const result = await makeRequest<IApiResponse<Payment[]>>(url, HttpMethod.Get);
+      const url = api.requestUrl("/v1/payments");
+      const result = await api.makeRequest<IApiResponse<Payment[]>>(url, HttpMethod.Get);
 
       const payments = result.data.map((dataItem) => new Payment(dataItem));
       setPayments(payments);

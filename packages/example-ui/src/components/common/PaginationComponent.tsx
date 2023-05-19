@@ -3,7 +3,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
-import { IPagination } from "../../api/Base";
+import { IPagination } from "../../api/Api";
 
 const useStyles = makeStyles(
   {
