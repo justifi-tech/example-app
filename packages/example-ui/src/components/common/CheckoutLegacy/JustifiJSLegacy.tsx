@@ -20,13 +20,14 @@ import { checkoutFormSchema } from '../makeSchemas';
 // import FormFieldError, { FormFieldErrorTypes } from "../";
 import JustiFiPalette from "../JustiFiPallete";
 import { getConfig } from "../../../config";
+import { createPayment } from "../../../api/Payment";
 // import { Payment } from "../../../api/Payment";
 // import { createPayment } from "../../../api/Payment";
 
 let { clientId, sellerAccountId } = getConfig();
 
 clientId = 'test_SZ08j7tq500ktvzKOlOtfr5m8mc5F66M';
-sellerAccountId = 'acc_2ELCdFp1sPkOVo4h4DD0o7';
+sellerAccountId = 'acc_oTsL5sq1jyW6oZuBqOJNM';
 
 export interface JustiFiPaymentsJSArgs {
   clientKey: string;
@@ -38,7 +39,7 @@ export interface JustiFiPaymentsJSArgs {
 const JustiFiPaymentsJSConfig: JustiFiPaymentsJSArgs = {
   clientKey: 'test_SZ08j7tq500ktvzKOlOtfr5m8mc5F66M', 
   theme: "white",
-  account: 'acc_2ELCdFp1sPkOVo4h4DD0o7',
+  account: 'acc_oTsL5sq1jyW6oZuBqOJNM',
   iframeOrigin: 'https://js.justifi-staging.com'
 };
 
@@ -140,15 +141,18 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
 
     if (tokenizeResponse.token) {
       console.log(tokenizeResponse);
-      //  const payment = new Payment({ 
-      //    amount: params.amount, 
-      //    description: params.description, 
-      //    paymentMethod: { token: tokenizeResponse.token }, 
-      //  }); 
+      const paymentRequest = await createPayment({
+        amount: params.amount,
+        description: params.description,
+        currency: 'usd',
+        capture_strategy: 'automatic',
+        payment_method: { token: tokenizeResponse.token }
+      }, {
+        'Seller-Account': sellerAccountId
+      });
 
-      //  const paymentRequest = await api.submitPayment(payment); 
       setSubmitting(false);
-      /* alert("Payment created: \n" + JSON.stringify(paymentRequest.data)); */
+      alert("Payment created: \n" + JSON.stringify(paymentRequest.data));
     } else {
       setSubmitting(false);
       alert("Tokenization error: \n" + tokenizeResponse.errors[0]);
