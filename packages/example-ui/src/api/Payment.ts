@@ -265,23 +265,30 @@ export class Payment implements IPayment {
   }
 }
 
-export const createPayment = async (payload: any, headers: any = {}): Promise<IApiResponse<IPayment>> => {
+export const PaymentsApi = () => {
   const api = Api();
-  const url = api.requestUrl("/v1/payments");
 
-  return api.makeRequest<IApiResponse<IPayment>>(url, HttpMethod.Post, headers, payload);
-}
+  const createPayment = async (payload: any, headers: any = {}): Promise<IApiResponse<IPayment>> => {
+    const url = api.requestUrl("/v1/payments");
+  
+    return api.makeRequest<IApiResponse<IPayment>>(url, HttpMethod.Post, headers, payload);
+  }
 
-export const createPaymentIntent = async (payload: any, headers: any = {}): Promise<IApiResponse<IPayment>> => {
-  const api = Api();
-  const url = api.requestUrl("/v1/payment_intents");
+  const createPaymentIntent = async (payload: any, headers: any = {}): Promise<IApiResponse<IPayment>> => {
+    const url = api.requestUrl("/v1/payment_intents");
+  
+    return api.makeRequest<IApiResponse<IPayment>>(url, HttpMethod.Post, headers, payload);
+  }
+  
+  const createCheckoutSession = async (payload: any, headers: any = {}): Promise<IApiResponse<ICheckoutSession>> => {
+    const url = api.requestUrl("/v1/checkout_sessions");
+  
+    return api.makeRequest<IApiResponse<ICheckoutSession>>(url, HttpMethod.Post, headers, payload);
+  }
 
-  return api.makeRequest<IApiResponse<IPayment>>(url, HttpMethod.Post, headers, payload);
-}
-
-export const createCheckoutSession = async (payload: any, headers: any = {}): Promise<IApiResponse<ICheckoutSession>> => {
-  const api = Api();
-  const url = api.requestUrl("/v1/checkout_sessions");
-
-  return api.makeRequest<IApiResponse<ICheckoutSession>>(url, HttpMethod.Post, headers, payload);
-}
+  return {
+    createPayment,
+    createPaymentIntent,
+    createCheckoutSession
+  }
+};

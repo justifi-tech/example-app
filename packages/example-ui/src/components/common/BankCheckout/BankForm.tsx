@@ -22,7 +22,7 @@ import { BankErrorCode, CheckoutFormErrors } from "../FormFieldErrors";
 import { bankCheckoutFormSchema } from '../makeSchemas';
 import JustiFiPalette from "../JustiFiPallete";
 import { getConfig } from "../../../config";
-import { createPayment } from "../../../api/Payment";
+import { PaymentsApi } from "../../../api/Payment";
 import { formatCentsToDollars } from "../utils";
 
 const clientId = process.env.REACT_APP_CLIENT_ID || getConfig().clientId;
@@ -63,11 +63,11 @@ const useStyles = makeStyles(
 );
 
 function BankForm(props: { params: CreatePaymentParams }) {
+  const Payments = PaymentsApi();
   const { params } = props;
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [enableSubmit, setEnableSubmit] = useState<boolean>(false);
 
-  const [paymentMethodErrors, setPaymentMethodErrors] = useState<BankErrorCode[]>();
   const [showPaymentMethodErrors, setShowPaymentMethodErrors] = useState<boolean>(false);
   const [showInvalid, setShowInvalid] = useState<boolean>(true);
 
@@ -85,20 +85,16 @@ function BankForm(props: { params: CreatePaymentParams }) {
   const errors = formState.errors;
 
   useEffect(() => {
-    setShowInvalid(!!(showPaymentMethodErrors && paymentMethodErrors?.length));
-  }, [paymentMethodErrors, showPaymentMethodErrors])
-
-  useEffect(() => {
     if (formState.isDirty && !Object.entries(errors).length) {
       setEnableSubmit(true);
     }
-  }, [errors, formState, paymentMethodErrors, showPaymentMethodErrors])
+  }, [errors, formState, showPaymentMethodErrors])
   
   const classes = useStyles();
 
   async function onSubmit(formValues: any) {
     setShowPaymentMethodErrors(true);
-    if (submitting || !!Object.entries(errors).length || paymentMethodErrors?.length) return;
+    if (submitting || !!Object.entries(errors).length) return;
 
     setSubmitting(true);
 
@@ -108,7 +104,7 @@ function BankForm(props: { params: CreatePaymentParams }) {
 
     if (tokenizeResponse.token) {
 
-      const paymentRequest = await createPayment({
+      const paymentRequest = await Payments.createPayment({
         amount: params.amount,
         description: params.description,
         currency: 'usd', // Ask if this should be flagged as optional in our backend
@@ -126,9 +122,7 @@ function BankForm(props: { params: CreatePaymentParams }) {
     }
   }
 
-  function onPaymentMethodReady(data: any) {
-    setPaymentMethodErrors(data.detail.detail.errors);
-  };
+  function onPaymentMethodReady(data: any) {};
 
   return (
     <div className={classes.layout}>
@@ -201,14 +195,11 @@ function BankForm(props: { params: CreatePaymentParams }) {
                   </Box>
                   <Box>
                     <JustifiBankAccountForm 
-                      iframeOrigin='https://js.justifi-staging.com/bank-account'
+                      iframeOrigin={`${process.env.REACT_APP_JUSTIFI_COMPS_URL || 'https://js.justifi.ai'}/v2`}
                       ref={cardFormRef}
                       onBankAccountFormReady={onPaymentMethodReady}
                       className={(showInvalid) ? 'justifiCardForm invalid' : 'justifiCardForm'}
                     />
-                    {showPaymentMethodErrors ? paymentMethodErrors?.map(
-                      (errorKey, index) => BankError(errorKey, index)
-                    ) : ''}
                   </Box>
                   <Box>
                     <TextField

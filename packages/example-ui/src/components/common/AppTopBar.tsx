@@ -101,7 +101,7 @@ const AppTopBar = (props: AppTopBarProps) => {
               <MenuItem value={"/payments"}>Payments</MenuItem>
               <MenuItem value={"/checkout"}>Card Form Component</MenuItem>
               <MenuItem value={"/bank-checkout"}>Bank Checkout</MenuItem>
-              <MenuItem value={"/payment-form-checkout"}>Payment Form Checkout</MenuItem>
+              {/* <MenuItem value={"/payment-form-checkout"}>Payment Form Checkout</MenuItem> */}
               <MenuItem value={"/hosted-checkout"}>Hosted Checkout</MenuItem>
               <MenuItem value={"/onboarding"} disabled>Onboarding</MenuItem>
             </Select>

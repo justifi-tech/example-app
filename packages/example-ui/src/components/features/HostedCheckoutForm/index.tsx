@@ -2,10 +2,10 @@ import { Box, Button, Card, CardContent, CircularProgress, Grid, Link, Typograph
 import { useState } from "react";
 import SelectSeller from "../SelectSeller";
 import CreatePaymentForm from "../../common/Checkout/CreatePaymentForm";
-import { createCheckoutSession, createPaymentIntent } from "../../../api/Payment";
-
+import { PaymentsApi } from "../../../api/Payment";
 
 const HostedCheckoutComponent = () => {
+  const Payments = PaymentsApi();
   const [seller, setSeller] = useState<{
     sellerID: string,
     sellerName: string
@@ -19,7 +19,7 @@ const HostedCheckoutComponent = () => {
   const handleCreatePayment = async (data: any, extras?: Object) => {
     setLoading(true);
     try {
-      const paymentIntent = await createPaymentIntent({
+      const paymentIntent = await Payments.createPaymentIntent({
         amount: data.amount,
         currency: "usd",
         description: data.description
@@ -28,10 +28,9 @@ const HostedCheckoutComponent = () => {
         console.error("Error creating the payment intent");
         return;
       }
-      const newCheckoutSession = await createCheckoutSession({
+      const newCheckoutSession = await Payments.createCheckoutSession({
         payment_intent_id: paymentIntent.id,
-        after_payment_url: 'http://localhost:3008/hosted-checkout/success',
-        back_url: 'http://localhost:3008/hosted-checkout'
+        after_payment_url: `${window.location.origin}'/hosted-checkout/success'`,
       });
       if (!newCheckoutSession) {
         console.error("Error creating the checkout session")
@@ -83,7 +82,7 @@ const HostedCheckoutComponent = () => {
                 <>
                 <Typography>You can now redirect to the hosted checkout using the following session ID:</Typography>
                 <code style={{ display: 'block', margin: '15px 0', padding: '0 20px' }}>{checkoutSession}</code>
-                <Link href={`https://hosted-checkout.justifi-staging.com/${checkoutSession}`}>
+                <Link href={`${process.env.REACT_APP_HOSTED_CHECKOUT_URL}/${checkoutSession}`}>
                   <Button variant="contained">Go to the Hosted Checkout</Button>
                 </Link>
                 </>
