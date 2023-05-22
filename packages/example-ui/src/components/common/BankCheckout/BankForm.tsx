@@ -129,12 +129,6 @@ function BankForm(props: { params: CreatePaymentParams }) {
   function onPaymentMethodReady(data: any) {
     setPaymentMethodErrors(data.detail.detail.errors);
   };
-  function onPaymentMethodChange(data: any) {
-    setPaymentMethodErrors(data.detail.detail.errors);
-  };
-  function onPaymentMethodBlur(data: any) {
-    setPaymentMethodErrors(data.detail.detail.errors);
-  };
 
   return (
     <div className={classes.layout}>
@@ -210,8 +204,6 @@ function BankForm(props: { params: CreatePaymentParams }) {
                       iframeOrigin='https://js.justifi-staging.com/bank-account'
                       ref={cardFormRef}
                       onBankAccountFormReady={onPaymentMethodReady}
-                      onBankAccountFormChange={onPaymentMethodChange}
-                      onBankAccountFormBlur={onPaymentMethodBlur}
                       className={(showInvalid) ? 'justifiCardForm invalid' : 'justifiCardForm'}
                     />
                     {showPaymentMethodErrors ? paymentMethodErrors?.map(

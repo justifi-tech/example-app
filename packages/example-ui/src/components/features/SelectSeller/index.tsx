@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Alert, Box, Button, Card, CardActions, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, Skeleton, Typography } from "@mui/material";
-import { getSellers, ISellerList } from "../../../api/Seller";
+import { Sellers, ISellerList } from "../../../api/Seller";
 import { IApiResponse, IErrorObject, IServerError } from "../../../api/Api";
 import styled from "@emotion/styled";
 import JustiFiPalette from "../../common/JustiFiPallete";
@@ -41,6 +41,7 @@ const SelectSeller = ({ handleSubmit, maxWidth }: { handleSubmit?: Function, max
   const [serverError, setServerError] = useState<
     IErrorObject | IServerError | undefined
   >();
+  const sellersApi = Sellers();
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -59,7 +60,7 @@ const SelectSeller = ({ handleSubmit, maxWidth }: { handleSubmit?: Function, max
 
   const fetchAndUpdateSellers = async () => {
     try {
-      const { data, error }: IApiResponse<ISellerList> = await getSellers();
+      const { data, error }: IApiResponse<ISellerList> = await sellersApi.getSellers();
       if (error) {
         setServerError(error);
         return;

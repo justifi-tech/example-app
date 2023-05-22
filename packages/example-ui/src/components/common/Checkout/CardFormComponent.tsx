@@ -129,14 +129,6 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
     setPaymentMethodErrors(data.detail.errors);
   };
 
-  function onPaymentMethodChange(data: any) {
-    setPaymentMethodErrors(data.detail.errors);
-  };
-
-  function onPaymentMethodBlur(data: any) {
-    setPaymentMethodErrors(data.detail.errors);
-  };
-
   return (
     <div className={classes.layout}>
       <div className={classes.layoutContent}>
@@ -244,8 +236,6 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                       iframeOrigin='https://js.justifi-staging.com'
                       // iframeOrigin='http://localhost:3003'
                       onCardFormReady={onPaymentMethodReady}
-                      onCardFormChange={onPaymentMethodChange}
-                      onCardFormBlur={onPaymentMethodBlur}
                       className={(showInvalid) ? 'justifiCardForm invalid' : 'justifiCardForm'}
                     />
                     {(showInvalid) ? paymentMethodErrors.map(

@@ -4,7 +4,7 @@ import { Alert, Grid, Skeleton, Typography } from "@mui/material";
 import MainLayout from "../../common/MainLayout";
 import PageLayout from "../../common/PageLayout";
 import CreateSellerForm from "./CreateSellerForm";
-import { createSeller, CreateSellerPayload, ISeller } from "../../../api/Seller";
+import { Sellers, CreateSellerPayload, ISeller } from "../../../api/Seller";
 import { IApiResponse, IErrorObject, IServerError } from "../../../api/Api";
 import SelectSeller from "../SelectSeller";
 
@@ -36,6 +36,7 @@ const CreateSeller = () => {
     IErrorObject | IServerError | undefined
   >();
   const navigate = useNavigate();
+  const sellers = Sellers();
 
   useEffect(() => {
     setLoading(false);
@@ -48,7 +49,7 @@ const CreateSeller = () => {
   }, [navigate, url]);
 
   const doCreateSeller = async (payload: CreateSellerPayload) => {
-    const { data, error }: IApiResponse<ISeller> = await createSeller(payload)
+    const { data, error }: IApiResponse<ISeller> = await sellers.createSeller(payload)
     if (error) {
       setServerError(error);
     } else {
