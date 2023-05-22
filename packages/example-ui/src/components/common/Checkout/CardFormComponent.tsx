@@ -19,7 +19,7 @@ import { CardErrorCode, CheckoutFormErrors } from "../FormFieldErrors";
 import { checkoutFormSchema } from '../makeSchemas';
 import JustiFiPalette from "../JustiFiPallete";
 import { getConfig } from "../../../config";
-import { createPayment } from "../../../api/Payment";
+import { PaymentsApi } from "../../../api/Payment";
 import { formatCentsToDollars } from "../utils";
 
 const clientId = process.env.REACT_APP_CLIENT_ID || getConfig().clientId;
@@ -61,6 +61,7 @@ const useStyles = makeStyles(
 
 
 function CardFormComponent(props: { params: CreatePaymentParams }) {
+  const Payments = PaymentsApi();
   const { params } = props;
   const [enabled, setEnabled] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -107,7 +108,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
 
     if (tokenizeResponse.token) {
 
-      const paymentRequest = await createPayment({
+      const paymentRequest = await Payments.createPayment({
         amount: params.amount,
         description: params.description,
         currency: 'usd', // Ask if this should be flagged as optional in our backend
@@ -233,8 +234,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                   <Box>
                     <JustifiCardForm 
                       ref={cardFormRef}
-                      iframeOrigin='https://js.justifi-staging.com'
-                      // iframeOrigin='http://localhost:3003'
+                      iframeOrigin={`${process.env.REACT_APP_JUSTIFI_COMPS_URL || 'https://js.justifi.ai'}/card`}
                       onCardFormReady={onPaymentMethodReady}
                       className={(showInvalid) ? 'justifiCardForm invalid' : 'justifiCardForm'}
                     />
