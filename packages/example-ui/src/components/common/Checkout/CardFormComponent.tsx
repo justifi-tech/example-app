@@ -15,7 +15,6 @@ import {
 import { JustifiCardForm } from '@justifi/react-components';
 import { makeStyles } from "@mui/styles";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { CardErrorCode, CheckoutFormErrors } from "../FormFieldErrors";
 import { checkoutFormSchema } from '../makeSchemas';
 import JustiFiPalette from "../JustiFiPallete";
 import { getConfig } from "../../../config";
@@ -23,12 +22,6 @@ import { PaymentsApi } from "../../../api/Payment";
 import { formatCentsToDollars } from "../utils";
 
 const clientId = process.env.REACT_APP_JUSTIFI_CLIENT_ID || getConfig().clientId;
-
-const CardError = (errorKey: CardErrorCode, index: number) => (
-  <FormHelperText error variant="filled" key={index} >
-    {CheckoutFormErrors.validationErrors.card[errorKey]}
-  </FormHelperText>
-);
 export interface CreatePaymentParams {
   amount: number;
   description: string;
@@ -71,10 +64,6 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
     setEnabled(!!params.sellerAccountId);
   }, [params])
 
-  const [paymentMethodErrors, setPaymentMethodErrors] = useState<CardErrorCode[]>();
-  const [showPaymentMethodErrors, setShowPaymentMethodErrors] = useState<boolean>(false);
-  const showInvalid = showPaymentMethodErrors && paymentMethodErrors?.length;
-
 
   const cardFormRef = useRef(null);
   
@@ -96,9 +85,8 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
   
   const classes = useStyles();
 
-  async function onSubmit(formValues: any) {
-    setShowPaymentMethodErrors(true);
-    if (submitting || paymentMethodErrors?.length) return;
+  const onSubmit = async (formValues: any) => {
+    if (submitting) return;
 
     setSubmitting(true);
 
@@ -106,29 +94,24 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
     const paymentMethodMetadata = { ...formValues };
     const tokenizeResponse = await cardForm.tokenize(clientId, paymentMethodMetadata, params.sellerAccountId);
 
-    if (tokenizeResponse.token) {
+    if (tokenizeResponse.id) {
 
       const paymentRequest = await Payments.createPayment({
         amount: params.amount,
         description: params.description,
         currency: 'usd', // Ask if this should be flagged as optional in our backend
         capture_strategy: 'automatic', // Ask if this should be flagged as optional in our backend
-        payment_method: { token: tokenizeResponse.token }
+        payment_method: { token: tokenizeResponse.id }
       }, {
         'Seller-Account': params.sellerAccountId
       });
       
-      setSubmitting(false);
       alert('Payment created: \n' + JSON.stringify(paymentRequest.data));
     } else {
-      setSubmitting(false);
       alert('Tokenization error: \n' + tokenizeResponse.errors[0]);
     }
+    setSubmitting(false);
   }
-
-  function onPaymentMethodReady(data: any) {
-    setPaymentMethodErrors(data.detail.errors);
-  };
 
   return (
     <div className={classes.layout}>
@@ -234,13 +217,9 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                   <Box>
                     <JustifiCardForm 
                       ref={cardFormRef}
-                      iframeOrigin={`${process.env.REACT_APP_JUSTIFI_COMPS_URL || 'https://js.justifi.ai'}`}
-                      onCardFormReady={onPaymentMethodReady}
-                      className={(showInvalid) ? 'justifiCardForm invalid' : 'justifiCardForm'}
+                      iframeOrigin={`${process.env.REACT_APP_JUSTIFI_COMPS_URL || 'https://js.justifi.ai'}/v2`}
+                      singleLine={true}
                     />
-                    {(showInvalid) ? paymentMethodErrors.map(
-                      (errorKey, index) => CardError(errorKey, index)
-                    ) : ''}
                   </Box>
                   <Box sx={{ marginTop: "32px" }}>
                     <Typography
