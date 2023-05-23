@@ -234,7 +234,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                   <Box>
                     <JustifiCardForm 
                       ref={cardFormRef}
-                      iframeOrigin={`${process.env.REACT_APP_JUSTIFI_COMPS_URL || 'https://js.justifi.ai'}/card`}
+                      iframeOrigin={`${process.env.REACT_APP_JUSTIFI_COMPS_URL || 'https://js.justifi.ai'}`}
                       onCardFormReady={onPaymentMethodReady}
                       className={(showInvalid) ? 'justifiCardForm invalid' : 'justifiCardForm'}
                     />

@@ -18,7 +18,6 @@ import {
 import { JustifiBankAccountForm } from '@justifi/react-components';
 import { makeStyles } from "@mui/styles";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { BankErrorCode, CheckoutFormErrors } from "../FormFieldErrors";
 import { bankCheckoutFormSchema } from '../makeSchemas';
 import JustiFiPalette from "../JustiFiPallete";
 import { getConfig } from "../../../config";
@@ -27,11 +26,6 @@ import { formatCentsToDollars } from "../utils";
 
 const clientId = process.env.REACT_APP_CLIENT_ID || getConfig().clientId;
 
-const BankError = (errorKey: BankErrorCode, index: number) => (
-  <FormHelperText error variant="filled" key={index} >
-    {CheckoutFormErrors.validationErrors.bank[errorKey]}
-  </FormHelperText>
-);
 export interface CreatePaymentParams {
   amount: number;
   description: string;
