@@ -55,7 +55,9 @@ const BankCheckout = () => {
               them, while the iframed bank account form will send the payment method
               info to JustiFi, keeping the platform free of PCI scope.
             </SubheaderText>
-            <SelectSeller handleSubmit={
+            <SelectSeller
+              submitOnChange
+              handleSubmit={
               (
                 selectedSellerID: string,
                 selectedSellerSafeName: string,
@@ -67,7 +69,7 @@ const BankCheckout = () => {
             />
             <BankForm params={{
               amount: 1000,
-              description: 'test payment',
+              description: `test payment for: ${currentSeller.selectedSellerSafeName}`,
               sellerAccountId: currentSeller.selectedSellerID,
               sellerSafeName: currentSeller.selectedSellerSafeName
             }}/>
