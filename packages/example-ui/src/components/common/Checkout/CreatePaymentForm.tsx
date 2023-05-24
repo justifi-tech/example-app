@@ -125,7 +125,7 @@ const CreatePaymentForm = (
                     }}
                     error={!!errors?.sellerAccountId}
                   >
-                    <MenuItem data-safe-name='Pleasant View Gardens' value={"acc_Yzem4ZF4mKnMO0dBObRUU"}>
+                    <MenuItem data-safe-name='Pleasant View Gardens' value={"acc_37klepovVgsdN5bkWSP1I4"}>
                       Pleasant View Gardens
                     </MenuItem>
                     <MenuItem data-safe-name='Other Seller' value={"not_an_account_value"}>
