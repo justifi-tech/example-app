@@ -60,9 +60,9 @@ const Payments = () => {
             <HeaderText>Payments</HeaderText>
           </Typography>
           <SubheaderText variant="h5">
-            These are all the payments the seller has processed through JustiFi.
+            These are all the payments the sub account has processed through JustiFi.
             The platform can hit our API to display this data in their UI for
-            their sellers.
+            their sub accounts.
           </SubheaderText>
         </Grid>
         <PageTable

@@ -25,7 +25,7 @@ const clientId = process.env.REACT_APP_JUSTIFI_CLIENT_ID || getConfig().clientId
 export interface CreatePaymentParams {
   amount: number;
   description: string;
-  sellerAccountId: string;
+  sellerID: string;
   sellerSafeName: string;
 }
 
@@ -61,7 +61,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
   const [enableSubmit, setEnableSubmit] = useState<boolean>(false);
 
   useEffect(() => {
-    setEnabled(!!params.sellerAccountId);
+    setEnabled(!!params.sellerID);
   }, [params])
 
 
@@ -92,7 +92,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
 
     const cardForm = (cardFormRef as any).current;
     const paymentMethodMetadata = { ...formValues };
-    const tokenizeResponse = await cardForm.tokenize(clientId, paymentMethodMetadata, params.sellerAccountId);
+    const tokenizeResponse = await cardForm.tokenize(clientId, paymentMethodMetadata, params.sellerID);
 
     if (tokenizeResponse.id) {
 
@@ -103,7 +103,7 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
         capture_strategy: 'automatic', // Ask if this should be flagged as optional in our backend
         payment_method: { token: tokenizeResponse.id }
       }, {
-        'Seller-Account': params.sellerAccountId
+        'Seller-Account': params.sellerID
       });
       
       alert('Payment created: \n' + JSON.stringify(paymentRequest.data));

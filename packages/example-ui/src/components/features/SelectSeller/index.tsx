@@ -26,9 +26,9 @@ const SelectSellerError = (props: { error: IErrorObject | IServerError }) => {
 };
 
 const SelectSeller = (
-  { handleSubmit, maxWidth, actions, submitOnChange }: {
+  { handleSubmit, maxWidth, actions, submitOnChange, noForm }: {
     handleSubmit?: Function, maxWidth?: string, actions?: { element: ReactElement },
-    submitOnChange?: boolean
+    submitOnChange?: boolean, noForm?: boolean
   }) => {
   const [url, setUrl] = useState<string>("");
   const [enabled, setEnabled] = useState<boolean>(false);
@@ -84,6 +84,9 @@ const SelectSeller = (
     setUrl(to);
   }
 
+  const FormWrap = ({ children, noForm }: { children: ReactElement, noForm?: boolean }) => 
+    !noForm ? <form onSubmit={submitHandler}>{children}</form> : <Box>{children}</Box>
+
   return (
     <Grid container sx={{ justifyContent: "center" }}>
       <Box sx={{
@@ -94,28 +97,30 @@ const SelectSeller = (
         <Skeleton variant="rectangular" height={200}/>
         ) : (
           <Card
-            variant="outlined"
+            variant={!noForm ? "outlined" : undefined}
             sx={{
               width: '100%',
-              padding: "32px",
+              padding: `${!noForm ? "32px" : "0"}`,
+              margin: `${!noForm ? "unset" : "0"}`,
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
             }}
           >
-            <form
-              onSubmit={submitHandler}>
-              <CardContent sx={{ padding: "0" }}>
-                <Typography
-                  sx={{
-                    fontSize: "34px",
-                    color: "#004C4D",
-                    fontWeight: "bold",
-                    padding: "0",
-                  }}
-                >
-                  Select a Sub Account
-                </Typography>
+            <FormWrap noForm={noForm}>
+              <CardContent sx={{ padding: "0 !important" }}>
+                {!noForm && 
+                  <Typography
+                    sx={{
+                      fontSize: "34px",
+                      color: "#004C4D",
+                      fontWeight: "bold",
+                      padding: "0",
+                    }}
+                  >
+                    Select a Sub Account
+                  </Typography>
+                }
                 <FormControl fullWidth>
                   <InputLabel variant="filled" id="subaccount-selector">Select a Sub Account</InputLabel>
                   <Select
@@ -140,12 +145,14 @@ const SelectSeller = (
                   </Select>
                 </FormControl>
                 {actions && 
-                  <CardActions sx={{ padding: "0", marginTop: "30px" }}>
+                  <CardActions
+                    sx={{ padding: "0", marginTop: "30px" }}
+                  >
                     {React.cloneElement(actions.element, { disabled: !enabled })}
                   </CardActions>
                 }
               </CardContent>
-            </form>
+            </FormWrap>
           </Card>
         )}
       </Box>
