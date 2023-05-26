@@ -1,5 +1,5 @@
 import { JustifiPaymentForm } from "@justifi/react-components";
-import { Box, Typography } from "@mui/material";
+import { Box, Card, CardContent, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import SelectSeller from "../../features/SelectSeller";
 
@@ -30,7 +30,7 @@ const PaymentFormComponent = () => {
     }}>
       <Box>
         <Box>
-          <SelectSeller handleSubmit={onSellerSelected} />
+          <SelectSeller submitOnChange handleSubmit={onSellerSelected} />
         </Box>
         <Box sx={{
           padding: '20px',
@@ -59,17 +59,26 @@ const PaymentFormComponent = () => {
         </Box>
       </Box>
       <Box sx={{ padding: '0 20px' }}>
-        <Typography variant="h4">
-          {token && 'The token produced is:'}
-          {reqError && 'There was an error with the request:'}
-        </Typography>
-        <Typography variant="code1" sx={{ display: 'flex', padding: '20px' }}>
-          {token}
-          {reqError}
-        </Typography>
-        <Typography variant="body1">
-          {token && 'With this tokenized payment method you can proceed to create payments.'}
-        </Typography>
+        <Card>
+          <CardContent sx={{ overflow: 'auto', overflowWrap: 'anywhere' }}>
+            {token || reqError ?
+              <>
+                <Typography variant="h4">
+                {token && 'The token produced is:'}
+                {reqError && 'There was an error with the request:'}
+                </Typography>
+                <Typography variant="code1" sx={{ display: 'flex', padding: '20px' }}>
+                  {token}
+                  {reqError}
+                </Typography>
+                <Typography variant="body1">
+                  {token && 'With this tokenized payment method you can proceed to create payments.'}
+                </Typography>
+              </>
+            : <Typography>Once you create the payment method, the token will be displayed here.</Typography>
+            }
+          </CardContent>
+        </Card>
       </Box>
     </Box>
   );

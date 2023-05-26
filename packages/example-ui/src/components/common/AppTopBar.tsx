@@ -97,7 +97,7 @@ const AppTopBar = (props: AppTopBarProps) => {
               onChange={handleSelectChange}
               sx={{ bordercolor: "white" }}
             >
-              <MenuItem value={"/"}>Create or Select Seller</MenuItem>
+              <MenuItem value={"/"}>Create or Select Sub Account</MenuItem>
               <MenuItem value={"/payments"}>Payments</MenuItem>
               <MenuItem value={"/checkout"}>Card Form Component</MenuItem>
               <MenuItem value={"/bank-checkout"}>Bank Checkout</MenuItem>

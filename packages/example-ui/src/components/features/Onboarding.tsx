@@ -13,7 +13,7 @@ const Onboarding = () => {
     <MainLayout>
       <PageLayout
         header="Hosted Onboarding"
-        subheader="This is an example of the platform utilizing hosted onboarding to collect the required information from their sellers via an iframe. To load hosted onboarding, the platform creates a seller first, then feeds that seller’s account id into the iframe URL."
+        subheader="This is an example of the platform utilizing hosted onboarding to collect the required information from their sub accounts via an iframe. To load hosted onboarding, the platform creates a sub account first, then feeds that sub account’s id into the iframe URL."
       >
         <Grid container sx={{ justifyContent: "center" }}>
           <IFrame url={url} position="relative" width="1440" height="1087" />

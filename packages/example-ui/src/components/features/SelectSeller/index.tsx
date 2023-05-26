@@ -1,9 +1,7 @@
-import { FormEvent, useEffect, useState } from "react";
-import { Alert, Box, Button, Card, CardActions, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, Skeleton, Typography } from "@mui/material";
+import React, { FormEvent, ReactElement, useEffect, useState } from "react";
+import { Alert, Box, Card, CardActions, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Skeleton, Typography } from "@mui/material";
 import { Sellers, ISellerList } from "../../../api/Seller";
 import { IApiResponse, IErrorObject, IServerError } from "../../../api/Api";
-import styled from "@emotion/styled";
-import JustiFiPalette from "../../common/JustiFiPallete";
 import { useNavigate } from "react-router";
 
 const SelectSellerError = (props: { error: IErrorObject | IServerError }) => {
@@ -27,14 +25,11 @@ const SelectSellerError = (props: { error: IErrorObject | IServerError }) => {
   );
 };
 
-const SubheaderText = styled(Typography)({
-  color: JustiFiPalette.grey[700],
-  fontSize: "16px",
-  fontWeight: 400,
-  lineHeight: "1.5",
-});
-
-const SelectSeller = ({ handleSubmit, maxWidth }: { handleSubmit?: Function, maxWidth?: string }) => {
+const SelectSeller = (
+  { handleSubmit, maxWidth, actions, submitOnChange, noForm }: {
+    handleSubmit?: Function, maxWidth?: string, actions?: { element: ReactElement },
+    submitOnChange?: boolean, noForm?: boolean
+  }) => {
   const [url, setUrl] = useState<string>("");
   const [enabled, setEnabled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -51,12 +46,12 @@ const SelectSeller = ({ handleSubmit, maxWidth }: { handleSubmit?: Function, max
   }, [navigate, url]);
 
   const [sellers, setSellers] = useState<ISellerList>();
-  const [selectedSellerID, setSelectedSellerID] = useState<string>('');
+  const [selectedSubAccountID, setSelectedSubAccountID] = useState<string>('');
   const [selectedSellerSafeName, setSelectedSellerSafeName] = useState<string>('');
 
   useEffect(() => {
-    setEnabled(!!selectedSellerID);
-  }, [selectedSellerID]);
+    setEnabled(!!selectedSubAccountID);
+  }, [selectedSubAccountID]);
 
   const fetchAndUpdateSellers = async () => {
     try {
@@ -76,6 +71,22 @@ const SelectSeller = ({ handleSubmit, maxWidth }: { handleSubmit?: Function, max
     fetchAndUpdateSellers();
   }, [])
 
+  const submitHandler = (e: FormEvent<any> | SelectChangeEvent<any>, sellerID?: string, sellerSafeName?: string) => {
+    e.preventDefault();
+    if (handleSubmit) {
+      handleSubmit(sellerID || selectedSubAccountID, sellerSafeName || selectedSellerSafeName, e);
+      return;
+    }
+    
+    setLoading(false);
+    setServerError(undefined);
+    const to = `/onboarding/${selectedSubAccountID}`;
+    setUrl(to);
+  }
+
+  const FormWrap = ({ children, noForm }: { children: ReactElement, noForm?: boolean }) => 
+    !noForm ? <form onSubmit={submitHandler}>{children}</form> : <Box>{children}</Box>
+
   return (
     <Grid container sx={{ justifyContent: "center" }}>
       <Box sx={{
@@ -86,50 +97,43 @@ const SelectSeller = ({ handleSubmit, maxWidth }: { handleSubmit?: Function, max
         <Skeleton variant="rectangular" height={200}/>
         ) : (
           <Card
-            variant="outlined"
+            variant={!noForm ? "outlined" : undefined}
             sx={{
               width: '100%',
-              padding: "32px",
+              padding: `${!noForm ? "32px" : "0"}`,
+              margin: `${!noForm ? "unset" : "0"}`,
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
             }}
           >
-            <form
-              onSubmit={(e: FormEvent<HTMLFormElement>) => {
-                e.preventDefault();
-                if (handleSubmit) {return handleSubmit(selectedSellerID, selectedSellerSafeName, e);}
-                
-                return (e: FormEvent<HTMLFormElement>) => {
-                  setLoading(false);
-                  setServerError(undefined);
-                  const to = `/onboarding/${selectedSellerID}`;
-                  setUrl(to);
-                }}
-              }
-            >
-              <CardContent sx={{ padding: "0" }}>
-                <Typography
-                  sx={{
-                    fontSize: "34px",
-                    color: "#004C4D",
-                    fontWeight: "bold",
-                    padding: "0",
-                  }}
-                >
-                  Select a Seller
-                </Typography>
-                <SubheaderText variant="h5">{"Select a seller from this account to continue"}</SubheaderText>
+            <FormWrap noForm={noForm}>
+              <CardContent sx={{ padding: "0 !important" }}>
+                {!noForm && 
+                  <Typography
+                    sx={{
+                      fontSize: "34px",
+                      color: "#004C4D",
+                      fontWeight: "bold",
+                      padding: "0",
+                    }}
+                  >
+                    Select a Sub Account
+                  </Typography>
+                }
                 <FormControl fullWidth>
-                  <InputLabel variant="filled" id="seller-selector">Select a Seller</InputLabel>
+                  <InputLabel variant="filled" id="subaccount-selector">Select a Sub Account</InputLabel>
                   <Select
                     variant="filled"
-                    name="seller-selector"
-                    value={selectedSellerID}
+                    name="subaccount-selector"
+                    value={selectedSubAccountID}
                     native={false}
                     onChange={(e, child: any) => {
-                      setSelectedSellerID(e.target.value);
+                      setSelectedSubAccountID(e.target.value);
                       setSelectedSellerSafeName(child?.props['data-seller-name']);
+                      if (submitOnChange) {
+                        submitHandler(e, e.target.value, child?.props['data-seller-name']);
+                      }
                     }}
                   >
                     {/* Need a case for when there's no sellers in the account */}
@@ -140,18 +144,15 @@ const SelectSeller = ({ handleSubmit, maxWidth }: { handleSubmit?: Function, max
                     }
                   </Select>
                 </FormControl>
-                <CardActions sx={{ padding: "0", marginTop: "30px" }}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    fullWidth
-                    disabled={!enabled}
+                {actions && 
+                  <CardActions
+                    sx={{ padding: "0", marginTop: "30px" }}
                   >
-                    Continue with selected seller
-                  </Button>
-                </CardActions>
+                    {React.cloneElement(actions.element, { disabled: !enabled })}
+                  </CardActions>
+                }
               </CardContent>
-            </form>
+            </FormWrap>
           </Card>
         )}
       </Box>

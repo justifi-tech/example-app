@@ -5,20 +5,16 @@ import {
   Card,
   CardActions,
   CardContent,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
   Typography,
-  styled,
-  FormHelperText
+  styled
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import JustiFiPalette from "../JustiFiPallete";
 import { paymentFormSchema } from "../makeSchemas";
 import { makeStyles } from "@mui/styles";
+import SelectSeller from "../../features/SelectSeller";
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -54,11 +50,11 @@ const CreatePaymentForm = (
   const { submitHandler, disabled = true, seller, width, title } = props;
   const classes = useStyles();
   const [enableSubmit, setEnableSubmit] = useState<boolean>(false);
-  const [selectedSellerSafeName, setSelectedSellerSafeName] = useState<String>('');
+  const [selectedSeller, setSelectedSeller] = useState<{sellerID: string, sellerSafeName: string}>();
   const extendedSubmitHandler = (data: Object) => {
     return submitHandler(data, {
-      sellerID: seller?.sellerID,
-      sellerSafeName: selectedSellerSafeName || seller?.sellerName
+      sellerID: selectedSeller?.sellerID || seller?.sellerID,
+      sellerSafeName: selectedSeller?.sellerSafeName || seller?.sellerName
     });
   }
 
@@ -67,9 +63,9 @@ const CreatePaymentForm = (
     handleSubmit,
     formState
   } = useForm({
-    resolver: yupResolver(paymentFormSchema(!!seller?.sellerID)),
+    resolver: yupResolver(paymentFormSchema(!!selectedSeller?.sellerID || !!seller?.sellerID)),
     defaultValues: {
-      sellerAccountId: seller?.sellerID || '',
+      sellerAccountId: selectedSeller?.sellerID || seller?.sellerID || '',
       amount: 0.0,
       description: "",
       applicationFeeAmount: null,
@@ -84,6 +80,10 @@ const CreatePaymentForm = (
       setEnableSubmit(true);
     }
   }, [errors, formState])
+
+  const onSellerSelected = (selectedSellerID: any, selectedSellerSafeName: any) => {
+    setSelectedSeller({sellerID: selectedSellerID, sellerSafeName: selectedSellerSafeName});
+  }
 
   return (
     <Box sx={{
@@ -111,30 +111,7 @@ const CreatePaymentForm = (
             </SubheaderText>
             
             {!seller ? 
-              <Box sx={{ marginTop: "32px" }}>
-                <FormControl variant="filled" fullWidth>
-                  <InputLabel id="seller-account-id">Seller</InputLabel>
-                  <Select
-                    label="Seller"
-                    defaultValue={""}
-                    {...register("sellerAccountId")}
-                    onChange={(event, element: React.PropsWithChildren<any>) => {
-                      if (element?.props) {
-                        setSelectedSellerSafeName(element.props['data-safe-name']);
-                      }
-                    }}
-                    error={!!errors?.sellerAccountId}
-                  >
-                    <MenuItem data-safe-name='Pleasant View Gardens' value={"acc_37klepovVgsdN5bkWSP1I4"}>
-                      Pleasant View Gardens
-                    </MenuItem>
-                    <MenuItem data-safe-name='Other Seller' value={"not_an_account_value"}>
-                      Other Seller
-                    </MenuItem>
-                  </Select>
-                  <FormHelperText error>{errors.sellerAccountId?.message}</FormHelperText>
-                </FormControl>
-              </Box>
+              <SelectSeller noForm submitOnChange handleSubmit={onSellerSelected} />
             :
               null
             }

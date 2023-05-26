@@ -2,7 +2,7 @@ import { object, string, number } from "yup";
 
 const paymentFormSchema = (hasSeller: boolean) => {
   return object({
-    sellerAccountId: !hasSeller ? string().required("Please, select a seller") : string(),
+    sellerAccountId: !hasSeller ? string().required("Please, select a sub account") : string(),
     amount: number()
       .required("Please, provide an amount")
       .typeError("Please, provide an amount")

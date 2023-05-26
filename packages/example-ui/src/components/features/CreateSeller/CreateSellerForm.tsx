@@ -98,13 +98,13 @@ const CreateSellerForm = (
             </Typography>
             <SubheaderText variant="h5">
               {
-                "Provide the name of the seller you'd like to send to hosted onboarding."
+                "Provide the name of the sub account you'd like to send to hosted onboarding."
               }
             </SubheaderText>
             <TextField
               fullWidth
               id="create-seller"
-              label="Seller name"
+              label="Sub Account name"
               type="search"
               variant="filled"
               margin="normal"
@@ -120,7 +120,7 @@ const CreateSellerForm = (
           </CardContent>
           <CardActions sx={{ padding: "0", marginTop: "30px" }}>
             <Button type="submit" variant="contained" fullWidth>
-              Create Seller
+              Create Sub Account
             </Button>
           </CardActions>
         </form>

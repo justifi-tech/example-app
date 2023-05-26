@@ -16,6 +16,6 @@ test("renders default path", () => {
     </MockTheme>
   );
 
-  const createElement = screen.getByText(/Create a Seller/i);
+  const createElement = screen.getByText(/Create a Sub Account/i);
   expect(createElement).toBeInTheDocument();
 });
