@@ -24,7 +24,7 @@ import { getConfig } from "../../../config";
 import { PaymentsApi } from "../../../api/Payment";
 import { formatCentsToDollars } from "../utils";
 
-const clientId = process.env.REACT_APP_CLIENT_ID || getConfig().clientId;
+const clientId = process.env.REACT_APP_JUSTIFI_CLIENT_ID || getConfig().clientId;
 
 export interface CreatePaymentParams {
   amount: number;
@@ -63,10 +63,9 @@ function BankForm(props: { params: CreatePaymentParams }) {
   const [enableSubmit, setEnableSubmit] = useState<boolean>(false);
 
   const [showPaymentMethodErrors, setShowPaymentMethodErrors] = useState<boolean>(false);
-  const [showInvalid, setShowInvalid] = useState<boolean>(true);
 
 
-  const cardFormRef = useRef(null);
+  const bankFormRef = useRef(null);
   
   const {
     register,
@@ -92,31 +91,30 @@ function BankForm(props: { params: CreatePaymentParams }) {
 
     setSubmitting(true);
 
-    const cardForm = (cardFormRef as any).current;
+    const bankForm = (bankFormRef as any).current;
     const paymentMethodMetadata = { ...formValues };
-    const tokenizeResponse = await cardForm.tokenize(clientId, paymentMethodMetadata, params.sellerAccountId);
+    const tokenizeResponse = await bankForm.tokenize(clientId, paymentMethodMetadata, params.sellerAccountId);
 
-    if (tokenizeResponse.token) {
-
+    if (tokenizeResponse.id) {
       const paymentRequest = await Payments.createPayment({
         amount: params.amount,
         description: params.description,
         currency: 'usd', // Ask if this should be flagged as optional in our backend
         capture_strategy: 'automatic', // Ask if this should be flagged as optional in our backend
-        payment_method: { token: tokenizeResponse.token }
+        payment_method: { token: tokenizeResponse.id }
       }, {
         'Seller-Account': params.sellerAccountId
       });
       
-      setSubmitting(false);
       alert('Payment created: \n' + JSON.stringify(paymentRequest.data));
+    } else if (tokenizeResponse?.errors) {
+      alert('Tokenization error: \n' + tokenizeResponse?.errors[0]);
     } else {
-      setSubmitting(false);
-      alert('Tokenization error: \n' + tokenizeResponse.errors[0]);
+      alert('An unkwown error has occurred. Please try again.')
     }
-  }
 
-  function onPaymentMethodReady(data: any) {};
+    setSubmitting(false);
+  }
 
   return (
     <div className={classes.layout}>
@@ -190,9 +188,7 @@ function BankForm(props: { params: CreatePaymentParams }) {
                   <Box>
                     <JustifiBankAccountForm 
                       iframeOrigin={`${process.env.REACT_APP_JUSTIFI_COMPS_URL || 'https://js.justifi.ai'}/v2`}
-                      ref={cardFormRef}
-                      onBankAccountFormReady={onPaymentMethodReady}
-                      className={(showInvalid) ? 'justifiCardForm invalid' : 'justifiCardForm'}
+                      ref={bankFormRef}
                     />
                   </Box>
                   <Box>
