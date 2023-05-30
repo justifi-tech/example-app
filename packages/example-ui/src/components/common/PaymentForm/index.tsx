@@ -58,7 +58,7 @@ const PaymentFormComponent = () => {
           </Box>
           <Box sx={{
             opacity: !seller?.sellerName ? 0.5 : 1,
-            pointerEvents: !seller?.sellerName ? 'unset' : "none",
+            pointerEvents: !seller?.sellerName ? 'none' : 'unset',
             padding: '20px',
             border: '1px solid gray',
             borderRadius: '3px',
