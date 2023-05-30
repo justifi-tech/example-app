@@ -3,6 +3,7 @@ import { Box, Card, CardContent, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import { PaymentsApi } from "../../../api/Payment";
 import SelectSeller from "../../features/SelectSeller";
+import { formatCentsToDollars } from "../utils";
 
 const PaymentFormComponent = () => {
   const paymentFormRef = useRef(null);
@@ -14,6 +15,8 @@ const PaymentFormComponent = () => {
   const onSellerSelected = (selectedSellerID: any, selectedSellerSafeName: any) => {
     setSeller({sellerID: selectedSellerID, sellerName: selectedSellerSafeName});
   }
+
+  const PayAmount = 1000;
   const onSubmitHandler = async (e: any) => {
     setToken('');
     setReqError('');
@@ -26,7 +29,7 @@ const PaymentFormComponent = () => {
     if (e.detail.id) {
       try {
         const payment = await payments.createPayment({
-          amount: 1000,
+          amount: PayAmount,
           description: 'test payment from PaymentForm flow',
           currency: 'usd', // Ask if this should be flagged as optional in our backend
           capture_strategy: 'automatic', // Ask if this should be flagged as optional in our backend
@@ -54,12 +57,22 @@ const PaymentFormComponent = () => {
             <SelectSeller submitOnChange handleSubmit={onSellerSelected} />
           </Box>
           <Box sx={{
+            opacity: !seller?.sellerName ? 0.5 : 1,
+            pointerEvents: !seller?.sellerName ? 'unset' : "none",
             padding: '20px',
             border: '1px solid gray',
             borderRadius: '3px',
             marginTop: '20px',
             backgroundColor: "#fafafa"
           }}>
+            <Typography sx={{
+                fontSize: "14px",
+                color: "#004C4D",
+                fontWeight: "bold",
+                padding: "0",
+              }}>
+              Payment amount: {formatCentsToDollars(PayAmount)}
+            </Typography>
             <Typography
               sx={{
                 fontSize: "20px",
@@ -67,7 +80,7 @@ const PaymentFormComponent = () => {
                 fontWeight: "bold",
                 padding: "0",
                 marginBottom: "20px"
-              }}>Payment method for {seller?.sellerName}</Typography>
+              }}>Payment method for: {seller?.sellerName || "<no account selected>"}</Typography>
             <JustifiPaymentForm
               ref={paymentFormRef}
               accountId={seller?.sellerID}
