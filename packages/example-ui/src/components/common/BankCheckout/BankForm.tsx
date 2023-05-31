@@ -16,13 +16,13 @@ import {
   InputLabel
 } from "@mui/material";
 import { JustifiBankAccountForm } from '@justifi/react-components';
-import { makeStyles } from "@mui/styles";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { bankCheckoutFormSchema } from '../makeSchemas';
 import JustiFiPalette from "../JustiFiPallete";
 import { getConfig } from "../../../config";
 import { PaymentsApi } from "../../../api/Payment";
 import { formatCentsToDollars } from "../utils";
+import { TitleText } from "../atoms";
 
 const clientId = process.env.REACT_APP_JUSTIFI_CLIENT_ID || getConfig().clientId;
 
@@ -32,29 +32,6 @@ export interface CreatePaymentParams {
   sellerAccountId: string;
   sellerSafeName: string;
 }
-
-const contentOffset = "24px";
-const useStyles = makeStyles(
-  (theme: any) => ({
-    layout: {
-      display: "flex",
-      flexDirection: "column",
-      height: "100%",
-      maxHeight: "100%",
-      overflowY: "scroll",
-    },
-    layoutContent: {
-      flex: 1,
-      marginTop: `${contentOffset}`,
-      minHeight: 0,
-      maxHeight: `calc(100% + ${contentOffset})`,
-      [theme.breakpoints.up("2048")]: {
-        maxWidth: `calc(100vw - '30vm' - '256px')`,
-      },
-    },
-  }),
-  { index: 1 }
-);
 
 function BankForm(props: { params: CreatePaymentParams }) {
   const Payments = PaymentsApi();
@@ -82,8 +59,6 @@ function BankForm(props: { params: CreatePaymentParams }) {
       setEnableSubmit(true);
     }
   }, [errors, formState, showPaymentMethodErrors])
-  
-  const classes = useStyles();
 
   async function onSubmit(formValues: any) {
     setShowPaymentMethodErrors(true);
@@ -117,149 +92,132 @@ function BankForm(props: { params: CreatePaymentParams }) {
   }
 
   return (
-    <div className={classes.layout}>
-      <div className={classes.layoutContent}>
-        <Grid container sx={{
-          justifyContent: "center",
+    <Grid container sx={{
+      marginTop: {xs: '20px', md: '0'},
+      justifyContent: "center",
+      borderRadius: '5px',
+    }}>
+      <Grid item
+        md={'auto'}
+        sx={{
+          width: '100%',
+          maxWidth: '600px',
+          backgroundColor: "white",
+          padding: 4,
           borderRadius: '5px',
-        }}>
-          <Box
-            sx={{
-              backgroundColor: "white",
-              padding: 4,
-              borderRadius: '5px',
-              transition: '0.2s ease-in-out filter',
-            }}
-          >
-            <Card>
-              <form aria-label="refund form" onSubmit={handleSubmit(onSubmit, onSubmit)}>
-                <CardContent>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
+          transition: '0.2s ease-in-out filter',
+        }}
+      >
+        <Card>
+          <form aria-label="refund form" onSubmit={handleSubmit(onSubmit, onSubmit)}>
+            <CardContent>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: "20px",
+                    color: "#004C4D",
+                    fontWeight: "bold",
+                    padding: "0",
+                  }}
+                >
+                  {params.sellerSafeName}
+                </Typography>
+                <TitleText>
+                  {formatCentsToDollars(params.amount || 0.0)}
+                </TitleText>
+                {/* TODO: convert to Subtitle component */}
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontSize: "16px",
+                    color: JustiFiPalette.grey[700],
+                    fontWeight: 400,
+                    padding: "0",
+                    marginBottom: "12px"
+                  }}
+                >
+                  {params.description}{" "}
+                </Typography>
+              </Box>
+              <Box>
+                <JustifiBankAccountForm 
+                  iframeOrigin={`${process.env.REACT_APP_JUSTIFI_COMPS_URL || 'https://js.justifi.ai'}/v2`}
+                  ref={bankFormRef}
+                />
+              </Box>
+              <Box>
+                <TextField
+                  fullWidth
+                  id="name"
+                  label="Account Owner Name"
+                  type="text"
+                  variant="filled"
+                  margin="normal"
+                  {...register("name")}
+                />
+                {<FormHelperText error>{errors.name?.message as string}</FormHelperText>}
+              </Box>
+              <Box>
+                <FormControl
+                  variant="filled"
+                  fullWidth
+                  sx={{
+                    margin: '10px 0'
+                  }}
+                >
+                  <InputLabel htmlFor="account_owner_type">Select an account owner type</InputLabel>
+                  <Select
+                    {...register("account_owner_type")}
+                    id="account_owner_type"
+                    defaultValue=""
                   >
-                    <Typography
-                      sx={{
-                        fontSize: "20px",
-                        color: "#004C4D",
-                        fontWeight: "bold",
-                        padding: "0",
-                      }}
-                    >
-                      {params.sellerSafeName}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: "34px",
-                        color: "#004C4D",
-                        fontWeight: "bold",
-                        padding: "0",
-                      }}
-                    >
-                      {formatCentsToDollars(params.amount || 0.0)}
-                    </Typography>
-                    <Typography
-                      variant="h5"
-                      sx={{
-                        fontSize: "16px",
-                        color: JustiFiPalette.grey[700],
-                        fontWeight: 400,
-                        padding: "0",
-                      }}
-                    >
-                      {params.description}{" "}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ marginTop: "32px" }}>
-                    <Typography
-                      variant="h5"
-                      sx={{
-                        fontSize: "16px",
-                        color: JustiFiPalette.grey[700],
-                        fontWeight: 400,
-                      }}
-                    >
-                      Payment Method
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <JustifiBankAccountForm 
-                      iframeOrigin={`${process.env.REACT_APP_JUSTIFI_COMPS_URL || 'https://js.justifi.ai'}/v2`}
-                      ref={bankFormRef}
-                    />
-                  </Box>
-                  <Box>
-                    <TextField
-                      fullWidth
-                      id="name"
-                      label="Account Owner Name"
-                      type="text"
-                      variant="filled"
-                      margin="normal"
-                      {...register("name")}
-                    />
-                    {<FormHelperText error>{errors.name?.message as string}</FormHelperText>}
-                  </Box>
-                  <Box>
-                    <FormControl
-                      variant="filled"
-                      fullWidth
-                      sx={{
-                        margin: '10px 0'
-                      }}
-                    >
-                      <InputLabel htmlFor="account_owner_type">Select an account owner type</InputLabel>
-                      <Select
-                        {...register("account_owner_type")}
-                        id="account_owner_type"
-                        defaultValue=""
-                      >
-                        <MenuItem value="individual">Individual</MenuItem>
-                        <MenuItem value="company">Company</MenuItem>
-                      </Select>
-                    </FormControl>
-                    {<FormHelperText error>{errors.account_owner_type?.message as string}</FormHelperText>}
-                  </Box>
-                  <Box>
-                    <FormControl
-                      variant="filled"
-                      fullWidth
-                      sx={{
-                        margin: '10px 0'
-                      }}
-                    >
-                      <InputLabel htmlFor="account_type">Select an account type</InputLabel>
-                      <Select
-                        id="account_type"
-                        defaultValue=""
-                        {...register("account_type")}
-                      >
-                        <MenuItem value="checking">Checking</MenuItem>
-                        <MenuItem value="savings">Savings</MenuItem>
-                      </Select>
-                    </FormControl>
-                    {<FormHelperText error>{errors.account_type?.message as string}</FormHelperText>}
-                  </Box>
-                </CardContent>
-                <CardActions sx={{ padding: "0", marginTop: "30px" }}>
-                  <Button
-                    disabled={!enableSubmit || submitting}
-                    type="submit"
-                    variant="contained"
-                    fullWidth
+                    <MenuItem value="individual">Individual</MenuItem>
+                    <MenuItem value="company">Company</MenuItem>
+                  </Select>
+                </FormControl>
+                {<FormHelperText error>{errors.account_owner_type?.message as string}</FormHelperText>}
+              </Box>
+              <Box>
+                <FormControl
+                  variant="filled"
+                  fullWidth
+                  sx={{
+                    margin: '10px 0'
+                  }}
+                >
+                  <InputLabel htmlFor="account_type">Select an account type</InputLabel>
+                  <Select
+                    id="account_type"
+                    defaultValue=""
+                    {...register("account_type")}
                   >
-                    Authorize & Capture Payment
-                  </Button>
-                </CardActions>
-              </form>
-            </Card>
-          </Box>
-        </Grid>
-      </div>
-    </div>
+                    <MenuItem value="checking">Checking</MenuItem>
+                    <MenuItem value="savings">Savings</MenuItem>
+                  </Select>
+                </FormControl>
+                {<FormHelperText error>{errors.account_type?.message as string}</FormHelperText>}
+              </Box>
+            </CardContent>
+            <CardActions sx={{ padding: "0", marginTop: "30px" }}>
+              <Button
+                disabled={!enableSubmit || submitting}
+                type="submit"
+                variant="contained"
+                fullWidth
+              >
+                Authorize & Capture Payment
+              </Button>
+            </CardActions>
+          </form>
+        </Card>
+      </Grid>
+    </Grid>
   );
 }
 

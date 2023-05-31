@@ -15,6 +15,7 @@ import JustiFiPalette from "../JustiFiPallete";
 import { paymentFormSchema } from "../makeSchemas";
 import { makeStyles } from "@mui/styles";
 import SelectSeller from "../../features/SelectSeller";
+import { TitleText } from "../atoms";
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -93,25 +94,18 @@ const CreatePaymentForm = (
       <Card variant="outlined" className={classes.content}>
         <form aria-label="refund form" onSubmit={handleSubmit(extendedSubmitHandler)}>
           <CardContent sx={{ padding: "0" }}>
-            <Typography
-              sx={{
-                fontSize: "34px",
-                color: "#004C4D",
-                fontWeight: 700,
-                padding: "0",
-              }}
-            >
+            <TitleText>
               {title ? title :
                 'Create a Payment'
               }
-            </Typography>
+            </TitleText>
             <SubheaderText variant="h5">
               Configure the settings of the payment you’d like to send to the
               checkout.
             </SubheaderText>
             
             {!seller ? 
-              <SelectSeller noForm submitOnChange handleSubmit={onSellerSelected} />
+              <SelectSeller noForm submitOnChange handleSubmit={onSellerSelected} height={56}/>
             :
               null
             }

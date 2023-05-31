@@ -9,6 +9,7 @@ import {
 import JustiFiPalette from "../common/JustiFiPallete";
 import AppTopBar from "../common/AppTopBar";
 import HostedCheckoutComponent from "./HostedCheckoutForm";
+import { TitleText } from "../common/atoms";
 
 const HeaderText = styled("span")({
   display: "flex",
@@ -36,12 +37,9 @@ const HostedCheckout = () => {
         <Toolbar />
         <Grid container sx={{ padding: "32px" }}>
           <Grid>
-            <Typography
-              variant="h4"
-              sx={{ fontSize: "34px", color: "#004C4D", fontWeight: 700 }}
-            >
+            <TitleText>
               <HeaderText>Card Form Component</HeaderText>
-            </Typography>
+            </TitleText>
             <SubheaderText variant="h5">
               This is an example of the platform using the JustiFi Hosted Checkout.
             </SubheaderText>

@@ -3,6 +3,7 @@ import { Alert, Box, Card, CardActions, CardContent, FormControl, Grid, InputLab
 import { Sellers, ISellerList } from "../../../api/Seller";
 import { IApiResponse, IErrorObject, IServerError } from "../../../api/Api";
 import { useNavigate } from "react-router";
+import { TitleText } from "../../common/atoms";
 
 const SelectSellerError = (props: { error: IErrorObject | IServerError }) => {
   const { error } = props;
@@ -26,9 +27,9 @@ const SelectSellerError = (props: { error: IErrorObject | IServerError }) => {
 };
 
 const SelectSeller = (
-  { handleSubmit, maxWidth, actions, submitOnChange, noForm }: {
+  { handleSubmit, maxWidth, actions, submitOnChange, noForm, height }: {
     handleSubmit?: Function, maxWidth?: string, actions?: { element: ReactElement },
-    submitOnChange?: boolean, noForm?: boolean
+    submitOnChange?: boolean, noForm?: boolean, height?: number | string
   }) => {
   const [url, setUrl] = useState<string>("");
   const [enabled, setEnabled] = useState<boolean>(false);
@@ -94,7 +95,7 @@ const SelectSeller = (
         maxWidth: maxWidth || '600px'
       }}>
         {loading ? (
-        <Skeleton variant="rectangular" height={200}/>
+        <Skeleton variant="rectangular" height={height || (actions ? 235 : 173)}/>
         ) : (
           <Card
             variant={!noForm ? "outlined" : undefined}
@@ -110,16 +111,9 @@ const SelectSeller = (
             <FormWrap noForm={noForm}>
               <CardContent sx={{ padding: "0 !important" }}>
                 {!noForm && 
-                  <Typography
-                    sx={{
-                      fontSize: "34px",
-                      color: "#004C4D",
-                      fontWeight: "bold",
-                      padding: "0",
-                    }}
-                  >
+                  <TitleText>
                     Select a Sub Account
-                  </Typography>
+                  </TitleText>
                 }
                 <FormControl fullWidth>
                   <InputLabel variant="filled" id="subaccount-selector">Select a Sub Account</InputLabel>

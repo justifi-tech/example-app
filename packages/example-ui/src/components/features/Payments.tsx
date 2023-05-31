@@ -10,6 +10,7 @@ import { Payment } from "../../api/Payment";
 import PaymentsTableRow from "../common/Payments/PaymentsTableRow";
 import PaymentsTableHeaderRow from "../common/Payments/PaymentsTableHeaderRow";
 import { HttpMethod, IApiResponse, IPagination, Api } from "../../api/Api";
+import { TitleText } from "../common/atoms";
 
 const HeaderText = styled("span")({
   display: "flex",
@@ -56,9 +57,9 @@ const Payments = () => {
         sx={{ height: 155, backgroundColor: "white", padding: "32px" }}
       >
         <Grid item xs>
-          <Typography variant="h4" sx={{ fontSize: "34px", color: "#004C4D" }}>
+          <TitleText>
             <HeaderText>Payments</HeaderText>
-          </Typography>
+          </TitleText>
           <SubheaderText variant="h5">
             These are all the payments the sub account has processed through JustiFi.
             The platform can hit our API to display this data in their UI for
