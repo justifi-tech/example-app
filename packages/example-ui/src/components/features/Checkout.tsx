@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   CssBaseline,
@@ -12,7 +12,7 @@ import JustiFiPalette from "../common/JustiFiPallete";
 import AppTopBar from "../common/AppTopBar";
 import CreatePaymentForm from "../common/Checkout/CreatePaymentForm";
 import CardFormComponent from "../common/Checkout/CardFormComponent";
-import { TitleText } from "../common/atoms";
+import { SpinningLoader, TitleText } from "../common/atoms";
 
 const HeaderText = styled("span")({
   display: "flex",
@@ -32,6 +32,7 @@ const SubheaderText = styled(Typography)({
 
 const Checkout = () => {
   const [params, setParams] = React.useState<any>({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   // This should be nore specifically typed
   const onCreatePayment = (data: Object, extras?: Object) => {
@@ -40,6 +41,9 @@ const Checkout = () => {
 
   return (
     <Box sx={{ display: "flex" }}>
+      {loading && (
+        <SpinningLoader />
+      )}
       <CssBaseline />
       <AppTopBar toggleDrawer={() => {}} />
       <Drawer
@@ -67,7 +71,7 @@ const Checkout = () => {
               them, while the iframed card form will send the payment method
               info to JustiFi, keeping the platform free of PCI scope.
             </SubheaderText>
-            <CardFormComponent params={params} />
+            <CardFormComponent setLoading={setLoading} params={params} />
           </Grid>
         </Grid>
       </Box>

@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, Link, Typography } from "@mui/material";
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, Link, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { ReactElement } from "react";
 import { IPayment } from "../../../api/Payment";
@@ -52,7 +52,33 @@ const SuccessPrompt = ({ children, open, close, entityLink, createdPayment }: {
   </Dialog>
 );
 
+const SpinningLoader = () => (
+  <Box sx={{
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    zIndex: 10000
+  }}>
+    <CircularProgress
+      size={80}
+      sx={{
+        color: 'gray',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: '-12px',
+        marginLeft: '-12px',
+        zIndex: 200
+      }}
+    />
+  </Box>
+)
+
 export {
   TitleText,
-  SuccessPrompt
+  SuccessPrompt,
+  SpinningLoader
 };
