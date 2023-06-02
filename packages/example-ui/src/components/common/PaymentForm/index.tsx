@@ -3,7 +3,7 @@ import { Box, Card, CardContent, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import { PaymentsApi } from "../../../api/Payment";
 import SelectSeller from "../../features/SelectSeller";
-import { SuccessPrompt } from "../atoms";
+import { SpinningLoader, SuccessPrompt } from "../atoms";
 import { formatCentsToDollars } from "../utils";
 
 const PaymentFormComponent = () => {
@@ -14,6 +14,7 @@ const PaymentFormComponent = () => {
   const [token, setToken] = useState<string>();
   const [reqError, setReqError] = useState<string>();
   const [openSuccess, setOpenSuccess] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onSellerSelected = (selectedSellerID: any, selectedSellerSafeName: any) => {
     setSeller({sellerID: selectedSellerID, sellerName: selectedSellerSafeName});
@@ -21,6 +22,7 @@ const PaymentFormComponent = () => {
 
   const PayAmount = 1000;
   const onSubmitHandler = async (e: any) => {
+    setLoading(true);
     setToken('');
     setReqError('');
     if (e.detail.id) {
@@ -47,6 +49,7 @@ const PaymentFormComponent = () => {
       }
     }
 
+    setLoading(false);
     // Re-enable submit button regardless of outcome
     (paymentFormRef as any).current.enableSubmitButton();
   }
@@ -55,6 +58,9 @@ const PaymentFormComponent = () => {
     <Box sx={{
       display: 'flex'
     }}>
+      {loading &&
+        <SpinningLoader />
+      }
       <Box sx={{ width: '50%' }}>
         <Box>
           <Box>
