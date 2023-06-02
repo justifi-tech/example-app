@@ -18,9 +18,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { checkoutFormSchema } from '../makeSchemas';
 import JustiFiPalette from "../JustiFiPallete";
 import { getConfig } from "../../../config";
-import { PaymentsApi } from "../../../api/Payment";
+import { IPayment, PaymentsApi } from "../../../api/Payment";
 import { formatCentsToDollars } from "../utils";
-import { TitleText } from "../atoms";
+import { SuccessPrompt, TitleText } from "../atoms";
 
 const clientId = process.env.REACT_APP_JUSTIFI_CLIENT_ID || getConfig().clientId;
 export interface CreatePaymentParams {
@@ -54,12 +54,14 @@ const useStyles = makeStyles(
 );
 
 
-function CardFormComponent(props: { params: CreatePaymentParams }) {
+function CardFormComponent(props: { setLoading: any, params: CreatePaymentParams }) {
   const Payments = PaymentsApi();
   const { params } = props;
   const [enabled, setEnabled] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [enableSubmit, setEnableSubmit] = useState<boolean>(false);
+  const [paymentRes, setPaymentRes] = useState<IPayment>();
+  const [openSuccess, setOpenSuccess] = useState<boolean>(false);
 
   useEffect(() => {
     setEnabled(!!params.sellerID);
@@ -93,26 +95,35 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
 
     const cardForm = (cardFormRef as any).current;
     const paymentMethodMetadata = { ...formValues };
-    const tokenizeResponse = await cardForm.tokenize(clientId, paymentMethodMetadata, params.sellerID);
+    try {
+      const tokenizeResponse = await cardForm.tokenize(clientId, paymentMethodMetadata, params.sellerID);
+      if (tokenizeResponse.id) {
 
-    if (tokenizeResponse.id) {
-
-      const paymentRequest = await Payments.createPayment({
-        amount: params.amount,
-        description: params.description,
-        currency: 'usd', // Ask if this should be flagged as optional in our backend
-        capture_strategy: 'automatic', // Ask if this should be flagged as optional in our backend
-        payment_method: { token: tokenizeResponse.id }
-      }, {
-        'Seller-Account': params.sellerID
-      });
-      
-      alert('Payment created: \n' + JSON.stringify(paymentRequest.data));
-    } else {
-      alert('Tokenization error: \n' + tokenizeResponse.errors[0]);
+        const paymentRequest = await Payments.createPayment({
+          amount: params.amount,
+          description: params.description,
+          currency: 'usd', // Ask if this should be flagged as optional in our backend
+          capture_strategy: 'automatic', // Ask if this should be flagged as optional in our backend
+          payment_method: { token: tokenizeResponse.id }
+        }, {
+          'Seller-Account': params.sellerID
+        });
+        
+        setPaymentRes(paymentRequest.data);
+        setOpenSuccess(true)
+      } else {
+        alert('Tokenization error: \n' + tokenizeResponse?.error.message);
+      }
+    } catch (e) {
+      alert('Tokenization error: \n' + e);
     }
+
     setSubmitting(false);
   }
+
+  useEffect(() => {
+    props.setLoading(submitting);
+  }, [props, submitting]);
 
   return (
     <div className={classes.layout}>
@@ -311,6 +322,14 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
             </Card>
           </Box>
         </Grid>
+        {paymentRes &&
+          <SuccessPrompt
+            open={openSuccess}
+            close={() => {setOpenSuccess(false)}}
+            createdPayment={paymentRes}
+            entityLink={`${process.env.REACT_APP_JUSTIFI_DASHBOARD_URL}/account/${params.sellerID}/payments/${paymentRes?.id}`}
+          />
+        }
       </div>
     </div>
   );

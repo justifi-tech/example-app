@@ -3,6 +3,7 @@ import { Box, Card, CardContent, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import { PaymentsApi } from "../../../api/Payment";
 import SelectSeller from "../../features/SelectSeller";
+import { SuccessPrompt } from "../atoms";
 import { formatCentsToDollars } from "../utils";
 
 const PaymentFormComponent = () => {
@@ -12,6 +13,8 @@ const PaymentFormComponent = () => {
   const [paymentRes, setPaymentRes] = useState<any>();
   const [token, setToken] = useState<string>();
   const [reqError, setReqError] = useState<string>();
+  const [openSuccess, setOpenSuccess] = useState<boolean>(false);
+
   const onSellerSelected = (selectedSellerID: any, selectedSellerSafeName: any) => {
     setSeller({sellerID: selectedSellerID, sellerName: selectedSellerSafeName});
   }
@@ -38,6 +41,7 @@ const PaymentFormComponent = () => {
           'Seller-Account': seller?.sellerID
         });
         setPaymentRes(payment);
+        setOpenSuccess(true);
       } catch (e) {
         setPaymentRes(e);
       }
@@ -137,6 +141,14 @@ const PaymentFormComponent = () => {
           </Card>
         </Box>
       </Box>
+      {paymentRes &&
+        <SuccessPrompt
+          open={openSuccess}
+          close={() => {setOpenSuccess(false)}}
+          createdPayment={paymentRes.data}
+          entityLink={`${process.env.REACT_APP_JUSTIFI_DASHBOARD_URL}/account/${seller?.sellerID}/payments/${paymentRes?.id}`}
+        />
+      }
     </Box>
   );
 }
