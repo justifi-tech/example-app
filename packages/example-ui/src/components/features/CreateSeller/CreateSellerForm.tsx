@@ -14,6 +14,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import JustiFiPalette from "../../common/JustiFiPallete";
 import { makeStyles } from "@mui/styles";
 import SellerFormSchema from "./CreateSellerFormSchema";
+import { TitleText } from "../../common/atoms";
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -86,16 +87,9 @@ const CreateSellerForm = (
           onSubmit={handleSubmit(onSubmit, onError)}
         >
           <CardContent sx={{ padding: "0" }}>
-            <Typography
-              sx={{
-                fontSize: "34px",
-                color: "#004C4D",
-                fontWeight: "bold",
-                padding: "0",
-              }}
-            >
+            <TitleText>
               Create a Seller
-            </Typography>
+            </TitleText>
             <SubheaderText variant="h5">
               {
                 "Provide the name of the sub account you'd like to send to hosted onboarding."

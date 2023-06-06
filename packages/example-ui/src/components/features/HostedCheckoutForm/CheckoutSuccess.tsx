@@ -11,6 +11,7 @@ import {
 import AppTopBar from "../../common/AppTopBar";
 import JustiFiPalette from "../../common/JustiFiPallete";
 import { Link } from "react-router-dom";
+import { TitleText } from "../../common/atoms";
 
 const HeaderText = styled("span")({
   display: "flex",
@@ -38,12 +39,9 @@ const CheckoutSuccess = () => {
         <Toolbar />
         <Grid container sx={{ padding: "32px" }}>
           <Grid>
-            <Typography
-              variant="h4"
-              sx={{ fontSize: "34px", color: "#004C4D", fontWeight: 700 }}
-            >
+            <TitleText>
               <HeaderText>Hosted Checkout Success</HeaderText>
-            </Typography>
+            </TitleText>
             <SubheaderText variant="h5">
               This is an example of a page to redirect to after payment success when using the Hosted Checkout.
               This can be configured through the 'after_payment_url' property when creating the Checkout Session.

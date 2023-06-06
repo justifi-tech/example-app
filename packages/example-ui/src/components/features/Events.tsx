@@ -6,6 +6,7 @@ import JustiFiPalette from "../common/JustiFiPallete";
 import { Event, listRecentEvents } from "../../api/Events";
 import EventsTableHeaderRow from "../common/Events/EventsTableHeaderRow";
 import EventsTableRow from "../common/Events/EventsTableRow";
+import { TitleText } from "../common/atoms";
 
 const HeaderText = styled("span")({
   display: "flex",
@@ -48,9 +49,9 @@ const Events = () => {
         sx={{ height: 155, backgroundColor: "white", padding: "32px" }}
       >
         <Grid item xs>
-          <Typography variant="h4" sx={{ fontSize: "34px", color: "#004C4D" }}>
+          <TitleText>
             <HeaderText>Received Events</HeaderText>
-          </Typography>
+          </TitleText>
           <SubheaderText variant="h5">
             These are all the events the platform has received from JustiFi, based on the
             event publishers the platform created

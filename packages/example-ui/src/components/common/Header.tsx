@@ -2,6 +2,7 @@ import { FunctionComponent } from "react";
 import { Grid, Divider, Typography, styled } from "@mui/material";
 import { Variant } from "@mui/material/styles/createTypography";
 import JustiFiPalette from "./JustiFiPallete";
+import { TitleText } from "./atoms";
 
 interface HeaderProps {
   header: string | JSX.Element | JSX.Element[];
@@ -55,12 +56,9 @@ const Header: FunctionComponent<React.PropsWithChildren<HeaderProps>> = (
     <FullWidthHeader>
       <Grid container spacing={2} wrap="nowrap">
         <Grid item xs>
-          <Typography
-            variant={fontVariants[variant].header}
-            sx={{ fontSize: "34px", color: "#004C4D" }}
-          >
+          <TitleText>
             <HeaderText>{header}</HeaderText>
-          </Typography>
+          </TitleText>
 
           {subheader && (
             <SubheaderText variant={fontVariants[variant].subheader}>

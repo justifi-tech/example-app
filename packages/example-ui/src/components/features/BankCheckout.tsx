@@ -10,6 +10,7 @@ import AppTopBar from "../common/AppTopBar";
 import BankForm from "../common/BankCheckout/BankForm";
 import SelectSeller from "./SelectSeller";
 import { FormEvent, useState } from "react";
+import { TitleText } from "../common/atoms";
 
 const HeaderText = styled("span")({
   display: "flex",
@@ -41,20 +42,17 @@ const BankCheckout = () => {
       <AppTopBar />
       <Box component="main">
         <Toolbar />
-        <Grid container sx={{ padding: "32px" }}>
-          <Grid>
-            <Typography
-              variant="h4"
-              sx={{ fontSize: "34px", color: "#004C4D", fontWeight: 700 }}
-            >
-              <HeaderText>Bank Account Component</HeaderText>
-            </Typography>
-            <SubheaderText variant="h5" margin="15px 0">
-              This is an example of the usage of the Bank Account Web Component. The platform can use
-              their own fields to collect any additional info that's relevant to
-              them, while the iframed bank account form will send the payment method
-              info to JustiFi, keeping the platform free of PCI scope.
-            </SubheaderText>
+        <Grid container columns={12} sx={{ padding: "32px" }}>
+          <TitleText>
+            <HeaderText>Bank Account Component</HeaderText>
+          </TitleText>
+          <SubheaderText variant="h5" margin="15px 0">
+            This is an example of the usage of the Bank Account Web Component. The platform can use
+            their own fields to collect any additional info that's relevant to
+            them, while the iframed bank account form will send the payment method
+            info to JustiFi, keeping the platform free of PCI scope.
+          </SubheaderText>
+          <Grid item xs={12} md={6}>
             <SelectSeller
               submitOnChange
               handleSubmit={
@@ -67,6 +65,8 @@ const BankCheckout = () => {
               }
             }
             />
+          </Grid>
+          <Grid item xs={12} md={6}>
             <BankForm params={{
               amount: 1000,
               description: `test payment for: ${currentSeller.selectedSellerSafeName}`,

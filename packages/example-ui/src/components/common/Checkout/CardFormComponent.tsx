@@ -20,6 +20,7 @@ import JustiFiPalette from "../JustiFiPallete";
 import { getConfig } from "../../../config";
 import { PaymentsApi } from "../../../api/Payment";
 import { formatCentsToDollars } from "../utils";
+import { TitleText } from "../atoms";
 
 const clientId = process.env.REACT_APP_JUSTIFI_CLIENT_ID || getConfig().clientId;
 export interface CreatePaymentParams {
@@ -115,6 +116,11 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
 
   return (
     <div className={classes.layout}>
+      <style>
+        {`:root {
+          --jfi-form-control-padding: .5rem 0;
+        }`}
+      </style>
       <div className={classes.layoutContent}>
         <Grid container sx={{
           justifyContent: "center",
@@ -154,16 +160,9 @@ function CardFormComponent(props: { params: CreatePaymentParams }) {
                     >
                       {params.sellerSafeName}
                     </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: "34px",
-                        color: "#004C4D",
-                        fontWeight: "bold",
-                        padding: "0",
-                      }}
-                    >
+                    <TitleText>
                       {formatCentsToDollars(params.amount || 0.0)}
-                    </Typography>
+                    </TitleText>
                     <Typography
                       variant="h5"
                       sx={{
