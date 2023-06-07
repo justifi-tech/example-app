@@ -1,5 +1,7 @@
-import { Typography } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, Link, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import { ReactElement } from "react";
+import { IPayment } from "../../../api/Payment";
 
 const TitleText = ({ children }: { children: ReactElement | string }) => <Typography
   sx={{
@@ -10,6 +12,47 @@ const TitleText = ({ children }: { children: ReactElement | string }) => <Typogr
   }}
 >{children}</Typography>
 
+const SuccessPrompt = ({ children, open, close, entityLink, createdPayment }: {
+  children?: ReactElement | string, open: boolean, close: () => void,
+  entityLink?: string, createdPayment?: IPayment
+}) => (
+  <Dialog onClose={close} open={open}>
+    <DialogContent>
+      {children}
+      {createdPayment &&
+        <>
+          <Box><strong>Payment ID:</strong> {createdPayment.id}</Box>
+          <Box><strong>Payment Amount:</strong> {createdPayment.amount}</Box>
+          <Box><strong>Payment Fee:</strong> {createdPayment.applicationFee?.amount}</Box>
+          <Box><strong>Payment Account:</strong> {createdPayment.accountId}</Box>
+          <Typography variant="caption">For more details, please click the below link to see the entity in the dashboard.</Typography>
+        </>
+      }
+    </DialogContent>
+    <DialogActions sx={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      padding: '20px'
+    }}>
+      {entityLink && 
+        <Button variant="contained">
+          <Link
+            underline="none"
+            color="inherit"
+            target="_blank"
+            rel="noopener"
+            href={entityLink}
+          >See this entity in the dashboard</Link>
+        </Button>
+      }
+      <Button variant="contained" onClick={close}>
+        Close
+      </Button>
+    </DialogActions>
+  </Dialog>
+);
+
 export {
-  TitleText
+  TitleText,
+  SuccessPrompt
 };

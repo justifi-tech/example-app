@@ -20,9 +20,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { bankCheckoutFormSchema } from '../makeSchemas';
 import JustiFiPalette from "../JustiFiPallete";
 import { getConfig } from "../../../config";
-import { PaymentsApi } from "../../../api/Payment";
+import { IPayment, PaymentsApi } from "../../../api/Payment";
 import { formatCentsToDollars } from "../utils";
-import { TitleText } from "../atoms";
+import { SuccessPrompt, TitleText } from "../atoms";
 
 const clientId = process.env.REACT_APP_JUSTIFI_CLIENT_ID || getConfig().clientId;
 
@@ -38,6 +38,8 @@ function BankForm(props: { params: CreatePaymentParams }) {
   const { params } = props;
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [enableSubmit, setEnableSubmit] = useState<boolean>(false);
+  const [openSuccess, setOpenSuccess] = useState<boolean>(false);
+  const [createdPayment, setCreatedPayment] = useState<IPayment>();
 
   const [showPaymentMethodErrors, setShowPaymentMethodErrors] = useState<boolean>(false);
 
@@ -81,7 +83,8 @@ function BankForm(props: { params: CreatePaymentParams }) {
         'Seller-Account': params.sellerAccountId
       });
       
-      alert('Payment created: \n' + JSON.stringify(paymentRequest.data));
+      setCreatedPayment(paymentRequest.data);
+      setOpenSuccess(true);
     } else if (tokenizeResponse?.errors) {
       alert('Tokenization error: \n' + tokenizeResponse?.errors[0]);
     } else {
@@ -217,6 +220,12 @@ function BankForm(props: { params: CreatePaymentParams }) {
           </form>
         </Card>
       </Grid>
+      <SuccessPrompt
+        close={() => setOpenSuccess(false)}
+        open={openSuccess}
+        createdPayment={createdPayment}
+        entityLink={`${process.env.REACT_APP_JUSTIFI_DASHBOARD_URL}/account/${params.sellerAccountId}/payments/${createdPayment?.id}`}
+      />
     </Grid>
   );
 }
