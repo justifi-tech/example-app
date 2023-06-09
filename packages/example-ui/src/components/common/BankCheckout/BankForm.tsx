@@ -21,7 +21,7 @@ import { bankCheckoutFormSchema } from '../makeSchemas';
 import JustiFiPalette from "../JustiFiPallete";
 import { getConfig } from "../../../config";
 import { IPayment, PaymentsApi } from "../../../api/Payment";
-import { formatCentsToDollars } from "../utils";
+import { buildEntityUrl, formatCentsToDollars } from "../utils";
 import { SuccessPrompt, TitleText } from "../atoms";
 
 const clientId = process.env.REACT_APP_JUSTIFI_CLIENT_ID || getConfig().clientId;
@@ -224,7 +224,11 @@ function BankForm(props: { params: CreatePaymentParams }) {
         close={() => setOpenSuccess(false)}
         open={openSuccess}
         createdPayment={createdPayment}
-        entityLink={`${process.env.REACT_APP_JUSTIFI_DASHBOARD_URL}/account/${params.sellerAccountId}/payments/${createdPayment?.id}`}
+        entityLink={
+          process.env.REACT_APP_JUSTIFI_DASHBOARD_URL
+          ? buildEntityUrl(params.sellerAccountId || '', createdPayment?.id || '')
+          : undefined
+        }
       />
     </Grid>
   );

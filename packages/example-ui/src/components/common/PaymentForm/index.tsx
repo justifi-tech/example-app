@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { PaymentsApi } from "../../../api/Payment";
 import SelectSeller from "../../features/SelectSeller";
 import { SpinningLoader, SuccessPrompt } from "../atoms";
-import { formatCentsToDollars } from "../utils";
+import { buildEntityUrl, formatCentsToDollars } from "../utils";
 
 const PaymentFormComponent = () => {
   const paymentFormRef = useRef(null);
@@ -152,7 +152,11 @@ const PaymentFormComponent = () => {
           open={openSuccess}
           close={() => {setOpenSuccess(false)}}
           createdPayment={paymentRes.data}
-          entityLink={`${process.env.REACT_APP_JUSTIFI_DASHBOARD_URL}/account/${seller?.sellerID}/payments/${paymentRes?.id}`}
+          entityLink={
+            process.env.REACT_APP_JUSTIFI_DASHBOARD_URL
+            ? buildEntityUrl(seller?.sellerID || '', paymentRes?.id)
+            : undefined
+          }
         />
       }
     </Box>

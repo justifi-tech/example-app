@@ -25,7 +25,9 @@ const SuccessPrompt = ({ children, open, close, entityLink, createdPayment }: {
           <Box><strong>Payment Amount:</strong> {createdPayment.amount}</Box>
           <Box><strong>Payment Fee:</strong> {createdPayment.applicationFee?.amount}</Box>
           <Box><strong>Payment Account:</strong> {createdPayment.accountId}</Box>
-          <Typography variant="caption">For more details, please click the below link to see the entity in the dashboard.</Typography>
+          {entityLink &&
+            <Typography variant="caption">For more details, please click the below link to see the entity in the dashboard.</Typography>
+          }
         </>
       }
     </DialogContent>

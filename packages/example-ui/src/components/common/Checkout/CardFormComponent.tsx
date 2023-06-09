@@ -19,7 +19,7 @@ import { checkoutFormSchema } from '../makeSchemas';
 import JustiFiPalette from "../JustiFiPallete";
 import { getConfig } from "../../../config";
 import { IPayment, PaymentsApi } from "../../../api/Payment";
-import { formatCentsToDollars } from "../utils";
+import { buildEntityUrl, formatCentsToDollars } from "../utils";
 import { SuccessPrompt, TitleText } from "../atoms";
 
 const clientId = process.env.REACT_APP_JUSTIFI_CLIENT_ID || getConfig().clientId;
@@ -327,7 +327,11 @@ function CardFormComponent(props: { setLoading: any, params: CreatePaymentParams
             open={openSuccess}
             close={() => {setOpenSuccess(false)}}
             createdPayment={paymentRes}
-            entityLink={`${process.env.REACT_APP_JUSTIFI_DASHBOARD_URL}/account/${params.sellerID}/payments/${paymentRes?.id}`}
+            entityLink={
+              process.env.REACT_APP_JUSTIFI_DASHBOARD_URL
+              ? buildEntityUrl(params.sellerID || '', paymentRes?.id || '')
+              : undefined
+            }
           />
         }
       </div>
