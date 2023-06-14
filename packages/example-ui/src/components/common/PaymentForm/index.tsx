@@ -3,7 +3,8 @@ import { Box, Card, CardContent, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import { PaymentsApi } from "../../../api/Payment";
 import SelectSeller from "../../features/SelectSeller";
-import { formatCentsToDollars } from "../utils";
+import { SpinningLoader, SuccessPrompt } from "../atoms";
+import { buildEntityUrl, formatCentsToDollars } from "../utils";
 
 const PaymentFormComponent = () => {
   const paymentFormRef = useRef(null);
@@ -12,12 +13,16 @@ const PaymentFormComponent = () => {
   const [paymentRes, setPaymentRes] = useState<any>();
   const [token, setToken] = useState<string>();
   const [reqError, setReqError] = useState<string>();
+  const [openSuccess, setOpenSuccess] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const onSellerSelected = (selectedSellerID: any, selectedSellerSafeName: any) => {
     setSeller({sellerID: selectedSellerID, sellerName: selectedSellerSafeName});
   }
 
   const PayAmount = 1000;
   const onSubmitHandler = async (e: any) => {
+    setLoading(true);
     setToken('');
     setReqError('');
     if (e.detail.id) {
@@ -38,11 +43,13 @@ const PaymentFormComponent = () => {
           'Seller-Account': seller?.sellerID
         });
         setPaymentRes(payment);
+        setOpenSuccess(true);
       } catch (e) {
         setPaymentRes(e);
       }
     }
 
+    setLoading(false);
     // Re-enable submit button regardless of outcome
     (paymentFormRef as any).current.enableSubmitButton();
   }
@@ -51,6 +58,9 @@ const PaymentFormComponent = () => {
     <Box sx={{
       display: 'flex'
     }}>
+      {loading &&
+        <SpinningLoader />
+      }
       <Box sx={{ width: '50%' }}>
         <Box>
           <Box>
@@ -137,6 +147,18 @@ const PaymentFormComponent = () => {
           </Card>
         </Box>
       </Box>
+      {paymentRes &&
+        <SuccessPrompt
+          open={openSuccess}
+          close={() => {setOpenSuccess(false)}}
+          createdPayment={paymentRes.data}
+          entityLink={
+            process.env.REACT_APP_JUSTIFI_DASHBOARD_URL
+            ? buildEntityUrl(seller?.sellerID || '', paymentRes?.id)
+            : undefined
+          }
+        />
+      }
     </Box>
   );
 }

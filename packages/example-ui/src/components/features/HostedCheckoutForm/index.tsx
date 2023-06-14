@@ -1,8 +1,9 @@
-import { Box, Button, Card, CardContent, CircularProgress, Grid, Link, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Grid, Link, Typography } from "@mui/material";
 import { useState } from "react";
 import SelectSeller from "../SelectSeller";
 import CreatePaymentForm from "../../common/Checkout/CreatePaymentForm";
 import { PaymentsApi } from "../../../api/Payment";
+import { SpinningLoader } from "../../common/atoms";
 
 const HostedCheckoutComponent = () => {
   const Payments = PaymentsApi();
@@ -30,7 +31,7 @@ const HostedCheckoutComponent = () => {
       }
       const newCheckoutSession = await Payments.createCheckoutSession({
         payment_intent_id: paymentIntent.id,
-        after_payment_url: `${window.location.origin}'/hosted-checkout/success'`,
+        after_payment_url: `${window.location.origin}/hosted-checkout/success`,
       });
       if (!newCheckoutSession) {
         console.error("Error creating the checkout session")
@@ -48,31 +49,14 @@ const HostedCheckoutComponent = () => {
     <Box>
       <Grid container spacing={1}>
         {loading && (
-          <>
-            <CircularProgress
-              size={80}
-              sx={{
-                color: 'gray',
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                marginTop: '-12px',
-                marginLeft: '-12px',
-              }}
-            />
-            <Box sx={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
-              backgroundColor: 'rgba(0,0,0,0.2)',
-              zIndex: 100
-            }}/>
-          </>
+          <SpinningLoader />
         )}
         <Grid item xs={6}>
-          <SelectSeller maxWidth="auto" handleSubmit={(sellerID: string, sellerName: string) => {setSeller({ sellerID, sellerName })}} />
+          <SelectSeller
+            maxWidth="auto"
+            handleSubmit={(sellerID: string, sellerName: string) => {setSeller({ sellerID, sellerName })}}
+            submitOnChange
+          />
         </Grid>
         <Grid item xs={6}>
           <Card>
