@@ -31,7 +31,7 @@ const HostedCheckoutComponent = () => {
       }
       const newCheckoutSession = await Payments.createCheckoutSession({
         payment_intent_id: paymentIntent.id,
-        after_payment_url: `${window.location.origin}'/hosted-checkout/success'`,
+        after_payment_url: `${window.location.origin}/hosted-checkout/success`,
       });
       if (!newCheckoutSession) {
         console.error("Error creating the checkout session")
