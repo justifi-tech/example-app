@@ -54,7 +54,7 @@ const useStyles = makeStyles(
 );
 
 
-function CardFormComponent(props: { setLoading: any, params: CreatePaymentParams }) {
+function CardFormComponent(props: { setLoading: any, params: CreatePaymentParams, children?: any }) {
   const Payments = PaymentsApi();
   const { params } = props;
   const [enabled, setEnabled] = useState<boolean>(false);
@@ -307,6 +307,7 @@ function CardFormComponent(props: { setLoading: any, params: CreatePaymentParams
                       {<FormHelperText error>{errors.address_postal_code?.message as string}</FormHelperText>}
                     </FormControl>
                   </Box>
+                  {props.children}
                 </CardContent>
                 <CardActions sx={{ padding: "0", marginTop: "30px" }}>
                   <Button
