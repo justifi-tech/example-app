@@ -11,6 +11,7 @@ import HostedCheckout from "./components/features/HostedCheckout";
 import CheckoutSuccess from "./components/features/HostedCheckoutForm/CheckoutSuccess";
 import PaymentFormCheckout from "./components/features/PaymentForm";
 import { useAuth0 } from '@auth0/auth0-react';
+import CheckoutInsurance from "./components/features/CheckoutInsurance";
 
 export default function App() {
   const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
@@ -50,6 +51,7 @@ export default function App() {
             <Route path="/payment-form-checkout" element={<PaymentFormCheckout />} />
             <Route path="/hosted-checkout" element={<HostedCheckout />} />
             <Route path="/hosted-checkout/success" element={<CheckoutSuccess />} />
+            <Route path="/checkout-insurance" element={<CheckoutInsurance />} />
           </Routes>
         </BrowserRouter>
       </React.StrictMode>
